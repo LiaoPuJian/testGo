@@ -11,6 +11,8 @@ func main(){
 
 	defer fmt.Println("a2")
 
+	testDefer()
+
 	defer fmt.Println("a3")
 
 
@@ -19,4 +21,16 @@ func main(){
 	}
 
 	fmt.Println("End")
+}
+
+
+func testDefer(){
+
+	fmt.Println("111")
+
+	defer fmt.Println("我是testDefer里面的第一句")
+
+	defer fmt.Println("我是testDefer里面的第二句")
+
+	fmt.Println("222")
 }
