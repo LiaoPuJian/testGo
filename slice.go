@@ -18,9 +18,9 @@ func main() {
 	}
 
 	game := [][]string{
-		[]string{"_", "_", "_"},
-		[]string{"_", "_", "_"},
-		[]string{"_", "_", "_"},
+		[]string{},
+		[]string{},
+		[]string{},
 	}
 
 	game[0][0] = "X"
@@ -52,6 +52,7 @@ func main() {
 		fmt.Printf("2**%d = %d\n", i, v)
 	}
 }
+
 
 func printBoard(s [][]string){
 	for i := 0; i < len(s); i++ {
