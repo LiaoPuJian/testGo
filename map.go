@@ -53,7 +53,6 @@ key表示用户名，是唯一的，不可以重复
 
 func modifyUser(users map[string]map[string]string, name string){
 	v, ok := users[name]
-
 	if ok {
 		//有，改密码
 		v["pwd"] = "888888"
