@@ -21,18 +21,19 @@ func (u User) CallReflect(name string, id, age int) {
 }
 
 func main() {
-	/*u := User{
+	u := User{
 		Id:   1,
 		Name: "LPJ",
 		Age:  2,
 	}
-	info(u)*/
+	info(u)
 
-	/*	m := 123
-		vOfValue := reflect.ValueOf(&m)
-		vOfValue.Elem().SetInt(999)
-		fmt.Println(m)*/
-	user := User{2, "lpj", 18}
+	m := 123
+	vOfValue := reflect.ValueOf(&m)
+	vOfValue.Elem().SetInt(999)
+	fmt.Println(m)
+
+	/*user := User{2, "lpj", 18}
 	user.CallReflect("jjy", 10, 20)
 	//获取user的反射值类型
 	v := reflect.ValueOf(user)
@@ -40,7 +41,11 @@ func main() {
 	mehoodU := v.MethodByName("CallReflect")
 	//设置参数
 	args := []reflect.Value{reflect.ValueOf("YJJ"), reflect.ValueOf(3), reflect.ValueOf(5)}
-	mehoodU.Call(args)
+	mehoodU.Call(args)*/
+
+	//a := 123
+
+	//reflectTest01(a)
 }
 
 //反射方法   传递一个空的接口
@@ -69,4 +74,28 @@ func info(o interface{}) {
 		m := t.Method(i)
 		fmt.Printf("%6s:%v", m.Name, m.Type)
 	}
+}
+
+//这个方法对基本数据类型进行反射的基本操作
+func reflectTest01(b interface{}) {
+
+	//获取传递的这个空接口的类型
+	rType := reflect.TypeOf(b)
+	fmt.Println("type:", rType)
+	//获取值
+	rVal := reflect.ValueOf(b)
+	fmt.Printf("type:%T, Val:%d", rVal, rVal)
+
+	//将这个值转换为int
+	n1 := rVal.Int()
+	fmt.Println(n1)
+
+	//将这个值转换为空接口
+	iV := rVal.Interface()
+	fmt.Printf("type:%T, val:%v\n", iV, iV)
+
+	//将空接口通过断言的方式转换成需要的类型
+	n2 := iV.(int)
+	fmt.Println("n2:", n2)
+
 }

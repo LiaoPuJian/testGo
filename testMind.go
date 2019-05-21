@@ -27,6 +27,8 @@ func main() {
 	//sliceAndArr();
 	//structTest()
 	//structTestPub()
+	//structTestExtends()
+	testReference()
 }
 
 //猜想，既然slice是数组的引用，那么定义一个slice引用某个数组，
@@ -192,8 +194,11 @@ func structTestExtends() {
 	b.hobby = "basketball"
 
 	//第二种情况在这里使用同一个包下的其他的私有结构体，并访问其私有属性，也是可以的
+	//这里有一个坑，如果需要使用同一个包的其他文件下的结构体或者方法，则在go run 和go build的时候
+	//需要将该文件一起编译
 	var cat cat
 	cat.name = "miaomiao"
+	fmt.Println(cat)
 
 	//第三种情况，在这里使用不同包的结构体。由于student和person是私有，不能实例化
 	// 只能实例化公有的worker
@@ -204,5 +209,32 @@ func structTestExtends() {
 	//如果是小写，则即便继承过来也会认定为私有，不能使用
 	//worker.age = 18   //这里会报错
 	worker.Worker()
+}
 
+//猜想，据说golang中main包中不同的文件的代码不能直接互相调用，其他包的可以
+func testReference() {
+
+	//这里调用同样是main包的struct.go里的Dog结构体
+	dog := Dog{name: "feifei", age: 18}
+	//打印之，这里如果直接使用go run testMind.go或者go build testMind.go
+	//会提示undefined:Dog。这个时候需要在编译的时候加上struct.go
+	//即使用go run testMind.go struct.go或者go build testMind.go struct.go
+	//将提供Dog结构体的文件也一并编译，才会正常运行
+	fmt.Println(dog)
+
+	//那么如果是不同的包呢？
+	//我们在包project1中建立了fish和behavior文件
+	fish := project1.Fish{
+		Name: "shark",
+	}
+	//打印之
+	fmt.Println(fish)
+	//调用fish文件的方法
+	project1.FishSay()
+	//调用fish结构体的方法，都可以完美执行，且下面的方法是依赖behavior中的方法的
+	fish.Say()
+	fish.FishAge()
+
+	//这里证明，如果是另一个包，在引用了对应的文件之后，其互相的调用是不受编译影响的
+	//证明只有main包受此影响
 }

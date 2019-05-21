@@ -3,7 +3,6 @@ package main
 import (
 	"errors"
 	"fmt"
-	project1 "hello/project01"
 )
 
 type Point struct {
@@ -124,7 +123,7 @@ func (c *Calculator) cal(x, y float64, method string) (float64, error) {
 	}
 }
 
-func main() {
+/*func main() {
 	//var mu MethodUtils
 	var mu = MethodUtils{}
 	//mu.print()
@@ -164,4 +163,4 @@ func main() {
 	//查询余额
 	account.Query("111111")
 
-}
+}*/

@@ -13,7 +13,7 @@ func Task(taskch, resch chan int, exitch chan bool, i int) {
 		}
 	}()
 	for t := range taskch { //  处理任务
-		fmt.Println("do task :", t)
+		fmt.Println("第", i, "个消费者正在 do task :", t)
 		resch <- t //
 	}
 	fmt.Println(fmt.Sprintf("task:%d 任务完成了", i))

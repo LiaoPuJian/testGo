@@ -1,36 +1,83 @@
 package main
 
 import (
-	"crypto/md5"
 	"encoding/json"
 	"fmt"
-	"github.com/pquerna/ffjson/ffjson"
 )
 
+//定义一个结构体
+type Monster struct {
+	//这里如果希望转json之后使用别名，则直接在对应的key后面添加tag标签
+	Name     string `json:"monster_name"`
+	Age      int    `json:"monster_age"`
+	Birthday string
+}
+
 func main() {
-	a := []int{1, 2, 3, 4, 5}
-	jsonA, err := json.Marshal(a)
-	if err != nil {
-		panic("报错了！")
+	/**
+	struct转json
+	*/
+	monster := Monster{
+		Name:     "牛牛",
+		Age:      100,
+		Birthday: "aaa",
 	}
+	//这里不论传指针还是实例都可以
+	structToJson(&monster)
 
-	fmt.Println(string(jsonA))
+	//map转json
+	map1 := make(map[string]string)
+	map1["name"] = "111"
+	map1["hobby"] = "basketball"
 
-	//对jsonA解码
-	var a1 interface{}
-	json.Unmarshal([]byte(jsonA), &a1)
-	fmt.Println(a1)
+	mapToJson(map1)
 
-	ffJosn, err := ffjson.Marshal(a)
+	//slice转json
+	slice1 := []map[string]string{}
+	slice1 = append(slice1, map1)
+	mapToJson(slice1)
+
+	//json转struct
+	jsonStr := "{\"monster_name\":\"牛牛\",\"monster_age\":100,\"Birthday\":\"aaa\"}"
+	monster2 := Monster{}
+	jsonToStruct(jsonStr, &monster2)
+
+	//json转struct
+	jsonStr2 := "{\"monster\":\"牛牛\",\"monster_age\":100,\"Birthday\":\"aaa\"}"
+	map2 := make(map[string]interface{})
+
+	jsonToStruct(jsonStr2, &map2)
+}
+
+/**
+结构体转json
+*/
+func structToJson(monster *Monster) {
+	data, err := json.Marshal(monster)
 	if err != nil {
-		panic("ff报错了！")
+		fmt.Println("转换失败：", err)
 	}
-	fmt.Println(string(ffJosn))
+	fmt.Println(string(data))
+}
 
-	md5A := md5.New()
+/**
+map或者slice转json
+*/
+func mapToJson(m interface{}) {
+	data, err := json.Marshal(m)
+	if err != nil {
+		fmt.Println("转换失败：", err)
+	}
+	fmt.Println(string(data))
+}
 
-	md5A.Write([]byte("pipikai shi ge zhizhang"))
-	str := md5A.Sum([]byte(""))
-	fmt.Printf("%x\n\n", str)
-
+/**
+json转strcut或者map或者slice
+*/
+func jsonToStruct(jsonStr string, a interface{}) {
+	err := json.Unmarshal([]byte(jsonStr), a)
+	if err != nil {
+		fmt.Println("转换失败：", err)
+	}
+	fmt.Println(a)
 }
