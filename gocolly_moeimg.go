@@ -1,20 +1,15 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"github.com/gocolly/colly"
-	"io"
-	"net/http"
-	"os"
-	"path"
+	"hello/util"
 	"strings"
 	"sync"
 )
 
 var (
-	imgFile = "E:\\keke\\"
-	wg      = sync.WaitGroup{}
+	wg = sync.WaitGroup{}
 )
 
 func main() {
@@ -64,7 +59,7 @@ func main() {
 				imgSrc = url + imgSrc
 			}
 			fmt.Println("获取图片url:", imgSrc)
-			go saveFile(imgSrc)
+			go util.SaveFile(imgSrc)
 		}
 		wg.Done()
 	})
@@ -81,27 +76,4 @@ func main() {
 	}
 
 	wg.Wait()
-}
-
-func saveFile(imgSrc string) {
-	res, err := http.Get(imgSrc)
-	if err != nil {
-		fmt.Println("A error occurred!")
-		return
-	}
-	// defer后的为延时操作，通常用来释放相关变量
-	defer res.Body.Close()
-	// 获得get请求响应的reader对象
-	reader := bufio.NewReaderSize(res.Body, 32*1024)
-
-	fileName := path.Base(imgSrc)
-
-	file, err := os.Create(imgFile + fileName)
-	if err != nil {
-		return
-	}
-	// 获得文件的writer对象
-	writer := bufio.NewWriter(file)
-
-	io.Copy(writer, reader)
 }
