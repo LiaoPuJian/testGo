@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"path"
+	"time"
 )
 
 var (
@@ -14,9 +15,14 @@ var (
 )
 
 func SaveFile(fileSrc string) {
-	res, err := http.Get(fileSrc)
+
+	client := http.Client{}
+	client.Timeout = time.Second * 150
+	res, err := client.Get(fileSrc)
+
+	//res, err := http.Get(fileSrc)
 	if err != nil {
-		fmt.Println("A error occurred!")
+		fmt.Println("保存图片时报错了！", err)
 		return
 	}
 	// defer后的为延时操作，通常用来释放相关变量
