@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	//BufReader()
+	BufReader()
 
 	//NoBufReader()
 
@@ -17,13 +17,13 @@ func main() {
 
 	//putFileToAnotherFile()
 
-	filename1 := "e:/111.jpg"
+	/*filename1 := "e:/111.jpg"
 	filename2 := "e:/1111.jpg"
 	copyFileToAnotherFile(filename1, filename2)
 
 	filename1 = "e:/111.jpg"
 	filename2 = "e:/1111.txt"
-	copyFileToAnotherFile(filename1, filename2)
+	copyFileToAnotherFile(filename1, filename2)*/
 }
 
 /**

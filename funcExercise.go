@@ -32,7 +32,7 @@ func main() {
 
 	arr := []int{24, 96, 80, 57, 13}
 
-	maoPao1(&arr)
+	MaoPao1(&arr)
 
 	fmt.Println(arr)
 
@@ -183,7 +183,7 @@ func maoPao() {
 	fmt.Println(arr)
 }
 
-func maoPao1(arr *[]int) {
+func MaoPao1(arr *[]int) {
 	fmt.Println("排序前的数组：", *arr)
 	var temp int
 
