@@ -1,25 +1,22 @@
 package main
 
 import (
+	"fmt"
 	"github.com/keima/spider"
-	"sync"
-)
-
-var (
-	wg = sync.WaitGroup{}
 )
 
 func main() {
-	wg.Add(2)
-	//爬取moeimg的内容
-	go func() {
-		spider.MoeimgRun(5)
-		wg.Done()
-	}()
-	//爬取yande的内容
-	go func() {
-		spider.YandeRun(5)
-		wg.Done()
-	}()
-	wg.Wait()
+	start := 0
+	end := 0
+	fmt.Println("请输入您想爬取的起始页（数字）:")
+	fmt.Scanln(&start)
+	fmt.Println("请输入您想爬取的结束页（数字）:")
+	fmt.Scanln(&end)
+
+	if start <= 0 || end <= 0 || start > end {
+		fmt.Println("输入的页码有错！")
+		return
+	}
+	spider.MoeimgRun(start, end)
+	fmt.Println("结束")
 }
