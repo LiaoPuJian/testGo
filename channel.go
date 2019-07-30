@@ -35,7 +35,8 @@ func main() {
 		case msg := <-ch:
 			fmt.Println(msg)
 		default:
-			fmt.Println("我什么都没拿到")
+			fmt.Println("111")
+			break
 		}
 	}
 
