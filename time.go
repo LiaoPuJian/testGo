@@ -24,12 +24,12 @@ func main() {
 		fmt.Println("Too far away")
 	}*/
 
-	//getTime()
-	a := DateToTimestamp("2018-06-30 15:04:05")
+	getTime()
+	/*a := DateToTimestamp("2018-06-30 15:04:05")
 	fmt.Println(a)
 
 	b := TimestampToDate(1530371045)
-	fmt.Println(b)
+	fmt.Println(b)*/
 
 }
 

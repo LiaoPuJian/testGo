@@ -14,7 +14,7 @@ func main() {
 
 	db, err := sql.Open("mysql", "root:@tcp(localhost:3306)/test?charset=utf8")
 	checkErr(err)
-	/*insertSql := "INSERT INTO `tp_rabbitmq_test` SET body=?"
+	insertSql := "INSERT INTO `tp_rabbitmq_test` SET body=?"
 	//插入数据
 	res, err := InsertData(db, insertSql)
 	checkErr(err)
@@ -34,7 +34,7 @@ func main() {
 	affect, err := res.RowsAffected()
 	checkErr(err)
 
-	fmt.Println(affect)*/
+	fmt.Println(affect)
 
 	//查询语句
 	selectSql := "SELECT body,create_time,update_time FROM `tp_rabbitmq_test`"
