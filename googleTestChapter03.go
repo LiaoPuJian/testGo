@@ -1,10 +1,17 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"hello/queue"
+)
 
 type treeNode struct {
 	value       int
 	left, right *treeNode
+}
+
+type myTreeNode struct {
+	node *treeNode
 }
 
 //工厂函数，用于新建struct
@@ -49,4 +56,17 @@ func main() {
 	ptree1.setValue2(20)
 	fmt.Println(ptree1)
 
+	q := queue.Queue{1}
+	q.Push(2)
+	q.Push(3)
+	fmt.Println(q.Pop())
+	fmt.Println(q.Pop())
+	fmt.Println(q.IsEmpty())
+	fmt.Println(q.Pop())
+	fmt.Println(q.IsEmpty())
+
+	q2 := queue.Queue2{[]int{1, 2, 3}}
+	q2.Push([]int{4, 5, 6})
+	fmt.Println(q2)
+	fmt.Println(q2.Pop())
 }

@@ -1,28 +1,48 @@
 package main
 
 import (
-	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
-	"strings"
+	"os"
 )
 
-func sayhelloName(w http.ResponseWriter, r *http.Request) {
-	r.ParseForm()       //解析参数，默认是不会解析的
-	fmt.Println(r.Form) //这些信息是输出到服务器端的打印信息
-	fmt.Println("path", r.URL.Path)
-	fmt.Println("scheme", r.URL.Scheme)
-	fmt.Println(r.Form["url_long"])
-	for k, v := range r.Form {
-		fmt.Println("key:", k)
-		fmt.Println("val:", strings.Join(v, ""))
+type shellFunc func(w http.ResponseWriter, r *http.Request) error
+
+func handleShellFunc(shell shellFunc) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		err := shell(w, r)
+		if err != nil {
+			code := http.StatusOK
+			switch {
+			case os.IsNotExist(err):
+				code = http.StatusNotFound
+			default:
+				code = http.StatusInternalServerError
+			}
+			http.Error(w, http.StatusText(code), code)
+		}
 	}
-	fmt.Fprintf(w, "Hello astaxie!") //这个写入到w的是输出到客户端的
+}
+
+func sayhelloName(w http.ResponseWriter, r *http.Request) error {
+	path := r.URL.Path[len("/"):]
+	file, err := os.Open(path)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	all, err := ioutil.ReadAll(file)
+	if err != nil {
+		return err
+	}
+	w.Write(all)
+	return nil
 }
 
 func main() {
-	http.HandleFunc("/", sayhelloName)       //设置访问的路由
-	err := http.ListenAndServe(":9090", nil) //设置监听的端口
+	http.HandleFunc("/", handleShellFunc(sayhelloName)) //设置访问的路由
+	err := http.ListenAndServe(":9090", nil)            //设置监听的端口
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
