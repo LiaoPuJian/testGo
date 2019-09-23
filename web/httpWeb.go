@@ -7,8 +7,10 @@ import (
 	"os"
 )
 
+//定义一个函数类型
 type shellFunc func(w http.ResponseWriter, r *http.Request) error
 
+//接收这个函数类型，并且返回一个可以被HandleFunc接受的func
 func handleShellFunc(shell shellFunc) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		err := shell(w, r)

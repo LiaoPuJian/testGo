@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/gomodule/redigo/redis"
+
+	"github.com/garyburd/redigo/redis"
 )
 
 func main() {

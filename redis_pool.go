@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/gomodule/redigo/redis"
 	"time"
+
+	"github.com/garyburd/redigo/redis"
 )
 
 var (
