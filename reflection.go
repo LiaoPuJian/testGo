@@ -17,7 +17,7 @@ func (u User) Hello() {
 
 //结构体User的绑定方法
 func (u User) CallReflect(name string, id, age int) {
-	fmt.Printf("My name is %s, I am %d, My id is %d, ni hao %s", name, age, id, u.Name)
+	fmt.Printf("My name is %s, I am %d, My id is %d, ni hao %s\n", name, age, id, u.Name)
 }
 
 func main() {
@@ -28,12 +28,12 @@ func main() {
 	}
 	info(u)
 
-	m := 123
+	/*m := 123
 	vOfValue := reflect.ValueOf(&m)
 	vOfValue.Elem().SetInt(999)
-	fmt.Println(m)
+	fmt.Println(m)*/
 
-	/*user := User{2, "lpj", 18}
+	user := User{2, "lpj", 18}
 	user.CallReflect("jjy", 10, 20)
 	//获取user的反射值类型
 	v := reflect.ValueOf(user)
@@ -41,18 +41,17 @@ func main() {
 	mehoodU := v.MethodByName("CallReflect")
 	//设置参数
 	args := []reflect.Value{reflect.ValueOf("YJJ"), reflect.ValueOf(3), reflect.ValueOf(5)}
-	mehoodU.Call(args)*/
+	mehoodU.Call(args)
 
-	//a := 123
-
-	//reflectTest01(a)
+	a := 123
+	reflectTest01(a)
 }
 
 //反射方法   传递一个空的接口
 func info(o interface{}) {
 	//使用反射获取这个空接口的类型集合
 	t := reflect.TypeOf(o)
-	fmt.Println("Type:", t.Name())
+	fmt.Println("Type:", t)
 
 	//判断传入的类型是否正确
 	if k := t.Kind(); k != reflect.Struct {
@@ -63,6 +62,8 @@ func info(o interface{}) {
 	//使用反射获取这个空接口的值集合
 	v := reflect.ValueOf(o)
 	fmt.Println("Value:", v)
+	//Value可以通过Type()方法获取对应的Type对象
+	fmt.Println("Second Type:", v.Type())
 
 	fmt.Println("num:", t.NumField(), "Field:", t.Field(0))
 
@@ -72,7 +73,7 @@ func info(o interface{}) {
 
 	for i := 0; i < t.NumMethod(); i++ {
 		m := t.Method(i)
-		fmt.Printf("%6s:%v", m.Name, m.Type)
+		fmt.Printf("%6s:%v\n", m.Name, m.Type)
 	}
 }
 
@@ -84,7 +85,7 @@ func reflectTest01(b interface{}) {
 	fmt.Println("type:", rType)
 	//获取值
 	rVal := reflect.ValueOf(b)
-	fmt.Printf("type:%T, Val:%d", rVal, rVal)
+	fmt.Printf("type:%T, Val:%d\n", rVal, rVal)
 
 	//将这个值转换为int
 	n1 := rVal.Int()
