@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"reflect"
 	"sort"
 	"strconv"
 	"strings"
@@ -36,7 +37,17 @@ func main() {
 	/*fmt.Println(longestCommonPrefix([]string{"flower", "flow", "flight"}))
 	fmt.Println(longestCommonPrefix([]string{"dog", "doracecar", "docar"}))*/
 
-	fmt.Println(threeSum([]int{-4, -2, -2, -2, 0, 1, 2, 2, 2, 3, 3, 4, 4, 6, 6}))
+	//fmt.Println(threeSum([]int{-4, -2, -2, -2, 0, 1, 2, 2, 2, 3, 3, 4, 4, 6, 6}))
+
+	//fmt.Println(threeSum([]int{-5, 14, 1, -2, 11, 11, -10, 3, -6, 0, 3, -4, -9, -13, -8, -7, 9, 8, -7, 11, 12, -7, 4, -7, -1, -5, 13, 1, -2, 8, -13, 0, -1, 3, 13, -13, -1, 10, 5, 1, -13, -15, 12, -7, -13, -11, -7, 3, 13, 1, 0, 2, 1, 11, 10, 8, -8, 1, -14, -3, -6, -12, 12, 0, 6, 2, 2, -9, -3, 14, -1, -9, 14, -4, -1, 8, -8, 7, -4, 12, -14, 3, -9, 2, 0, -13, -13, -1, 3, -12, 11, 4, -9, 8, 11, 5, -5, -10, 3, -1, -11, -13, 5, -12, -10, 11, 11, -3, -5, 14, -13, -4, -5, -7, 6, 2, -13, 0, 8, -3, 4, 4, -14, 2}))
+
+	//fmt.Println(threeSum([]int{3, 0, -2, -1, 1, 2}))
+
+	//fmt.Println(threeSumClosest([]int{-1, 2, 1, -4}, 1))
+
+	//fmt.Println(letterCombinations("23"))
+
+	fmt.Println(fourSum([]int{-1, 0, -5, -2, -2, -4, 0, 1, -2}, -9))
 }
 
 //给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。
@@ -554,7 +565,7 @@ func romanToInt(s string) int {
 		if v == 'M' {
 			//判断上一个是不是C
 			if prev == 'C' {
-				num += 800
+				num += 800 //这里为什么是800而不是900，因为它前面如果是一个C的话，已经加过一次100了亦如是
 			} else {
 				num += 1000
 			}
@@ -629,24 +640,45 @@ func romanToInt(s string) int {
 解释: 输入不存在公共前缀。
 */
 func longestCommonPrefix(strs []string) string {
+	var str []byte
+
 	if len(strs) == 0 {
 		return ""
 	}
 
-	common := ""
-	str := strs[0]
+	//获取数组第一个元素的长度
+	l := len(strs[0])
 
-	for i := 0; i < len(str); i++ {
-		s := str[0 : i+1]
-		for _, vv := range strs[1:] {
-			if strings.Index(vv, s) != 0 {
-				return common
+	//按照这个第一个元素的长度来循环
+	for i := 0; i < l; i++ {
+		var x byte
+		y := -1
+		//判断第一个元素是否都是一样的
+		for k, v := range strs {
+			//如果是循环的数组的第一个元素，则直接将第一个元素的第i个值赋予x
+			if k == 0 {
+				x = v[i]
+			} else {
+				//判断当前这个值是否等于x，如果不等于，则证明第i个元素不是公共元素。 如果当前循环的字符串长度比较短，没有第i个元素，也同理
+				if len(v)-1 < i || v[i] != x {
+					break
+				}
+			}
+			//如果循环的是最后一个元素，且也通过了，则证明这个i是公共元素，将其放入str中
+			if k == len(strs)-1 {
+				y = k
 			}
 		}
-		common = s
+
+		if y == len(strs)-1 {
+			str = append(str, x)
+		} else {
+			//证明不是第i个元素不是每个字符串都通过了，则跳出循环
+			break
+		}
 	}
 
-	return common
+	return string(str)
 }
 
 /**
@@ -661,18 +693,279 @@ func longestCommonPrefix(strs []string) string {
 
 */
 func threeSum(nums []int) [][]int {
-	sli := [][]int{}
+
+	//1、思路1 暴力破解
+
+	//2、思路2，指针法
+	//先将数组从小到大排序
+	sort.Sort(IntSlice(nums))
+
+	var res [][]int
+
 	l := len(nums)
-	if l < 3 {
-		return sli
-	}
-	//排序数组
-	sort.Ints(nums)
-	//以第二个元素作为中间轴，定义两个指针，一个在数组头，一个在数组尾巴
-	for i := 1; i < l-1; i++ {
+
+	m := make(map[int][]int)
+
+	//指针从第二位开始，到倒数第二位结束
+	for i := 1; i <= l-1; i++ {
 		first := 0
 		last := l - 1
+		for last > i && i > first {
+
+			//fmt.Println("转换前：", first, i, last, nums[first], nums[i], nums[last])
+			if nums[first]+nums[last]+nums[i] == 0 {
+
+				if v, ok := m[nums[first]]; ok {
+					if v[0] == nums[i] || v[0] == nums[last] {
+						//fmt.Println("已经存在了，跳过", nums[first], nums[i], nums[last])
+						first = first + 1
+						last = last - 1
+						continue
+					}
+				}
+				//fmt.Println("数据ok，存入", nums[first], nums[i], nums[last])
+				res = append(res, []int{nums[first], nums[last], nums[i]})
+				m[nums[first]] = []int{nums[i], nums[last]}
+				first = first + 1
+				last = last - 1
+
+			} else if nums[first]+nums[last]+nums[i] < 0 {
+				first = first + 1
+			} else {
+				last = last - 1
+			}
+
+			//fmt.Println("转换后：", first, i, last, nums[first], nums[i], nums[last])
+
+		}
 	}
 
-	return sli
+	return res
+}
+
+type IntSlice []int
+
+func (s IntSlice) Len() int { return len(s) }
+
+func (s IntSlice) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
+
+func (s IntSlice) Less(i, j int) bool { return s[i] < s[j] }
+
+/**
+给定一个包括 n 个整数的数组 nums 和 一个目标值 target。找出 nums 中的三个整数，使得它们的和与 target 最接近。返回这三个数的和。假定每组输入只存在唯一答案。
+
+例如，给定数组 nums = [-1，2，1，-4], 和 target = 1.
+
+与 target 最接近的三个数的和为 2. (-1 + 2 + 1 = 2).
+*/
+func threeSumClosest(nums []int, target int) int {
+
+	//1、暴力法    此法会超时
+	/*var sum int
+	var minCha int
+	minCha = 10000
+
+	l := len(nums)
+	//循环数组
+	for i := 0; i < l-2; i++ {
+		for j := i + 1; j < l-1; j++ {
+			for k := j + 1; k < l; k++ {
+				cha := nums[i] + nums[j] + nums[k] - target
+				fmt.Println(nums[i], nums[j], nums[k], cha, minCha)
+				if cha < 0 {
+					cha = -cha
+				}
+				if minCha > cha {
+					minCha = cha
+					sum = nums[i] + nums[j] + nums[k]
+				}
+			}
+		}
+	}
+
+	return sum*/
+
+	//2、左右游标法
+	var sum int
+	minCha := 10000
+
+	l := len(nums)
+	//先将数组从小到大排序
+	sort.Sort(IntSlice(nums))
+
+	for i := 1; i <= l-1; i++ {
+		first := 0
+		last := l - 1
+
+		for last-i > 0 && i-first > 0 {
+			s := nums[i] + nums[first] + nums[last]
+			cha := s - target
+			if s-target == 0 {
+				return s
+			} else if s-target > 0 {
+				//太大了，右侧左移一位
+				last -= 1
+			} else {
+				//太小了，左侧右移一位
+				first += 1
+			}
+			//取绝对值
+			if cha < 0 {
+				cha = -cha
+			}
+			if cha < minCha {
+				minCha = cha
+				sum = s
+			}
+		}
+	}
+
+	return sum
+}
+
+/**
+给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。
+
+给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。
+*/
+func letterCombinations(digits string) []string {
+	//定义好一个map，用来存放数字对应的字符
+	m := make(map[byte][]string)
+	m['2'] = []string{"a", "b", "c"}
+	m['3'] = []string{"d", "e", "f"}
+	m['4'] = []string{"g", "h", "i"}
+	m['5'] = []string{"j", "k", "l"}
+	m['6'] = []string{"m", "n", "o"}
+	m['7'] = []string{"p", "q", "r", "s"}
+	m['8'] = []string{"t", "u", "v"}
+	m['9'] = []string{"w", "x", "y", "z"}
+
+	result := make([]string, 0)
+
+	//这里为了避免digits为""的情况
+	if len(digits) == 0 {
+		return result
+	}
+
+	f("", digits, &result, m)
+
+	return result
+}
+
+/**
+回溯算法。输入一个将被拼装的字符串和要回溯的字符串，一个结果集
+如果next_digits为空，则证明后续没有需要回溯的字符串了，直接将拼接好的字符串放入结果集中
+否则，则获取要回溯的字符串的第一个字符，去m中查到其对应的字符串，然后将这些字符串拼到combination中，并将next_digits从下一位开始，继续调用回溯方法
+*/
+func f(combination, next_digits string, result *[]string, m map[byte][]string) {
+	if len(next_digits) == 0 {
+		*result = append(*result, combination)
+	} else {
+		for _, v := range m[next_digits[0]] {
+			f(combination+v, next_digits[1:], result, m)
+		}
+	}
+}
+
+/**
+给定一个包含 n 个整数的数组 nums 和一个目标值 target，判断 nums 中是否存在四个元素 a，b，c 和 d ，使得 a + b + c + d 的值与 target 相等？找出所有满足条件且不重复的四元组。
+注意：
+答案中不可以包含重复的四元组。
+示例：
+给定数组 nums = [1, 0, -1, 0, -2, 2]，和 target = 0。
+满足要求的四元组集合为：
+[
+  [-1,  0, 0, 1],
+  [-2, -1, 1, 2],
+  [-2,  0, 0, 2]
+]
+
+*/
+func fourSum(nums []int, target int) [][]int {
+
+	var res [][]int
+
+	l := len(nums)
+
+	if l < 4 {
+		return res
+	}
+
+	//对数组进行排序
+	sort.Sort(IntSlice(nums))
+
+	//定义四个指针，k, i, j, h 。k从0开始遍历，i从k+1开始遍历，留下j和h。j指向i+1，h指向数组最后一位
+	for k := 0; k < l-3; k++ {
+		//当k的值与上一个值相等时，跳过当前循环
+		if k > 0 && nums[k] == nums[k-1] {
+			continue
+		}
+		//获取当前k的最小值，如果最小值直接大于了target，则可以直接跳过循环了
+		var min1 = nums[k] + nums[k+1] + nums[k+2] + nums[k+3]
+		if min1 > target {
+			continue
+		}
+		//获取当前k的最大值，如果最大值直接小于了target，则也可以直接跳过循环
+		var max1 = nums[k] + nums[l-1] + nums[l-2] + nums[l-3]
+		if max1 < target {
+			continue
+		}
+
+		//第二层循环
+		for i := k + 1; i < l-2; i++ {
+			//当i的值与上一个值相等时，跳过当前循环
+			if i > k+1 && nums[i] == nums[i-1] {
+				continue
+			}
+			//定义指针
+			var j, h = i + 1, l - 1
+			//fmt.Println("最小值：", k, i, j, h, nums[k], nums[i], nums[j], nums[j+1])
+			//获取当前i的最小值，如果最小值直接大于了target，则可以直接跳过循环了
+			var min2 = nums[k] + nums[i] + nums[j] + nums[j+1]
+			if min2 > target {
+				continue
+			}
+			//fmt.Println("最大值：", k, i, j, h, nums[k], nums[i], nums[h-1], nums[h])
+			//获取当前k的最大值，如果最大值直接小于了target，则也可以直接跳过循环
+			var max2 = nums[k] + nums[i] + nums[h-1] + nums[h]
+			if max2 < target {
+				continue
+			}
+
+			//这里开始操作指针j和h
+			for j < h {
+				//fmt.Println(k, i, j, h, nums[k], nums[i], nums[j], nums[h])
+				sum := nums[k] + nums[i] + nums[j] + nums[h]
+				if sum == target {
+					x := []int{nums[k], nums[i], nums[j], nums[h]}
+					jumpFlag := false
+					//如果sum刚好等于目标值，则去重后将其放入到res中
+					for _, v := range res {
+						if reflect.DeepEqual(v, x) {
+							j++
+							h--
+							jumpFlag = true
+							break
+						}
+					}
+					if jumpFlag {
+						continue
+					}
+					//将数组放入res中，
+					res = append(res, x)
+					//移动指针
+					j++
+					h--
+				} else if sum < target {
+					//如果sum小于目标值，则将j往右侧移动一位
+					j++
+				} else {
+					//如果sum大于目标值，则将h往左侧移动一位
+					h--
+				}
+			}
+		}
+	}
+
+	return res
 }
