@@ -46,6 +46,8 @@ func main() {
 		//这里先设置对应的超时时间，假设是10秒
 		time.Sleep(time.Second * 1)
 		ch <- 1
+		ch <- 2
+		ch <- 3
 		timeOut <- 111
 	}(ch, timeOut)
 

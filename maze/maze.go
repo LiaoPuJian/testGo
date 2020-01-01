@@ -5,6 +5,7 @@ import (
 	"os"
 )
 
+//迷宫的广度优先算法
 func main() {
 	maze := readMaze("maze/maze")
 	step := walk(maze, point{0, 0}, point{len(maze) - 1, len(maze[0]) - 1})
