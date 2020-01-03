@@ -8,7 +8,32 @@ import (
 	"strings"
 )
 
+type ListNode struct {
+	Val  int
+	Next *ListNode
+}
+
+//打印链表的方法
+func printList(res *ListNode) {
+	a := res
+	fmt.Print("res:")
+	for {
+		if a == nil {
+			break
+		}
+		fmt.Print(a.Val)
+		a = a.Next
+	}
+	fmt.Print("\n")
+}
+
 func main() {
+
+	/*list1 := &ListNode{Val: 1, Next: &ListNode{Val: 0, Next: &ListNode{Val: 0, Next: &ListNode{Val: 0, Next: &ListNode{Val: 1, Next: nil}}}}}
+	list2 := &ListNode{Val: 5, Next: &ListNode{Val: 6, Next: &ListNode{Val: 4, Next: nil}}}
+
+	addTwoNumbers(list1, list2)*/
+
 	/*fmt.Println(findMedianSortedArrays([]int{1, 3}, []int{2}))
 	fmt.Println(findMedianSortedArrays([]int{1, 2}, []int{3, 4}))
 	fmt.Println(findMedianSortedArrays([]int{3, 5, 7}, []int{6, 9, 20}))*/
@@ -47,7 +72,26 @@ func main() {
 
 	//fmt.Println(letterCombinations("23"))
 
-	fmt.Println(fourSum([]int{-1, 0, -5, -2, -2, -4, 0, 1, -2}, -9))
+	//fmt.Println(fourSum([]int{-1, 0, -5, -2, -2, -4, 0, 1, -2}, -9))
+
+	//list := &ListNode{Val: 1, Next: &ListNode{Val: 2, Next: &ListNode{Val: 3, Next: &ListNode{Val: 4, Next: &ListNode{Val: 5, Next: nil}}}}}
+
+	//l := removeNthFromEnd(list, 2)
+
+	//fmt.Println(isValid("([)]"))
+
+	/*list1 := &ListNode{Val: -10, Next: &ListNode{Val: -6, Next: &ListNode{Val: -6, Next: &ListNode{Val: -6, Next: &ListNode{Val: -3, Next: &ListNode{Val: 5, Next: nil}}}}}}
+	//list2 := &ListNode{Val: 1, Next: &ListNode{Val: 3, Next: &ListNode{Val: 4, Next: nil}}}
+	fmt.Println(mergeTwoLists(list1, nil))*/
+
+	/*list1 := &ListNode{Val: 1, Next: &ListNode{Val: 4, Next: &ListNode{Val: 5, Next: nil}}}
+	list2 := &ListNode{Val: 1, Next: &ListNode{Val: 3, Next: &ListNode{Val: 4, Next: nil}}}
+	list3 := &ListNode{Val: 2, Next: &ListNode{Val: 6, Next: nil}}
+
+	l := mergeKLists([]*ListNode{list1, list2, list3})
+	printList(l)*/
+
+	printList(swapPairs(&ListNode{Val: 1, Next: &ListNode{Val: 2, Next: &ListNode{Val: 3, Next: &ListNode{Val: 4, Next: nil}}}}))
 }
 
 //给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。
@@ -62,6 +106,58 @@ func twoSum(nums []int, target int) []int {
 		m[v] = k
 	}
 	return []int{-1, -1}
+}
+
+/**
+给出两个 非空 的链表用来表示两个非负的整数。其中，它们各自的位数是按照 逆序 的方式存储的，并且它们的每个节点只能存储 一位 数字。
+
+如果，我们将这两个数相加起来，则会返回一个新的链表来表示它们的和。
+
+您可以假设除了数字 0 之外，这两个数都不会以 0 开头。
+
+示例：
+
+输入：(2 -> 4 -> 3) + (5 -> 6 -> 4)
+输出：7 -> 0 -> 8
+原因：342 + 465 = 807
+
+*/
+func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
+	//1、分别计算出两个链表的值，相加之后，倒过来，再生成链表   (这样不行，测试用例中有很多很长的链表，相加会溢出)
+
+	//2、循环两个链表的每个节点，如果有一个节点为空，则将那个节点的值置为0，将两个节点相加，然后得到的合如果大于10则减去10，小于10不做操作，
+	//将这个合放入到输出链表里。如果大于10，则记录进位。
+	pre := &ListNode{Val: 0}
+	cur := pre
+
+	var carry int
+
+	for l1 != nil || l2 != nil {
+		var x, y int
+		if l1 != nil {
+			x = l1.Val
+			l1 = l1.Next
+		}
+		if l2 != nil {
+			y = l2.Val
+			l2 = l2.Next
+		}
+		sum := x + y + carry
+		//计算当前两个链表的值的和是否进一
+		carry = sum / 10
+		//计算出生成的链表的值
+		sum = sum % 10
+		//生成一个节点，放入cur中
+		cur.Next = &ListNode{Val: sum}
+		//开始处理下个节点
+		cur = cur.Next
+	}
+	//如果循环结束后，此时的carry还为1，证明此时最后一位相加也超出了10，则再往后续一个子节点
+	if carry == 1 {
+		cur.Next = &ListNode{Val: carry}
+	}
+
+	return pre.Next
 }
 
 //给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。
@@ -968,4 +1064,372 @@ func fourSum(nums []int, target int) [][]int {
 	}
 
 	return res
+}
+
+/**
+给定一个链表，删除链表的倒数第 n 个节点，并且返回链表的头结点。
+
+示例：
+
+给定一个链表: 1->2->3->4->5, 和 n = 2.
+
+当删除了倒数第二个节点后，链表变为 1->2->3->5.
+说明：
+
+给定的 n 保证是有效的。
+
+进阶：
+
+你能尝试使用一趟扫描实现吗？
+
+*/
+func removeNthFromEnd(head *ListNode, n int) *ListNode {
+	//递归思想，循环获取需要删除的元素，并将倒数n-1个元素的Next指定为倒数n+1个元素
+	//解题思路1、先计算出链表的长度，然后获取倒数第n个值在链表中正向的顺序
+	/*l1 := head
+	var length = 1
+	for l1.Next != nil {
+		l1 = l1.Next
+		length++
+	}
+
+	if length == 1 && n == 1 {
+		return nil
+	}
+	//如果长度和倒数位相等，则证明需要去除第一个值，直接返回head的子元素即可
+	if length == n {
+		return head.Next
+	}
+
+	l := head
+
+	for i := 1; i <= length-n; i++ {
+		if i == length-n {
+			//将l的Next指向n+1
+			l.Next = l.Next.Next
+			break
+		}
+		l = l.Next
+	}
+	return head*/
+
+	//阶梯思路2、双指针。设定两个指针，一个指向正向顺序为n+1的地方，一个指向正向顺序为0的地方。然后将两个指针一步一步的正向往后移动，一旦第一个指针移动到末尾指向空时
+	//第二个指针就指向了要被删除的上一个元素。此时令这个元素的子元素等于其子子元素即可
+	dummy := &ListNode{Val: 0, Next: head}
+	first := dummy
+	second := dummy
+	//将第一个指针移动到n+1的位置
+	for i := 1; i <= n+1; i++ {
+		first = first.Next
+	}
+	//开始一个单位一个单位的共同正向移动，一旦first为空，则此时的second即为要删除的上一个元素
+	for first != nil {
+		first = first.Next
+		second = second.Next
+	}
+
+	second.Next = second.Next.Next
+
+	return dummy.Next
+}
+
+/**
+给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串，判断字符串是否有效。
+
+有效字符串需满足：
+
+左括号必须用相同类型的右括号闭合。
+左括号必须以正确的顺序闭合。
+注意空字符串可被认为是有效字符串。
+
+*/
+func isValid(s string) bool {
+	//可以这么理解，设定一个栈。每读取到一个元素，则判断其情况。如果是左括号，则将其放入栈中，如果是右括号，则检查栈顶的元素是否是跟其匹配的左括号，
+	//如果是，则将左括号弹出（pop）。如果没有，则证明表达式无效。如果最后循环完成，栈中仍有数据，则也证明表达式无效
+	b := make([]byte, 0)
+
+	for _, v := range []byte(s) {
+		switch v {
+		case '(', '[', '{':
+			b = append(b, v)
+		case ')':
+			if len(b) >= 1 && b[len(b)-1] == '(' {
+				b = b[:len(b)-1]
+			} else {
+				return false
+			}
+		case ']':
+			if len(b) >= 1 && b[len(b)-1] == '[' {
+				b = b[:len(b)-1]
+			} else {
+				return false
+			}
+		case '}':
+			if len(b) >= 1 && b[len(b)-1] == '{' {
+				b = b[:len(b)-1]
+			} else {
+				return false
+			}
+		}
+		//fmt.Println(string(b))
+	}
+
+	if len(b) > 0 {
+		return false
+	}
+	return true
+}
+
+/**
+将两个有序链表合并为一个新的有序链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。
+
+示例：
+
+输入：1->2->4, 1->3->4
+输出：1->1->2->3->4->4
+
+*/
+func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
+	pre := &ListNode{}
+	cur := pre
+	var x, y int
+	//先循环第一个链表
+	for l1 != nil {
+		x = l1.Val
+		//如果第二个链表不为空，则比较第一个链表和第二个链表的大小，将小的放入新的链表中，并将对应的链表往后移动一位
+		if l2 != nil {
+			y = l2.Val
+			if x > y {
+				cur.Next = &ListNode{Val: y}
+				l2 = l2.Next
+				cur = cur.Next
+			} else if x < y {
+				cur.Next = &ListNode{Val: x}
+				l1 = l1.Next
+				cur = cur.Next
+			} else {
+				//如果两个值相等，则往新链表中塞两个节点，并且同时移动l1和l2
+				cur.Next = &ListNode{Val: x}
+				cur.Next.Next = &ListNode{Val: y}
+				cur = cur.Next.Next
+				l1 = l1.Next
+				l2 = l2.Next
+			}
+		} else {
+			//如果l2为空的话，则直接将l1的值塞入新的链表中，并移动l1
+			cur.Next = &ListNode{Val: x}
+			l1 = l1.Next
+			cur = cur.Next
+		}
+	}
+	//如果第一个循环完了第二个还有节点，则直接将剩下的节点拼到后面
+	for l2 != nil {
+		cur.Next = &ListNode{Val: l2.Val}
+		cur = cur.Next
+		l2 = l2.Next
+	}
+
+	return pre.Next
+}
+
+func mergeTwoLists1(l1, l2 *ListNode) *ListNode {
+	if l1 == nil {
+		return l2
+	}
+	if l2 == nil {
+		return l1
+	}
+	// 创建最终返回头的前置节点
+	pre := &ListNode{}
+	node := pre
+	for l1 != nil && l2 != nil {
+		//判断，如果当前l1的值大于l2的值，则将l2置为node.Next，反之亦然
+		if l1.Val > l2.Val {
+			node.Next = l2
+			l2 = l2.Next
+		} else {
+			node.Next = l1
+			l1 = l1.Next
+		}
+		//将node往后移动一位
+		node = node.Next
+	}
+	if l1 != nil {
+		node.Next = l1
+	}
+	if l2 != nil {
+		node.Next = l2
+	}
+
+	return pre.Next
+}
+
+/**
+给出 n 代表生成括号的对数，请你写出一个函数，使其能够生成所有可能的并且有效的括号组合。
+
+例如，给出 n = 3，生成结果为：
+
+[
+  "((()))",
+  "(()())",
+  "(())()",
+  "()(())",
+  "()()()"
+]
+
+*/
+func generateParenthesis(n int) []string {
+	var res []string
+	//使用回溯方法
+	generateF(&res, "", 0, 0, n)
+	return res
+}
+
+func generateF(res *[]string, cur string, left, right, max int) {
+	//判断，如果当前字符串的长度已经达到了n的两倍，则证明其已经达到最大长度，将其放入res中
+	if len(cur) == max*2 {
+		*res = append(*res, cur)
+		return
+	}
+	//如果左括号的数量小于n，则可以往其中放入左括号
+	if left < max {
+		generateF(res, cur+"(", left+1, right, max)
+	}
+	//如果右括号的数量小于左括号，则可以往其中放入右括号
+	if right < left {
+		generateF(res, cur+")", left, right+1, max)
+	}
+}
+
+/**
+合并 k 个排序链表，返回合并后的排序链表。请分析和描述算法的复杂度。
+
+示例:
+
+输入:
+[
+  1->4->5,
+  1->3->4,
+  2->6
+]
+输出: 1->1->2->3->4->4->5->6
+*/
+func mergeKLists(lists []*ListNode) *ListNode {
+	//获取所有链表的长度，得到一个总长
+	/*res := &ListNode{}
+	cur := res
+	var allL int
+	for _, v := range lists {
+		v1 := v
+		l := 0
+		for {
+			if v1 == nil {
+				break
+			}
+			l++
+			v1 = v1.Next
+		}
+		allL += l
+	}
+
+	if allL == 0 {
+		return nil
+	}
+
+	//从第一位循环到这个总长
+	for i := 1; i <= allL; i++ {
+		min := 100000
+		key := 0
+		for k, v := range lists {
+			//比较每个v的值，取其中最小的一个，放入res中，并将其往后移动一位
+			if v != nil && v.Val < min {
+				min = v.Val
+				key = k
+				//fmt.Println("当前循环值的键值和最小值：", k, v.Val, min)
+			}
+		}
+		//fmt.Println("获取当前最小值：", min, "最小值的所属值在lists中的键：", key)
+		cur.Val = min
+		if i != allL {
+			cur.Next = &ListNode{}
+			cur = cur.Next
+		}
+
+		lists[key] = lists[key].Next
+	}
+
+	return res*/
+
+	//解法2、递归，将K个链表转换为两个链表的合并问题
+
+	l := len(lists)
+	if l == 0 {
+		return nil
+	}
+
+	if l == 1 {
+		return lists[0]
+	}
+	//这里假设是一个三个元素的数组，则此时lists[:l/2]为第0个元素，lists[l/2:]为第一个和第二个元素
+	//此时第一个和第二个元素继续递归，会先合并成一个链表，再跟第0个合成一个链表
+	return mergeTwoLists(mergeKLists(lists[:l/2]), mergeKLists(lists[l/2:]))
+
+}
+
+/**
+给定一个链表，两两交换其中相邻的节点，并返回交换后的链表。
+
+你不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。
+
+
+示例:
+给定 1->2->3->4, 你应该返回 2->1->4->3.
+
+*/
+func swapPairs(head *ListNode) *ListNode {
+	if head == nil {
+		return nil
+	}
+
+	//获取链表的长度
+	cur := head
+	l := 0
+	for cur != nil {
+		l++
+		cur = cur.Next
+	}
+
+	if l == 1 {
+		return head
+	}
+
+	cur = head
+	parent := &ListNode{Val: 0, Next: head}
+	p1 := parent
+	for i := 1; i <= l; i += 2 {
+		//交换当前节点和其子节点
+		//将当前节点的父级的子节点指向当前节点的子节点
+		printList(p1)
+		printList(cur)
+		//避免长度为奇数时的报错
+		if cur.Next == nil {
+			break
+		}
+
+		p1.Next = cur.Next
+		printList(p1)
+		//将当前节点的子节点切换为其孙子节点
+		cur.Next = cur.Next.Next
+		printList(cur)
+		//将当前父节点的孙子节点换为当前节点
+		p1.Next.Next = cur
+		printList(p1)
+
+		//往后移动两位父节点
+		p1 = p1.Next.Next
+		//往后移动一位当前节点
+		cur = cur.Next
+	}
+
+	return parent.Next
 }
