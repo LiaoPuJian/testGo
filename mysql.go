@@ -3,18 +3,19 @@ package main
 import (
 	"database/sql"
 	"fmt"
+
 	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
 
-	a := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s", "root", "", "localhost", "3306", "test", "utf-8")
+	//a := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s", "root", "", "localhost", "3306", "test", "utf-8")
 
-	panic(a)
+	//panic(a)
 
-	db, err := sql.Open("mysql", "root:@tcp(localhost:3306)/test?charset=utf8")
+	db, err := sql.Open("mysql", "root:123456@tcp(localhost:3306)/product?charset=utf8")
 	checkErr(err)
-	insertSql := "INSERT INTO `tp_rabbitmq_test` SET body=?"
+	/*insertSql := "INSERT INTO `tp_rabbitmq_test` SET body=?"
 	//插入数据
 	res, err := InsertData(db, insertSql)
 	checkErr(err)
@@ -34,10 +35,10 @@ func main() {
 	affect, err := res.RowsAffected()
 	checkErr(err)
 
-	fmt.Println(affect)
+	fmt.Println(affect)*/
 
 	//查询语句
-	selectSql := "SELECT body,create_time,update_time FROM `tp_rabbitmq_test`"
+	selectSql := "SELECT * FROM `product`"
 
 	//查询数据
 	rows, err := queryData(db, selectSql)

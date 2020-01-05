@@ -91,7 +91,14 @@ func main() {
 	l := mergeKLists([]*ListNode{list1, list2, list3})
 	printList(l)*/
 
-	printList(swapPairs(&ListNode{Val: 1, Next: &ListNode{Val: 2, Next: &ListNode{Val: 3, Next: &ListNode{Val: 4, Next: nil}}}}))
+	//printList(swapPairs(&ListNode{Val: 1, Next: &ListNode{Val: 2, Next: &ListNode{Val: 3, Next: &ListNode{Val: 4, Next: nil}}}}))
+
+	//list := &ListNode{Val: 1, Next: &ListNode{Val: 2, Next: &ListNode{Val: 3, Next: &ListNode{Val: 4, Next: &ListNode{Val: 5, Next: &ListNode{Val: 6, Next: &ListNode{Val: 7, Next: &ListNode{Val: 8, Next: &ListNode{Val: 9, Next: nil}}}}}}}}}
+
+	//printList(reverseKGroup(list, 4))
+	//printList(reverseKGroup1(list, 3))
+
+	fmt.Println(removeDuplicates([]int{0, 0, 1, 1, 1, 2, 2, 3, 3, 4}))
 }
 
 //给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。
@@ -1408,14 +1415,13 @@ func swapPairs(head *ListNode) *ListNode {
 	p1 := parent
 	for i := 1; i <= l; i += 2 {
 		//交换当前节点和其子节点
-		//将当前节点的父级的子节点指向当前节点的子节点
 		printList(p1)
 		printList(cur)
 		//避免长度为奇数时的报错
 		if cur.Next == nil {
 			break
 		}
-
+		//将当前节点的父级的子节点指向当前节点的子节点
 		p1.Next = cur.Next
 		printList(p1)
 		//将当前节点的子节点切换为其孙子节点
@@ -1432,4 +1438,184 @@ func swapPairs(head *ListNode) *ListNode {
 	}
 
 	return parent.Next
+}
+
+/**
+给你一个链表，每 k 个节点一组进行翻转，请你返回翻转后的链表。
+k 是一个正整数，它的值小于或等于链表的长度。
+如果节点总数不是 k 的整数倍，那么请将最后剩余的节点保持原有顺序。
+
+示例 :
+给定这个链表：1->2->3->4->5
+当 k = 2 时，应当返回: 2->1->4->3->5   12345
+当 k = 3 时，应当返回: 3->2->1->4->5
+
+说明 :
+你的算法只能使用常数的额外空间。
+你不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。
+*/
+func reverseKGroup(head *ListNode, k int) *ListNode {
+	//设定两个游标，先指向第一个节点跟第k个节点，然后将第一个节点和第k个节点交换
+	//完成后，将左边的游标往右移动一位，游标的游标往左移动一位。这个时候要判断，如果中间剩余长度没有小于2，则不处理
+	//然后再循环k+1到2k，依次这么做
+	if k == 1 {
+		return head
+	}
+	//先获取链表的长度
+	var l int
+	lhead := head
+	for lhead != nil {
+		l++
+		if lhead.Next == nil {
+			break
+		}
+		lhead = lhead.Next
+	}
+	//循环l/k次
+	for i := 1; i <= l; i += k {
+		//如果此时l-i小于k，则跳过循环
+		if l-i+1 < k {
+			break
+		}
+		x, y := i, i+k-1
+		//交换第i个和第k个元素   1234567
+		for y-x >= 1 {
+			head = swapIAndK(head, x, y)
+			x++
+			y--
+		}
+	}
+
+	return head
+}
+
+//交换一个链表中的第i个节点和第k个节点
+func swapIAndK(list *ListNode, i, k int) *ListNode {
+	cur := list
+	//获取第i个元素和其父元素
+	iParent, iNode := getListIndex(cur, i)
+	cur = list
+	//获取第k个元素和其父元素
+	kParent, kNode := getListIndex(cur, k)
+
+	//交换i和k的值
+	//这里判断i的下一个元素是不是k，如果是，则直接两两交换
+	if iNode.Next == kNode {
+		//1、先令i的父节点的子节点为k
+		iParent.Next = kNode
+		//2、再令i的子节点为k的子节点
+		iNode.Next = kNode.Next
+		//3、令k的子节点为i
+		kNode.Next = iNode
+	} else {
+		//这里获取到iParent的子节点的子节点
+		x := iParent.Next.Next
+		//1、将i的子节点设置为k的子节点 假设i是1k是3  得到i = 14567
+		iNode.Next = kNode.Next
+		//2、把k的父节点的子节点设置为i  得到214567
+		kParent.Next = iNode
+		//3、将i的父节点的子节点设置为k 得到34567
+		iParent.Next = kNode
+		//4、将x设置为k的父节点
+		kNode.Next = x
+	}
+	if i == 1 {
+		return iParent.Next
+	} else {
+		return list
+	}
+}
+
+//这个方法用于获取链表的第index个节点和其父节点
+func getListIndex(list *ListNode, index int) (*ListNode, *ListNode) {
+	x := 1
+	parent := &ListNode{Val: 0, Next: list}
+	for list != nil {
+		if x == index {
+			return parent, list
+		} else {
+			x++
+			parent = list
+			list = list.Next
+		}
+	}
+	return nil, nil
+}
+
+func reverseKGroup1(head *ListNode, k int) *ListNode {
+	//为什么要这么做？因为定义一个头结点可以回避很多特殊情况
+	dummy := &ListNode{Val: 0, Next: head}
+	//定义一个开始节点，一个结束节点，用于翻转
+	pre := dummy
+	end := dummy
+
+	for end.Next != nil {
+		//将end节点移动到本次翻转的最后一个节点
+		for i := 0; i < k && end != nil; i++ {
+			end = end.Next
+		}
+		//如果当前的end节点为nil，则证明后续节点的个数不足本次翻转，直接跳过
+		if end == nil {
+			break
+		}
+		//定义本次翻转的开始节点
+		start := pre.Next
+		//下次翻转的开始节点
+		next := end.Next
+		//令本次翻转的最后一个节点的下一个节点为nil
+		end.Next = nil
+		//执行翻转  由于执行了end.Next = nil   所以本次翻转只会翻转需要的个数字符串
+		fmt.Println("翻转前的start")
+		printList(start)
+		pre.Next = reverseList(start)
+		fmt.Println("翻转后")
+		printList(pre.Next)
+		//然后将开始节点置为下一个要翻转的字符串的头结点
+		start.Next = next
+		pre = start
+		end = pre
+	}
+	//这里为什么返回dummy.Next？ 因为每次变换的只是pre和end，当pre和end完成一次变换之后，会重新赋值继续下一次变换
+	//只有dummy.Next的位置是始终不变的
+	return dummy.Next
+}
+
+//翻转链表元素
+func reverseList(head *ListNode) *ListNode {
+	pre := &ListNode{}
+	pre = nil
+	curr := head
+	for curr != nil {
+		//将curr的下一个链表记录下来（当前循环只处理当前节点）
+		next := curr.Next
+		//将当前节点的子节点设置为pre，如果是第一次循环，pre为nil
+		curr.Next = pre
+		//将pre设置为当前节点，此时pre为当前节点 + 之前的pre
+		pre = curr
+		//将curr设置为下一个链表，开始下一次的循环
+		curr = next
+	}
+	return pre
+}
+
+func removeDuplicates(nums []int) int {
+	var old int
+	old = -100
+
+	l := len(nums)
+
+	for i := 0; i < l; i++ {
+		if i >= len(nums) {
+			break
+		}
+		if old == nums[i] {
+			//删除当前元素
+			nums = append(nums[:i], nums[i+1:]...)
+			i--
+		} else {
+			old = nums[i]
+		}
+	}
+
+	return len(nums)
 }
