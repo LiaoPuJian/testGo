@@ -2610,7 +2610,7 @@ func combinationSumF2(candidates, last []int, res *[][]int, target, i int) bool 
 	}
 	//从当前的i开始循环
 	for j := i; j < len(candidates); j++ {
-		//这里和上一题不一样，这里需要判断，当
+		//这里和上一题不一样，这里需要判断，当j和i属于同一层级时，且当前值等于上个值，则跳过循环
 		if j > i && candidates[j] == candidates[j-1] {
 			continue
 		}
