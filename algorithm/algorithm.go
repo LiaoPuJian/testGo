@@ -28,7 +28,6 @@ func printList(res *ListNode) {
 }
 
 func main() {
-
 	/*list1 := &ListNode{Val: 1, Next: &ListNode{Val: 0, Next: &ListNode{Val: 0, Next: &ListNode{Val: 0, Next: &ListNode{Val: 1, Next: nil}}}}}
 	list2 := &ListNode{Val: 5, Next: &ListNode{Val: 6, Next: &ListNode{Val: 4, Next: nil}}}
 
@@ -98,7 +97,45 @@ func main() {
 	//printList(reverseKGroup(list, 4))
 	//printList(reverseKGroup1(list, 3))
 
-	fmt.Println(removeDuplicates([]int{0, 0, 1, 1, 1, 2, 2, 3, 3, 4}))
+	//fmt.Println(removeDuplicates([]int{0, 0, 1, 1, 1, 2, 2, 3, 3, 4}))
+	//fmt.Println(removeElement([]int{0, 1, 2, 2, 3, 0, 4, 2}, 2))
+	//fmt.Println(strStr("mississippi", "issis"))\
+	//fmt.Println(divide(-2147483648, -1))
+
+	//findSubstring1("foobarfoobar", []string{"foo", "bar"})
+	//findSubstring("aaa", []string{"a", "a"})
+	//findSubstring("wordgoodgoodgoodbestword", []string{"word", "good", "best", "word"})
+	/*findSubstring("pjzkrkevzztxductzzxmxsvwjkxpvukmfjywwetvfnujhweiybwvvsrfequzkhossmootkmyxgjgfordrpapjuunmqnxxdrqrf"+
+	"gkrsjqbszgiqlcfnrpjlcwdrvbumtotzylshdvccdmsqoadfrpsvnwpizlwszrtyclhgilklydbmfhuywotjmktnwrfvizvnmfvvqfiokkdprzn"+
+	"nnjycttprkxpuykhmpchiksyucbmtabiqkisgbhxngmhezrrqvayfsxauampdpxtafniiwfvdufhtwajrbkxtjzqjnfocdhekumttuqwovfjrgu"+
+	"lhekcpjszyynadxhnttgmnxkduqmmyhzfnjhducesctufqbumxbamalqudeibljgbspeotkgvddcwgxidaiqcvgwykhbysjzlzfbupkqunuqtra"+
+	"xrlptivshhbihtsigtpipguhbhctcvubnhqipncyxfjebdnjyetnlnvmuxhzsdahkrscewabejifmxombiamxvauuitoltyymsarqcuuoezcbqp"+
+	"daprxmsrickwpgwpsoplhugbikbkotzrtqkscekkgwjycfnvwfgdzogjzjvpcvixnsqsxacfwndzvrwrycwxrcismdhqapoojegggkocyrdtkzm"+
+	"iekhxoppctytvphjynrhtcvxcobxbcjjivtfjiwmduhzjokkbctweqtigwfhzorjlkpuuliaipbtfldinyetoybvugevwvhhhweejogrghllsou"+
+	"ipabfafcxnhukcbtmxzshoyyufjhzadhrelweszbfgwpkzlwxkogyogutscvuhcllphshivnoteztpxsaoaacgxyaztuixhunrowzljqfqrahos"+
+	"heukhahhbiaxqzfmmwcjxountkevsvpbzjnilwpoermxrtlfroqoclexxisrdhvfsindffslyekrzwzqkpeocilatftymodgztjgybtyheqgcpw"+
+	"ogdcjlnlesefgvimwbxcbzvaibspdjnrpqtyeilkcspknyylbwndvkffmzuriilxagyerjptbgeqgebiaqnvdubrtxibhvakcyotkfonmseszhc"+
+	"zapxdlauexehhaireihxsplgdgmxfvaevrbadbwjbdrkfbbjjkgcztkcbwagtcnrtqryuqixtzhaakjlurnumzyovawrcjiwabuwretmdamfkxr"+
+	"gqgcdgbrdbnugzecbgyxxdqmisaqcyjkqrntxqmdrczxbebemcblftxplafnyoxqimkhcykwamvdsxjezkpgdpvopddptdfbprjustquhlazkjf"+
+	"luxrzopqdstulybnqvyknrchbphcarknnhhovweaqawdyxsqsqahkepluypwrzjegqtdoxfgzdkydeoxvrfhxusrujnmjzqrrlxglcmkiykldbi"+
+	"asnhrjbjekystzilrwkzhontwmehrfsrzfaqrbbxncphbzuuxeteshyrveamjsfiaharkcqxefghgceeixkdgkuboupxnwhnfigpkwnqdvzlydp"+
+	"idcljmflbccarbiegsmweklwngvygbqpescpeichmfidgsjmkvkofvkuehsmkkbocgejoiqcnafvuokelwuqsgkyoekaroptuvekfvmtxtqshcw"+
+	"sztkrzwrpabqrrhnlerxjojemcxel",
+	[]string{"dhvf", "sind", "ffsl", "yekr", "zwzq", "kpeo", "cila", "tfty", "modg", "ztjg", "ybty", "heqg", "cpwo", "gdcj", "lnle", "sefg", "vimw", "bxcb"})*/
+
+	//nextPermutation([]int{1, 4, 7, 6, 5})
+
+	//fmt.Println(longestValidParentheses(")()())"))
+	//fmt.Println(longestValidParentheses("()))((())"))
+
+	//fmt.Println(search([]int{3, 1}, 1))
+	//fmt.Println(searchRange([]int{5, 7, 7, 8, 8, 10}, 3))
+
+	//fmt.Println(searchInsert([]int{1, 3, 5, 6}, 0))
+
+	//fmt.Println(countAndSay(1))
+
+	fmt.Println(combinationSum2([]int{10, 1, 2, 7, 6, 1, 5}, 8))
 }
 
 //给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。
@@ -1598,6 +1635,10 @@ func reverseList(head *ListNode) *ListNode {
 	return pre
 }
 
+/**
+给定一个排序数组，你需要在原地删除重复出现的元素，使得每个元素只出现一次，返回移除后数组的新长度。
+不要使用额外的数组空间，你必须在原地修改输入数组并在使用 O(1) 额外空间的条件下完成。
+*/
 func removeDuplicates(nums []int) int {
 	var old int
 	old = -100
@@ -1618,4 +1659,970 @@ func removeDuplicates(nums []int) int {
 	}
 
 	return len(nums)
+}
+
+/**
+给定一个数组 nums 和一个值 val，你需要原地移除所有数值等于 val 的元素，返回移除后数组的新长度。
+不要使用额外的数组空间，你必须在原地修改输入数组并在使用 O(1) 额外空间的条件下完成。
+元素的顺序可以改变。你不需要考虑数组中超出新长度后面的元素。
+
+*/
+func removeElement(nums []int, val int) int {
+	l := len(nums)
+
+	for i := 0; i < l; i++ {
+		if i >= len(nums) {
+			break
+		}
+		if val == nums[i] {
+			//删除当前元素
+			nums = append(nums[:i], nums[i+1:]...)
+			i--
+		}
+	}
+
+	return len(nums)
+}
+
+/**
+实现 strStr() 函数。
+给定一个 haystack 字符串和一个 needle 字符串，在 haystack 字符串中找出 needle 字符串出现的第一个位置 (从0开始)。如果不存在，则返回  -1。
+
+示例 1:
+输入: haystack = "hello", needle = "ll"
+输出: 2
+示例 2:
+输入: haystack = "aaaaa", needle = "bba"
+输出: -1
+*/
+func strStr(haystack string, needle string) int {
+	if needle == "" {
+		return 0
+	}
+	var pos int
+
+	//定义两个游标，一个指向haystack的第一个字符，一个指向needle的第一个字符。 如果两个游标的值相等，则将两者的游标往后移动一位
+	//如果此时都不相等，则将needle的游标调整到第一位，重新开始匹配。 如果needle都匹配完了，则此时返回haystack匹配第一个字符的位置
+
+	lh := len(haystack)
+	ln := len(needle)
+
+	if ln > lh {
+		return -1
+	}
+
+	nFlag := 0
+	success := false
+
+	for i := 0; i < lh; i++ {
+		//fmt.Println(string(haystack[i]), string(needle[nFlag]), nFlag, pos)
+		if haystack[i] == needle[nFlag] {
+			if nFlag == 0 {
+				pos = i
+			}
+			//如果匹配成功，开始匹配下个值
+			nFlag++
+			//如果当前的游标等于了ln，此时证明完全匹配成功，跳过整个循环
+			if nFlag == ln {
+				success = true
+				break
+			}
+		} else {
+			//匹配不成功，继续匹配下一个值
+			if nFlag != 0 {
+				//将i重新置于pos开始的位置，开始pos+1个循环
+				i = pos
+				nFlag = 0
+			}
+		}
+		if i == lh-1 && !success {
+			pos = -1
+		}
+	}
+
+	return pos
+}
+
+/**
+给定两个整数，被除数 dividend 和除数 divisor。将两数相除，要求不使用乘法、除法和 mod 运算符。
+返回被除数 dividend 除以除数 divisor 得到的商。
+
+示例 1:
+输入: dividend = 10, divisor = 3
+输出: 3
+示例 2:
+输入: dividend = 7, divisor = -3
+输出: -2
+
+说明:
+被除数和除数均为 32 位有符号整数。
+除数不为 0。
+假设我们的环境只能存储 32 位有符号整数，其数值范围是 [−231,  231 − 1]。本题中，如果除法结果溢出，则返回 231 − 1
+
+*/
+func divide(dividend int, divisor int) int {
+	MaxInt32 := 1<<31 - 1
+	MinInt32 := -1 << 31
+
+	if dividend == 0 {
+		return 0
+	}
+	if divisor == 1 {
+		return dividend
+	}
+	if divisor == -1 {
+		if dividend > MinInt32 {
+			return -dividend
+		}
+		return MaxInt32
+	}
+
+	sign := 1
+	if (dividend > 0 && divisor < 0) || (dividend < 0 && divisor > 0) {
+		sign = -1
+	}
+
+	if dividend < 0 {
+		dividend = -dividend
+	}
+	if divisor < 0 {
+		divisor = -divisor
+	}
+
+	res := div(dividend, divisor)
+
+	if sign == 1 {
+		if res > MaxInt32 {
+			return MaxInt32
+		} else {
+			return res
+		}
+	} else {
+		return -res
+	}
+}
+
+//递归除法
+func div(a, b int) int {
+	if a < b {
+		return 0
+	}
+	//由于a>=b，则默认会有一个count
+	count := 1
+	//重新赋值的原因是为了不改变b
+	tb := b
+	//这里循环，每次将tb变成2倍。  判断是否依然小于a，如果是，则将count赋值为本身的两倍
+	for tb+tb <= a {
+		count = count + count
+		tb = tb + tb
+	}
+	//循环结束，证明这时2tb已经大于了a，用a-tb，得到剩下不足一个tb的值，再用这个值继续除以b
+	return count + div(a-tb, b)
+}
+
+/**
+给定一个字符串 s 和一些长度相同的单词 words。找出 s 中恰好可以由 words 中所有单词串联形成的子串的起始位置。
+注意子串要与 words 中的单词完全匹配，中间不能有其他字符，但不需要考虑 words 中单词串联的顺序。
+示例 1：
+输入：
+  s = "barfoothefoobarman",
+  words = ["foo","bar"]
+输出：[0,9]
+解释：
+从索引 0 和 9 开始的子串分别是 "barfoo" 和 "foobar" 。
+输出的顺序不重要, [9,0] 也是有效答案。
+
+示例 2：
+输入：
+  s = "wordgoodgoodgoodbestword",
+  words = ["word","good","best","word"]
+输出：[]
+
+ababababab , [a, b]
+*/
+func findSubstring(s string, words []string) []int {
+	//思路1、循环words，组合好每个可能，放入一个新的slice中，循环这个slice，看s中有哪些符合   这种会超时
+
+	//思路2、用两个map来解决。首先，把所有的单词存到map中，键为单词，值为单词出现的次数。然后扫描子串中的单词，如果当前扫描的单词在之前的
+	//map中，就证明这个单词有效，放入第二个map中，并判断第二个map中的该单词次数是否大于第一个map中的单词次数，如果是（或者第一个map中压根没有），
+	//则证明当前子串中的该单词已经超了，当前子串不符合要求，跳过开始循环下一个子串。
+	//如果扫描子串完毕，且map2中的单词数量和map1数量相等，则证明这个子串是我们要找的子串，将其保存。
+	var res []int
+
+	ls := len(s)
+	wordNum := len(words)
+	if ls == 0 || wordNum == 0 {
+		return res
+	}
+
+	//数组中单词的大小，个数
+	oneWordLen := len(words[0])
+
+	//建立单词和单词在数组中个数的映射
+	m1 := make(map[string]int)
+	for _, v := range words {
+		m1[v]++
+	}
+
+	//遍历所有子串
+	for i := 0; i < ls-wordNum*oneWordLen+1; i++ {
+		//map2存储当前扫描的字符串含有的单词
+		m2 := make(map[string]int)
+		var num int
+		for num < wordNum {
+			//从子串中取出当前需要比对的单词（当前需要比对的单词为num开始的oneWordLen个长度）
+			w := s[i+num*oneWordLen : i+(num+1)*oneWordLen]
+			if _, ok := m1[w]; ok {
+				//这个字符串在m1中存在，将其在m2中的个数加一
+				m2[w]++
+				if m2[w] > m1[w] {
+					break
+				}
+			} else {
+				//这个字符串在m1中不存在，证明这个子串不合格，直接跳过循环
+				break
+			}
+			num++
+		}
+		if num == wordNum {
+			res = append(res, i)
+		}
+	}
+	fmt.Println(res)
+	return res
+}
+
+func findSubstring1(s string, words []string) []int {
+	//思路3、在思路2的基础上。存在三种情况。
+	// 第一种是当前子串完全匹配。 这个之后直接往后移动oneWordLen位。移动完成后，这个时候无需将m2清空，只需要将上一个子串在m2中的数量减1就可以了
+	//第二种是，当前子串在匹配的时候出现了不在m1中的单词时，可以直接移动到这个单词的下一位开始循环下一个子串
+	//第三种是，出现了符合要求的单词，但是次数超了。那此时只需要将这个超次数的单词移除即可
+	var res []int
+
+	ls := len(s)
+	wordNum := len(words)
+	if ls == 0 || wordNum == 0 {
+		return res
+	}
+
+	//数组中单词的大小，个数
+	oneWordLen := len(words[0])
+
+	//建立单词和单词在数组中个数的映射
+	m1 := make(map[string]int)
+	for _, v := range words {
+		m1[v]++
+	}
+
+	//将所有移动分为oneWordLen种情况
+	for i := 0; i < oneWordLen; i++ {
+		m2 := make(map[string]int)
+		var num int
+		//这里相对于思路2，每次循环oneWordLen个长度
+		for j := i; j < ls-wordNum*oneWordLen+1; j = j + oneWordLen {
+			//这里定义一个变量，防止情况3移除后，情况1继续移除
+			hasRemoved := false
+			for num < wordNum {
+				w := s[j+num*oneWordLen : j+(num+1)*oneWordLen]
+				if _, ok := m1[w]; ok {
+					//如果单词在m1中，则继续
+					m2[w]++
+					if m2[w] > m1[w] {
+						//出现情况3，遇到符合的单词，但是次数超过了
+						hasRemoved = true
+						var removeNum int
+						for m2[w] > m1[w] {
+							//这里一直循环去除，直到两者相等为止
+							firstWord := s[j+removeNum*oneWordLen : j+(removeNum+1)*oneWordLen]
+							m2[firstWord]--
+							removeNum++
+						}
+						num = num - removeNum + 1
+						j = j + (removeNum-1)*oneWordLen
+						break
+					}
+
+				} else {
+					//如果单词不在m1中，则出现了情况2，将下次开始的子串位置直接置为当前单词的下一位
+					m2 = make(map[string]int) //清空m2
+					j = j + num*oneWordLen    //跳转到当前单词的下一个值
+					num = 0
+					break
+				}
+				num++
+			}
+			if num == wordNum {
+				res = append(res, j)
+			}
+
+			//这里判断是否会出现情况1,如果出现了，则将上一个子串的第一个单词从m2中移除
+			if num > 0 && !hasRemoved {
+				firstWord := s[j : j+oneWordLen]
+				m2[firstWord]--
+				num = num - 1
+			}
+		}
+	}
+	return res
+}
+
+/**
+给定一个字符串数组，长度为l, 将这个字符串数组聚合为各种顺序打乱的字符串
+*/
+func findSubstringF(combine string, words []string) []string {
+	//回溯的思想
+	l := len(words)
+	if l == 0 {
+		return []string{combine}
+	} else if l == 1 {
+		return []string{combine + words[0]}
+	} else {
+		var res []string
+		for i := 0; i < l; i++ {
+			//注意，这里不能直接用等于复制，否则为引用赋值，改了lastWords原本的words也会改
+			lastWords := make([]string, l)
+			copy(lastWords, words)
+			//下一个字符串
+			lastS := combine + words[i]
+			//剔除当前元素
+			if i == l-1 {
+				lastWords = lastWords[:i]
+			} else {
+				lastWords = append(lastWords[:i], lastWords[i+1:]...)
+			}
+			r := findSubstringF(lastS, lastWords)
+			res = append(res, r...)
+		}
+		return res
+	}
+}
+
+/**
+实现获取下一个排列的函数，算法需要将给定数字序列重新排列成字典序中下一个更大的排列。
+如果不存在下一个更大的排列，则将数字重新排列成最小的排列（即升序排列）。
+必须原地修改，只允许使用额外常数空间。
+以下是一些例子，输入位于左侧列，其相应输出位于右侧列。
+1,2,3 → 1,3,2
+3,2,1 → 1,2,3
+1,1,5 → 1,5,1
+
+题干的意思是：找出这个数组排序出的所有数中，刚好比当前数大的那个数
+比如当前 nums = [1,2,3]。这个数是123，找出1，2，3这3个数字排序可能的所有数，排序后，比123大的那个数 也就是132
+如果当前 nums = [3,2,1]。这就是1，2，3所有排序中最大的那个数，那么就返回1，2，3排序后所有数中最小的那个，也就是1，2，3 -> [1,2,3]
+
+*/
+func nextPermutation(nums []int) {
+	//思路  其实只要从末尾开始，从右到左判断就好了，如果左侧比右侧小，则记录当前左侧的值，取到当前值右侧大于当前值的最小值，跳出循环即可。
+	//如果一直比较下来也没有符合的，那就直接将数组翻转
+	swap := func(nums []int, i, j int) {
+		temp := nums[i]
+		nums[i] = nums[j]
+		nums[j] = temp
+	}
+	reverse := func(nums []int, start int) {
+		i := start
+		j := len(nums) - 1
+		for i < j {
+			swap(nums, i, j)
+			i++
+			j--
+		}
+	}
+
+	l := len(nums)
+
+	//如果此时i+1 > i,则循环停止，获取到i的值
+	var i = l - 2
+	for i >= 0 && nums[i+1] <= nums[i] {
+		i--
+	}
+	//如果i大于等于0，则从数组的最右边再开始往i的位置找，
+	if i >= 0 {
+		j := l - 1
+		for j >= i && nums[j] <= nums[i] {
+			j--
+		}
+		swap(nums, i, j)
+	}
+	//这一步的目的是为了将i到数组最右侧的一段翻转，因为这一段只可能是从小到大的顺序
+	reverse(nums, i+1)
+	fmt.Println(nums)
+}
+
+/**
+给定一个只包含 '(' 和 ')' 的字符串，找出最长的包含有效括号的子串的长度。
+
+示例 1:
+
+输入: "(()"
+输出: 2
+解释: 最长有效括号子串为 "()"
+示例 2:
+
+输入: ")()())"
+输出: 4
+解释: 最长有效括号子串为 "()()"
+*/
+func longestValidParentheses(s string) int {
+	//1、暴力法，获取字符串中的每个偶数子串，并判断其是否为有效括号，如果是，和当前maxlength比较   (这种会超时，不采取)
+	/*isValid := func(str string) bool {
+		//这里还是采用栈的思想，新建一个栈，将s的字符串一个一个的往这个栈里塞，如果取到的是右括号，则判断栈顶上是不是左括号，如果是，则将栈里的左括号弹出，和当前的右括号
+		//组合成有效括号，并将当前有效字符串的长度加2。如果不是，则跳过当前的右括号。如果当前是左括号，则将左括号塞入到栈中。
+		stack := make([]byte, 0)
+		for _, v := range str {
+			if v == '(' {
+				stack = append(stack, '(')
+			} else {
+				//右括号，从栈顶端弹出一个值，如果是左括号，则抵消
+				if len(stack) > 0 {
+					stack = stack[:len(stack)-1]
+				} else {
+					return false
+				}
+			}
+		}
+
+		if len(stack) > 0 {
+			return false
+		}
+		return true
+	}
+
+	ls := len(s)
+	max := 0
+
+	for i := 0; i < ls; i++ {
+		for j := i + 2; j <= ls; j += 2 {
+			if isValid(s[i:j]) {
+				if max < j-i {
+					max = j - i
+				}
+			}
+		}
+	}
+	return max*/
+
+	/*动态规划  定义一个dp数组，数组的每个下标为i的值保存到当前字符串下标i为止的有效字符个数，例如
+	())((())
+	02000024
+	在循环第i个元素的时候，有两种情况，一种是'('这种数组下标必定为0，因为'('不闭合。所以只需要判断是')'的情况即可。是')'的情况下，有两种可能
+	1、上一个元素是'('这种情况下，上个元素和这个元素直接组合成'()'只需要将上上个元素的数组值加2即可
+	2、上一个元素是')'这种情况下，获取上个元素的数组值，如果此数组值不为0且值为x，证明此数组的前x个元素刚好可以组合成有效字符。则获取这些有效字符的再前一个值
+	如果这个值是'('，则可以组合为有效数组，将前一个数组元素的值加2即可。 还没完，如果前面还有一段是有效字符，如()((()))这种情况，则需要将前面的有效字符的长度
+	加起来
+	*/
+	/*var max int
+	ls := len(s)
+	dp := make([]int, ls)
+
+	for i := 1; i < ls; i++ {
+		if s[i] == ')' {
+			if s[i-1] == '(' {
+				dp[i] = 2
+				if i >= 2 {
+					dp[i] += dp[i-2]
+				}
+			} else if i-dp[i-1] >= 1 && s[i-dp[i-1]-1] == '(' {
+				dp[i] = dp[i-1] + 2
+				if i-dp[i-1]-2 >= 0 { //这里防止溢出
+					dp[i] += dp[i-dp[i-1]-2]
+				}
+			}
+			if dp[i] > max {
+				max = dp[i]
+			}
+		}
+
+	}
+	return max*/
+
+	/**
+	3、用栈
+	对于遇到的每个 ‘(’ ，我们将它的下标放入栈中。
+	对于遇到的每个 ‘)’ ，我们弹出栈顶的元素并将当前元素的下标与弹出元素下标作差，得出当前有效括号字符串的长度。通过这种方法，
+	我们继续计算有效子字符串的长度，并最终返回最长有效子字符串的长度。
+
+	*/
+	var max int
+	stack := make([]int, 0)
+	stack = append(stack, -1)
+	ls := len(s)
+	for i := 0; i < ls; i++ {
+		fmt.Println("stack1:", stack)
+		if s[i] == '(' {
+			stack = append(stack, i)
+		} else {
+			//弹出栈中的最上面一个元素
+			stack = stack[:len(stack)-1]
+			fmt.Println("stack2:", stack)
+			if len(stack) == 0 {
+				//将当前元素放入到栈中
+				stack = append(stack, i)
+				fmt.Println("stack3:", stack)
+			} else {
+				j := stack[len(stack)-1] //这里的j是i前面的没有被消除掉的最小坐标，可能是-1，也可能是')'所在的下标
+				fmt.Println("stack4:", i, j, max)
+				if i-j > max {
+					max = i - j
+				}
+			}
+		}
+	}
+	return max
+}
+
+/**
+假设按照升序排序的数组在预先未知的某个点上进行了旋转。
+( 例如，数组 [0,1,2,4,5,6,7] 可能变为 [4,5,6,7,0,1,2] )。
+搜索一个给定的目标值，如果数组中存在这个目标值，则返回它的索引，否则返回 -1 。
+你可以假设数组中不存在重复的元素。
+你的算法时间复杂度必须是 O(log n) 级别。
+
+示例 1:
+输入: nums = [4,5,6,7,0,1,2], target = 0
+输出: 4
+示例 2:
+输入: nums = [4,5,6,7,0,1,2], target = 3
+输出: -1
+*/
+func search(nums []int, target int) int {
+	//典型的二分查找，由于此数组是升序数组的翻转，则符合一个定理，在翻转节点后的数组值，一定小于翻转节点前的数组值（如4,5,6,7,0,1,2）
+	//判断，如果当前中点值大于左侧的值，则证明数组左侧是升序。否则则证明右侧是升序
+	var left, right = 0, len(nums) - 1
+	mid := left + (right-left)/2
+
+	for left <= right {
+		if nums[mid] == target {
+			return mid
+		}
+		//左边升序
+		if nums[left] <= nums[mid] {
+			//如果目标在中间节点的左侧，且左侧为升序，则只能从左侧找
+			if target < nums[mid] && target >= nums[left] {
+				right = mid - 1
+			} else {
+				left = mid + 1
+			}
+		} else {
+			//右边升序
+			//如果目标在中间节点的右侧
+			if target > nums[mid] && target <= nums[right] {
+				left = mid + 1
+			} else {
+				right = mid - 1
+			}
+		}
+		mid = left + (right-left)/2
+	}
+	return -1
+}
+
+/**
+给定一个按照升序排列的整数数组 nums，和一个目标值 target。找出给定目标值在数组中的开始位置和结束位置。
+你的算法时间复杂度必须是 O(log n) 级别。
+如果数组中不存在目标值，返回 [-1, -1]。
+
+示例 1:
+输入: nums = [5,7,7,8,8,10], target = 8
+输出: [3,4]
+示例 2:
+输入: nums = [5,7,7,8,8,10], target = 6
+输出: [-1,-1]
+*/
+func searchRange(nums []int, target int) []int {
+	//二分查找走你
+	/*erfen := func(nums []int, target int) int {
+		var left, right = 0, len(nums) - 1
+		var mid = left + (right-left)/2
+		for left <= right {
+			mid = left + (right-left)/2
+			if nums[mid] == target {
+				return mid
+			} else if nums[mid] > target {
+				//从左侧取
+				right = mid - 1
+			} else if nums[mid] < target {
+				//从右侧开始取
+				left = mid + 1
+			}
+		}
+		return -1
+	}*/
+	//查找最左侧的满足数据的二分查找
+	erfen2 := func(nums []int, target int) int {
+		if len(nums) == 0 {
+			return -1
+		}
+		var left, right = 0, len(nums) //这里跟基本的二分不一样
+		var mid = left + (right-left)/2
+		for left < right { //[left, right)
+			mid = left + (right-left)/2
+			if nums[mid] == target {
+				//收紧右侧
+				right = mid //为什么这里不+1？ 因为右侧是开区间  [left, right)
+			} else if nums[mid] > target {
+				//收紧右侧
+				right = mid
+			} else if nums[mid] < target {
+				//从左侧开始取
+				left = mid + 1
+			}
+		}
+		//如果left已经加到了数组的长度，则证明没有找到，返回-1
+		if left == len(nums) {
+			return -1
+		} else {
+			//如果此时left的值确实等于target
+			if nums[left] == target {
+				//这里返回left或right都一样，因为两个值最后相等
+				return left
+			} else {
+				return -1
+			}
+		}
+	}
+
+	//查找最左侧的满足数据的二分查找
+	erfen3 := func(nums []int, target int) int {
+		if len(nums) == 0 {
+			return -1
+		}
+		var left, right = 0, len(nums) //这里跟基本的二分不一样
+		var mid = left + (right-left)/2
+		for left < right { //[left, right)
+			mid = left + (right-left)/2
+			if nums[mid] == target {
+				//收紧左侧
+				left = mid + 1 //为什么这里是+1？ 因为左侧是闭区间，右侧是开区间[left, right)
+			} else if nums[mid] > target {
+				//收紧右侧
+				right = mid
+			} else if nums[mid] < target {
+				//从左侧开始取
+				left = mid + 1
+			}
+		}
+
+		if left == 0 {
+			return -1
+		} else {
+			if nums[left-1] == target {
+				//由于left = mid+1
+				return left - 1
+			} else {
+				return -1
+			}
+		}
+	}
+
+	return []int{erfen2(nums, target), erfen3(nums, target)}
+}
+
+/**
+给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。
+你可以假设数组中无重复元素。
+示例 1:
+输入: [1,3,5,6], 5
+输出: 2
+示例 2:
+输入: [1,3,5,6], 2
+输出: 1
+示例 3:
+输入: [1,3,5,6], 7
+输出: 4
+示例 4:
+输入: [1,3,5,6], 0
+输出: 0
+
+*/
+func searchInsert(nums []int, target int) int {
+	l := len(nums)
+
+	for i := 0; i < l; i++ {
+		if nums[i] == target {
+			return i
+		} else if nums[i] > target {
+			//此时nums[i] > target，而且没有返回。证明没有target的值，则直接返回
+			return i
+		}
+
+		if i == l-1 {
+			return i + 1
+		}
+	}
+
+	return 0
+}
+
+/**
+判断一个 9x9 的数独是否有效。只需要根据以下规则，验证已经填入的数字是否有效即可。
+数字 1-9 在每一行只能出现一次。
+数字 1-9 在每一列只能出现一次。
+数字 1-9 在每一个以粗实线分隔的 3x3 宫内只能出现一次。
+数独部分空格内已填入了数字，空白格用 '.' 表示。
+
+*/
+func isValidSudoku(board [][]byte) bool {
+	rows := make([]map[int]int, 9)
+	columns := make([]map[int]int, 9)
+	boxes := make([]map[int]int, 9)
+	for i := 0; i < 9; i++ {
+		rows[i] = make(map[int]int)
+		columns[i] = make(map[int]int)
+		boxes[i] = make(map[int]int)
+	}
+
+	for i := 0; i < 9; i++ {
+		for j := 0; j < 9; j++ {
+			num := board[i][j]
+			if num != '.' {
+				n := int(num)
+				boxIndex := i/3*3 + j/3
+				rows[i][n]++
+				columns[j][n]++
+				boxes[boxIndex][n]++
+
+				if rows[i][n] > 1 || columns[j][n] > 1 || boxes[boxIndex][n] > 1 {
+					return false
+				}
+			}
+		}
+	}
+	return true
+}
+
+/**
+编写一个程序，通过已填充的空格来解决数独问题。
+一个数独的解法需遵循如下规则：
+数字 1-9 在每一行只能出现一次。
+数字 1-9 在每一列只能出现一次。
+数字 1-9 在每一个以粗实线分隔的 3x3 宫内只能出现一次。
+*/
+func solveSudoku(board [][]byte) {
+	//新建三个bool的数组表明行、列、3*3
+	rowUsed := [9][10]bool{}
+	colUsed := [9][10]bool{}
+	boxUsed := [3][3][10]bool{}
+
+	l := len(board)
+	l1 := len(board[0])
+	//初始化，将已经填入的数字设置为true
+	for row := 0; row < l; row++ {
+		for col := 0; col < l1; col++ {
+			if board[row][col] != '.' {
+				//这里减48是为了抵消byte转int时的值
+				num := int(board[row][col]) - 48
+				rowUsed[row][num] = true
+				colUsed[col][num] = true
+				boxUsed[row/3][col/3][num] = true
+			}
+		}
+	}
+	//递归尝试填充数组
+	recusiveSolveSudoku(board, rowUsed, colUsed, boxUsed, 0, 0)
+}
+
+func recusiveSolveSudoku(board [][]byte, rowUsed, colUsed [9][10]bool, boxUsed [3][3][10]bool, row, col int) bool {
+	//边界校验，如果已经完成填充，返回true，表示结束
+	if col == len(board[0]) {
+		col = 0
+		//开始填充行
+		row++
+		if row == len(board) {
+			return true
+		}
+	}
+
+	if board[row][col] == '.' {
+		//开始尝试1-9的数字
+		for num := 1; num <= 9; num++ {
+			//如果行，列，3*3里面的num都为false，则证明此数字可以填
+			if !(rowUsed[row][num] || colUsed[col][num] || boxUsed[row/3][col/3][num]) {
+				//开始填充
+				rowUsed[row][num] = true
+				colUsed[col][num] = true
+				boxUsed[row/3][col/3][num] = true
+				s := strconv.FormatInt(int64(num), 10)
+				board[row][col] = s[0]
+
+				//开始看下一个节点，如果下一个节点ok，则返回ok
+				if recusiveSolveSudoku(board, rowUsed, colUsed, boxUsed, row, col+1) {
+					return true
+				}
+				//否则将当前节点都置空，重新填充
+				board[row][col] = '.'
+				rowUsed[row][num] = false
+				colUsed[col][num] = false
+				boxUsed[row/3][col/3][num] = false
+			}
+		}
+	} else {
+		return recusiveSolveSudoku(board, rowUsed, colUsed, boxUsed, row, col+1)
+	}
+	return false
+}
+
+/**
+「外观数列」是一个整数序列，从数字 1 开始，序列中的每一项都是对前一项的描述。前五项如下：
+
+1.     1
+2.     11
+3.     21
+4.     1211
+5.     111221
+1 被读作  "one 1"  ("一个一") , 即 11。
+11 被读作 "two 1s" ("两个一"）, 即 21。
+21 被读作 "one 2",  "one 1" （"一个二" ,  "一个一") , 即 1211。
+
+给定一个正整数 n（1 ≤ n ≤ 30），输出外观数列的第 n 项。
+
+这题的意思是，下一项是对当前项的描述，比如第一项是1，第二项为了描述1，则就是11，读作1个1，第三项为了描述11，则就是21，读作2个1
+*/
+func countAndSay(n int) string {
+	if n == 1 {
+		return "1"
+	}
+	if n == 2 {
+		return "11"
+	}
+
+	x := "11"
+
+	for i := 3; i <= n; i++ {
+		//解释m[i-1]
+		str := x
+		l := len(str)
+		cur := ""
+
+		var last byte //当前字符串的上一个字节
+		var num int   //当前字符出现的次数
+		for j := 0; j < l; j++ {
+			if j == 0 {
+				last = str[j]
+				num++
+			} else {
+				if str[j] == last {
+					num++
+					if j == l-1 {
+						cur += strconv.FormatInt(int64(num), 10) + string(last)
+					}
+				} else {
+					//当前字符和上一个字符不同，则处理上一个字符
+					cur += strconv.FormatInt(int64(num), 10) + string(last)
+					num = 0
+					last = str[j]
+					j-- //处理完毕后，继续处理当前的字符
+				}
+			}
+		}
+		x = cur
+	}
+
+	return x
+}
+
+/**
+给定一个无重复元素的数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
+candidates 中的数字可以无限制重复被选取。
+说明：
+所有数字（包括 target）都是正整数。
+解集不能包含重复的组合。
+示例 1:
+输入: candidates = [2,3,6,7], target = 7,
+所求解集为:
+[
+  [7],
+  [2,2,3]
+]
+
+*/
+func combinationSum(candidates []int, target int) [][]int {
+	//这题可以用回溯的方法做。先将数组排序，然后将目标值减去数组的每一个值，得到n个新的目标值，并判断目标值减去数组的每个值是否为0，如果是，则将其放入res
+	//然后继续减每个值，如果为0，则将其放入到res中
+	sort.Ints(candidates)
+	res := [][]int{}
+	combinationSumF(candidates, []int{}, &res, target, 0)
+	return res
+}
+
+func combinationSumF(candidates, last []int, res *[][]int, target, i int) bool {
+	if target == 0 {
+		//当前target为0，则已经减到0了，满足，将值放入到res中
+		cur := make([]int, len(last))
+		copy(cur, last)
+		//将cur放入res中
+		*res = append(*res, cur)
+		//由于后续的数组没必要循环了，所以直接return
+		return true
+	} else if target < 0 {
+		//当前target小于0，则当前情况不符合，返回false（由于candidates是排序的，则上一级的下一次循环也没必要了）
+		return false
+	}
+	//从当前的i开始循环
+	for j := i; j < len(candidates); j++ {
+		//将当前的值放入到数组中
+		last = append(last, candidates[j])
+		//开始递归，判断，如果返回值为false，则下面的循环都没必要了，直接中断。
+		if !combinationSumF(candidates, last, res, target-candidates[j], j) {
+			break
+		}
+		//如果为true，则将candidates[j]剔除数组，继续循环j+1
+		last = last[:len(last)-1]
+	}
+	return true
+}
+
+/**
+给定一个数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
+candidates 中的每个数字在每个组合中只能使用一次。
+说明：
+所有数字（包括目标数）都是正整数。
+解集不能包含重复的组合。
+示例 1:
+输入: candidates = [10,1,2,7,6,1,5], target = 8,
+所求解集为:
+[
+  [1, 7],
+  [1, 2, 5],
+  [2, 6],
+  [1, 1, 6]
+]
+*/
+func combinationSum2(candidates []int, target int) [][]int {
+	sort.Ints(candidates)
+	res := [][]int{}
+	combinationSumF2(candidates, []int{}, &res, target, 0)
+	return res
+}
+
+func combinationSumF2(candidates, last []int, res *[][]int, target, i int) bool {
+	if target == 0 {
+		//当前target为0，则已经减到0了，满足，将值放入到res中
+		cur := make([]int, len(last))
+		copy(cur, last)
+		//将cur放入res中
+		*res = append(*res, cur)
+		//由于后续的数组没必要循环了，所以直接return
+		return true
+	} else if target < 0 {
+		//当前target小于0，则当前情况不符合，返回false（由于candidates是排序的，则上一级的下一次循环也没必要了）
+		return false
+	}
+	//从当前的i开始循环
+	for j := i; j < len(candidates); j++ {
+		//这里和上一题不一样，这里需要判断，当
+		if j > i && candidates[j] == candidates[j-1] {
+			continue
+		}
+		//将当前的值放入到数组中
+		last = append(last, candidates[j])
+		//开始递归，判断，如果返回值为false，则下面的循环都没必要了，直接中断。
+		//fmt.Println("递归：", last, res, target-candidates[j], j+1)
+		if !combinationSumF2(candidates, last, res, target-candidates[j], j+1) {
+			break
+		}
+		//如果为true，则将candidates[j]剔除数组，继续循环j+1
+		last = last[:len(last)-1]
+	}
+	return true
 }
