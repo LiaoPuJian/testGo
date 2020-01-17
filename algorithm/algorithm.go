@@ -135,7 +135,15 @@ func main() {
 
 	//fmt.Println(countAndSay(1))
 
-	fmt.Println(combinationSum2([]int{10, 1, 2, 7, 6, 1, 5}, 8))
+	//fmt.Println(combinationSum2([]int{10, 1, 2, 7, 6, 1, 5}, 8))
+
+	//fmt.Println(firstMissingPositive([]int{3, 4, -1, -2, 1, 5, 16, 0, 2, 0}))
+
+	//fmt.Println(trap([]int{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1}))
+
+	//fmt.Println(isMatch("abefcdgiescdfimde", "ab*cd?i*de"))
+
+	fmt.Println(jump([]int{2, 3, 1, 1, 4, 5, 7, 10, 11, 10}))
 }
 
 //给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。
@@ -2625,4 +2633,394 @@ func combinationSumF2(candidates, last []int, res *[][]int, target, i int) bool 
 		last = last[:len(last)-1]
 	}
 	return true
+}
+
+/**
+给定一个未排序的整数数组，找出其中没有出现的最小的正整数。
+
+示例 1:
+输入: [1,2,0]
+输出: 3
+示例 2:
+输入: [3,4,-1,1]
+输出: 2
+示例 3:
+输入: [7,8,9,11,12]
+输出: 1
+*/
+func firstMissingPositive(nums []int) int {
+	/*var res = 1
+
+	l := len(nums)
+	if l == 0 {
+		return res
+	}
+
+	sort.Ints(nums)
+	//如果最大值是负数，那直接返回1
+	if nums[len(nums)-1] <= 0 {
+		return res
+	}
+	for k, v := range nums {
+		if v == 1 {
+			res = 2
+			continue
+		}
+		if v > 1 {
+			if k == 0 {
+				return 1
+			}
+			if k >= 1 && nums[k-1] <= 0 {
+				return 1
+			}
+			//判断和前一个值的差
+			if v-nums[k-1] > 1 {
+				return nums[k-1] + 1
+			} else {
+				res = v + 1
+			}
+		}
+	}
+
+	return res*/
+
+	abs := func(n int) int {
+		if n <= 0 {
+			return 0 - n
+		}
+		return n
+	}
+
+	found1 := false
+	length := len(nums)
+	//这一步将nums中是负数的或者大于当前数组长度的值替换为1
+	for i := 0; i < length; i++ {
+		if nums[i] == 1 {
+			found1 = true
+		} else if nums[i] > length || nums[i] <= 0 {
+			nums[i] = 1
+		}
+	}
+	//如果没有找到1，则返回1即可
+	if !found1 {
+		return 1
+	}
+	//做替换操作，类似将nums当成一个记录（因为本地不可使用额外的内存空间）
+	//取到某个值后，将这个值在nums中的位置设置为负数（标识这个值已经有了）
+	for i := 0; i < length; i++ {
+		num := abs(nums[i])
+		if num == length {
+			nums[0] = -abs(nums[0])
+		} else {
+			nums[num] = -abs(nums[num])
+		}
+	}
+	//这里从第一位开始取，如果大于0，代表这个值在原数组中没有出现过，则直接返回即可
+	for i := 1; i < length; i++ {
+		if nums[i] > 0 {
+			return i
+		}
+	}
+	if nums[0] > 0 {
+		return length
+	}
+
+	return length + 1
+}
+
+/**
+给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
+上面是由数组 [0,1,0,2,1,0,1,3,2,1,2,1] 表示的高度图，在这种情况下，可以接 6 个单位的雨水（蓝色部分表示雨水）。 感谢 Marcos 贡献此图。
+
+示例:
+输入: [0,1,0,2,1,0,1,3,2,1,2,1]
+输出: 6
+
+*/
+func trap(height []int) int {
+	//思路1，取到最高那个柱子，然后从1开始循环，将每一个高度的柱子能接住的雨水计算出来，想加，就是最终面积（注意剔除最前面和最后面的部分）
+	/*l := len(height)
+	if l == 0 {
+		return 0
+	}
+	var max = height[0]
+	for i := 0; i < l; i++ {
+		if height[i] > max {
+			max = height[i]
+		}
+	}
+	areaSum := 0
+	//从第1层循环到最高一层的下一级
+	for i := 1; i <= max; i++ {
+		//计算第i层能接多少面积的雨水
+		//找到这一层的起点和终点
+		var start, end, area int
+		for j := 0; j < l; j++ {
+			if height[j] >= i {
+				start = j
+				break
+			}
+		}
+		for j := l - 1; j > 0; j-- {
+			if height[j] >= i {
+				end = j
+				break
+			}
+		}
+		if end-start > 0 {
+			area = end - start + 1
+			for j := start; j <= end; j++ {
+				if height[j] >= i {
+					area--
+				}
+			}
+		}
+		areaSum += area
+	}
+	return areaSum*/
+	//思路2 ，遍历数组，获取数组左右端的最大高度，则当前元素下的面积即为min(leftMax, rightMax) - 当前元素的高度
+	/*l := len(height)
+	if l == 0 || l == 1 {
+		return 0
+	}
+	var areaSum int
+	leftMax := make(map[int]float64)
+	rightMax := make(map[int]float64)
+	leftMax[0] = float64(height[0])
+	for i := 1; i < l; i++ {
+		leftMax[i] = math.Max(float64(height[i]), float64(leftMax[i-1]))
+	}
+	rightMax[l-1] = float64(height[l-1])
+	for i := l - 2; i >= 0; i-- {
+		rightMax[i] = math.Max(float64(height[i]), float64(rightMax[i+1]))
+	}
+	for i := 1; i < l-1; i++ {
+		areaSum += int(math.Min(leftMax[i], rightMax[i])) - height[i]
+	}
+	return areaSum*/
+
+	//思路3，双指针。定义两个指针指向数组的最左侧和最右侧。 判断，如果左侧小，则处理左侧，否则处理右侧。
+	//以左侧为例。如果当前元素的高度大于左边的最高值，则将左边的最高值设定为当前元素的高度。否则，当前元素
+	//承接的面积为左侧的最高值减去当前元素的高度，处理完后移动指针
+	l := len(height)
+	if l == 0 || l == 1 {
+		return 0
+	}
+	var areaSum, leftMax, rightMax int
+	left, right := 0, l-1
+	for left < right {
+		if height[left] < height[right] {
+			if height[left] >= leftMax {
+				leftMax = height[left]
+			} else {
+				areaSum += leftMax - height[left]
+			}
+			left++
+		} else {
+			if height[right] >= rightMax {
+				rightMax = height[right]
+			} else {
+				areaSum += rightMax - height[right]
+			}
+			right--
+		}
+	}
+
+	return areaSum
+}
+
+/**
+给定两个以字符串形式表示的非负整数 num1 和 num2，返回 num1 和 num2 的乘积，它们的乘积也表示为字符串形式。
+
+示例 1:
+输入: num1 = "2", num2 = "3"
+输出: "6"
+示例 2:
+输入: num1 = "123", num2 = "456"
+输出: "56088"
+说明：
+num1 和 num2 的长度小于110。
+num1 和 num2 只包含数字 0-9。
+num1 和 num2 均不以零开头，除非是数字 0 本身。
+不能使用任何标准库的大数类型（比如 BigInteger）或直接将输入转换为整数来处理。
+
+*/
+func multiply(num1 string, num2 string) string {
+	len1 := len(num1)
+	len2 := len(num2)
+	if num1 == "0" || num2 == "0" {
+		return "0"
+	}
+
+	result := make([]int, len1+len2)
+	for i := len2 - 1; i >= 0; i-- {
+		for j := len1 - 1; j >= 0; j-- {
+			temp := int(num2[i]-'0')*int(num1[j]-'0') + result[i+j+1]
+			if temp >= 10 {
+				result[i+j] += temp / 10
+				result[i+j+1] = temp % 10
+				//fmt.Printf("add:%d mod:%d\n",temp / 10,temp%10)
+			} else {
+				result[i+j+1] = temp
+			}
+		}
+	}
+	//fmt.Println(result)
+	//num1和num2较小时，去除首位0
+	if result[0] == 0 {
+		result = result[1:]
+	}
+	str := ""
+	for _, v := range result {
+		str += strconv.Itoa(v)
+	}
+	return str
+}
+
+/**
+给定一个字符串 (s) 和一个字符模式 (p) ，实现一个支持 '?' 和 '*' 的通配符匹配。
+'?' 可以匹配任何单个字符。
+'*' 可以匹配任意字符串（包括空字符串）。
+两个字符串完全匹配才算匹配成功。
+
+说明:
+s 可能为空，且只包含从 a-z 的小写字母。
+p 可能为空，且只包含从 a-z 的小写字母，以及字符 ? 和 *。
+示例 1:
+输入:
+s = "aa"
+p = "a"
+输出: false
+解释: "a" 无法匹配 "aa" 整个字符串。
+示例 2:
+输入:
+s = "aa"
+p = "*"
+输出: true
+解释: '*' 可以匹配任意字符串。
+示例 3:
+输入:
+s = "cb"
+p = "?a"
+输出: false
+解释: '?' 可以匹配 'c', 但第二个 'a' 无法匹配 'b'。
+示例 4:
+输入:
+s = "adceb"
+p = "*a*b"
+输出: true
+解释: 第一个 '*' 可以匹配空字符串, 第二个 '*' 可以匹配字符串 "dce".
+示例 5:
+输入:
+s = "acdcb"
+p = "a*c?b"
+输入: false
+
+*/
+func isMatch(s string, p string) bool {
+
+	m := len(s)
+	n := len(p)
+	if p == "*" {
+		return true
+	}
+
+	//设定两个游标，和'*'对应值的位置
+	var i, j, iStar, jStar = 0, 0, -1, -1
+
+	//循环第一个字符串
+	for m > i {
+		fmt.Println(fmt.Sprintf("循环前，i:%d, j:%d, m:%d, n:%d, iStar:%d, jStar:%d", i, j, m, n, iStar, jStar))
+		//如果两个值相等
+		if j < n && (s[i] == p[j] || p[j] == '?') {
+			i++
+			j++
+		} else if j < n && p[j] == '*' {
+			//如果碰到了*，记录i值的位置和j值的位置，并将j向右移动一位，由于*可以匹配空字符串，所以i不动
+			iStar = i
+			jStar = j
+			j++
+		} else if iStar >= 0 {
+			//如果此时没匹配上，则将i往后移动一位。iStar也往后移动一位，就算当前元素匹配上了。开始匹配下一个。如果下一个没匹配上，继续移动
+			//如果出现了cac匹配*ab的情况，此时c是匹配的，a也是匹配的，由于最后的c和b不匹配，则将j移动回原来的a这里，然后假设cac都是匹配的*，继续排cac的下一个
+			//这个方法是，如果遇到了*，那么一定会把s排完，哪怕p排不完，最后再处理p
+			iStar++
+			i = iStar
+			j = jStar + 1
+		} else {
+			//如果都没匹配上，且iStar也为0，证明p中没有*，直接返回false
+			return false
+		}
+		fmt.Println(fmt.Sprintf("循环后，i:%d, j:%d, m:%d, n:%d, iStar:%d, jStar:%d", i, j, m, n, iStar, jStar))
+	}
+
+	//如果p还没遍历完，且当前的j为*，那么将j往后移动一位
+	for j < n && p[j] == '*' {
+		j++
+	}
+	//如果j此时也移动到了末尾，那么就是true，反之则为false
+	return j == n
+}
+
+/**
+给定一个非负整数数组，你最初位于数组的第一个位置。
+数组中的每个元素代表你在该位置可以跳跃的最大长度。
+你的目标是使用最少的跳跃次数到达数组的最后一个位置。
+
+示例:
+输入: [2,3,1,1,4]
+输出: 2
+解释: 跳到最后一个位置的最小跳跃数是 2。
+     从下标为 0 跳到下标为 1 的位置，跳 1 步，然后跳 3 步到达数组的最后一个位置。
+说明:
+假设你总是可以到达数组的最后一个位置。
+*/
+func jump(nums []int) int {
+	//思路，其实可以从后往前跳。 有一个固定公式。数组的长度-1-当前下标 = 数组的值 。如果成立，则此时从该下标跳到数组的末尾，将会用到自身最大的值
+	//此时，这个下标后面的值都是可以不用跳的，则到该下标为止的跳跃次数应该是最小。从后往前依次获取这个最小的下标值。
+	/*var jumpTimes = 1
+	l := len(nums)
+	if l == 1 {
+		return 0
+	} else {
+		var min = l - 2
+		for i := l - 2; i >= 0; i-- {
+			//证明从当前i跳转到l-1，需要nums[i]步。需要记录此时的下标
+			if l-1-i <= nums[i] {
+				min = i
+			}
+		}
+		//如果当前min即为数组第一个元素，则证明数组只有两个值了，此时直接返回1即可
+		if min == 0 {
+			return 1
+		} else {
+			fmt.Println(min, nums[:min+1])
+			//获取到了最近的min后，再从min往前取
+			//return jumpTimes
+			return jumpTimes + jump(nums[:min+1])
+		}
+	}*/
+
+	//思路2：贪婪算法，每次跳尽量多的值。比如2,3,1,1,4,5，第一个值是2，可以跳到3或者1，那么3明显可以跳的更远，那就跳到3
+	//然后3可以跳到1,1,4,那4可以跳的更远，那就跳到4，最后再跳5即可。    2, 3, 1, 1, 4, 5, 7, 10, 11, 10
+	var jumpTimes = 0
+	l := len(nums)
+	//记录最大的位置，此位置为下标加上下标对应的值
+	maxPos := 0
+	//记录当前i的边界值
+	end := 0
+	for i := 0; i < l-1; i++ {
+		//判断当前的下标和其对应的值相加得到的值是否大于当前的maxPos，如果是，则将其置为maxPos
+		if nums[i]+i > maxPos {
+			maxPos = nums[i] + i
+		}
+		//为当前的值设置边界。比如2,3,1,1,4,5 i=0时，边界此时为0+2=2。证明以i=0开始，最多往后移动2位。当从0到1,1到2之后，发现第1位的值想加最大
+		//得到1+3=4。此时证明，从第1位开始往后跳3位，最大可以跳到4，此时边界就设置为4
+		if i == end {
+			end = maxPos
+			jumpTimes++
+		}
+		fmt.Println(i, maxPos, end)
+	}
+	return jumpTimes
 }
