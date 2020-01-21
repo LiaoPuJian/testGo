@@ -143,7 +143,20 @@ func main() {
 
 	//fmt.Println(isMatch("abefcdgiescdfimde", "ab*cd?i*de"))
 
-	fmt.Println(jump([]int{2, 3, 1, 1, 4, 5, 7, 10, 11, 10}))
+	//fmt.Println(jump([]int{2, 3, 1, 1, 4, 5, 7, 10, 11, 10}))
+
+	//fmt.Println(permute([]int{1, 2, 3}))
+
+	//fmt.Println(permuteUnique([]int{3, 3, 0, 3}))
+	//fmt.Println(permuteUnique([]int{-1, 2, -1, 2, 1, -1, 2, 1}))
+	//fmt.Println(permuteUnique([]int{-1, 2, -1, 2, 1, -1, 2, 1}))
+
+	//rotate([][]int{{5, 1, 9, 11}, {2, 4, 8, 10}, {13, 3, 6, 7}, {15, 14, 12, 16}})
+	//rotate([][]int{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}})
+
+	//fmt.Println(groupAnagrams([]string{"eat", "tea", "tan", "ate", "nat", "bat"}))
+
+	fmt.Println(myPow(2, 11))
 }
 
 //给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。
@@ -3023,4 +3036,258 @@ func jump(nums []int) int {
 		fmt.Println(i, maxPos, end)
 	}
 	return jumpTimes
+}
+
+/**
+给定一个没有重复数字的序列，返回其所有可能的全排列。
+
+示例:
+输入: [1,2,3]
+输出:
+[
+  [1,2,3],
+  [1,3,2],
+  [2,1,3],
+  [2,3,1],
+  [3,1,2],
+  [3,2,1]
+]
+
+*/
+func permute(nums []int) [][]int {
+	//思路1，回溯。
+	res := make([][]int, 0)
+	l := len(nums)
+	permuteF(nums, []int{}, -100, l, &res)
+	return res
+}
+
+func permuteF(nums, cur []int, n, l int, res *[][]int) *[][]int {
+	if n != -100 {
+		cur = append(cur, n)
+	}
+	if l == len(cur) {
+		*res = append(*res, cur)
+		return res
+	} else {
+		//如果此时会走到这里，代表nums里面必然还有值
+		lc := len(nums)
+		for i := 0; i < lc; i++ {
+			curNums := make([]int, len(nums))
+			copy(curNums, nums)
+			next := curNums[i]
+			if lc == 1 {
+				permuteF([]int{}, cur, next, l, res)
+			} else {
+				if i+1 < l {
+					permuteF(append(curNums[:i], curNums[i+1:]...), cur, next, l, res)
+				} else {
+					permuteF(curNums[:i], cur, next, l, res)
+				}
+			}
+		}
+	}
+	return res
+}
+
+/**
+给定一个可包含重复数字的序列，返回所有不重复的全排列。
+
+示例:
+输入: [1,1,2]
+输出:
+[
+  [1,1,2],
+  [1,2,1],
+  [2,1,1]
+]
+*/
+func permuteUnique(nums []int) [][]int {
+	res := make([][]int, 0)
+	l := len(nums)
+	permuteUniqueF(nums, []int{}, -100, l, &res)
+	return res
+}
+
+func permuteUniqueF(nums, cur []int, n, l int, res *[][]int) *[][]int {
+	if n != -100 {
+		cur = append(cur, n)
+	}
+	if l == len(cur) {
+		*res = append(*res, cur)
+		return res
+	} else {
+		//如果此时会走到这里，代表nums里面必然还有值
+		lc := len(nums)
+		m := make(map[int]int)
+		for i := 0; i < lc; i++ {
+			//判断，如果当前的值跟上一个值一致，则跳过当前值
+			if _, ok := m[nums[i]]; ok {
+				continue
+			}
+			curNums := make([]int, len(nums))
+			copy(curNums, nums)
+			next := curNums[i]
+			//注意这里跟上面不一样，需要将当前cur重新赋值给一个切片，否则会导致结果重复
+			curN := make([]int, len(cur))
+			copy(curN, cur)
+
+			if lc == 1 {
+				permuteUniqueF([]int{}, curN, next, l, res)
+			} else {
+				if i+1 < l {
+					permuteUniqueF(append(curNums[:i], curNums[i+1:]...), curN, next, l, res)
+				} else {
+					permuteUniqueF(curNums[:i], curN, next, l, res)
+				}
+			}
+			m[nums[i]] = 1
+		}
+	}
+	return res
+}
+
+/**
+给定一个 n × n 的二维矩阵表示一个图像。
+将图像顺时针旋转 90 度。
+说明：
+你必须在原地旋转图像，这意味着你需要直接修改输入的二维矩阵。请不要使用另一个矩阵来旋转图像。
+
+示例 1:
+给定 matrix =
+[
+  [1,2,3],
+  [4,5,6],
+  [7,8,9]
+],
+原地旋转输入矩阵，使其变为:
+[
+  [7,4,1],
+  [8,5,2],
+  [9,6,3]
+]
+
+示例 2:
+给定 matrix =
+[
+  [ 5, 1, 9,11],
+  [ 2, 4, 8,10],
+  [13, 3, 6, 7],
+  [15,14,12,16]
+],
+
+原地旋转输入矩阵，使其变为:
+[
+  [15,13, 2, 5],
+  [14, 3, 4, 1],
+  [12, 6, 8, 9],
+  [16, 7,10,11]
+]
+*/
+func rotate(matrix [][]int) {
+	/*
+		思路：
+		1、先将数组上下翻转
+		2、再将数据按照“左上-右下”的斜对角线翻转
+	*/
+	for i := 0; i < len(matrix)/2; i++ {
+		line1 := matrix[i]
+		line2 := matrix[len(matrix)-1-i]
+		for j := 0; j < len(line1); j++ {
+			tmp := line1[j]
+			line1[j] = line2[j]
+			line2[j] = tmp
+		}
+	}
+	for i := 0; i < len(matrix); i++ {
+		for j := 0; j < i; j++ {
+			if i == j {
+				continue
+			}
+			tmp := matrix[i][j]
+			matrix[i][j] = matrix[j][i]
+			matrix[j][i] = tmp
+		}
+	}
+}
+
+/**
+给定一个字符串数组，将字母异位词组合在一起。字母异位词指字母相同，但排列不同的字符串。
+示例:
+输入: ["eat", "tea", "tan", "ate", "nat", "bat"],
+输出:
+[
+  ["ate","eat","tea"],
+  ["nat","tan"],
+  ["bat"]
+]
+说明：
+所有输入均为小写字母。
+不考虑答案输出的顺序。
+*/
+func groupAnagrams(strs []string) [][]string {
+	m := make(map[string][]string)
+	res := make([][]string, 0)
+
+	//字符串排序算法
+	f := func(w string) string {
+		s := strings.Split(w, "")
+		sort.Strings(s)
+		return strings.Join(s, "")
+	}
+
+	for _, v := range strs {
+		//这里将v按照ASCII码排序，判断m中是否存在，如果不存在，则新建，如果存在，则存入map对应的string切片中
+		str := f(v)
+		if _, ok := m[str]; ok {
+			m[str] = append(m[str], v)
+		} else {
+			m[str] = make([]string, 0)
+			m[str] = append(m[str], v)
+		}
+	}
+
+	for _, v := range m {
+		res = append(res, v)
+	}
+
+	return res
+}
+
+/**
+实现 pow(x, n) ，即计算 x 的 n 次幂函数。
+
+示例 1:
+输入: 2.00000, 10
+输出: 1024.00000
+示例 2:
+输入: 2.10000, 3
+输出: 9.26100
+示例 3:
+输入: 2.00000, -2
+输出: 0.25000
+解释: 2-2 = 1/22 = 1/4 = 0.25
+说明:
+-100.0 < x < 100.0
+n 是 32 位有符号整数，其数值范围是 [−231, 231 − 1] 。
+*/
+func myPow(x float64, n int) float64 {
+	if n == 0 {
+		return 1
+	}
+	if n == 1 {
+		return x
+	}
+	if n == -1 {
+		return 1 / x
+	}
+	//取当前n的一半返回的值
+	var half = myPow(x, n/2)
+	//如果n是偶数，rest是1，如果n是奇数，则rest是x本身。
+	//以x=2 n=5为例，2的五次方换成2的2次方乘以2的2次方乘以2的1次方
+	//以x=2 n=4为例，2的四次方换成2的2次方乘以2的2次方乘以1
+	//以x=2 n=-5为例，2的负五次方换成2的负二次方乘以2的负二次方乘以2的负一次方
+	//以x=2 n=-4为例，2的负四次方换成2的负2次方乘以2的负2次方乘以1
+	var rest = myPow(x, n%2)
+	return rest * half * half
 }
