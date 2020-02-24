@@ -1,166 +1,17 @@
-package main
+package algorithm
 
 import (
 	"fmt"
+	"math"
 	"reflect"
 	"sort"
 	"strconv"
 	"strings"
+	"unicode"
 )
 
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
-
-//打印链表的方法
-func printList(res *ListNode) {
-	a := res
-	fmt.Print("res:")
-	for {
-		if a == nil {
-			break
-		}
-		fmt.Print(a.Val)
-		a = a.Next
-	}
-	fmt.Print("\n")
-}
-
-func main() {
-	/*list1 := &ListNode{Val: 1, Next: &ListNode{Val: 0, Next: &ListNode{Val: 0, Next: &ListNode{Val: 0, Next: &ListNode{Val: 1, Next: nil}}}}}
-	list2 := &ListNode{Val: 5, Next: &ListNode{Val: 6, Next: &ListNode{Val: 4, Next: nil}}}
-
-	addTwoNumbers(list1, list2)*/
-
-	/*fmt.Println(findMedianSortedArrays([]int{1, 3}, []int{2}))
-	fmt.Println(findMedianSortedArrays([]int{1, 2}, []int{3, 4}))
-	fmt.Println(findMedianSortedArrays([]int{3, 5, 7}, []int{6, 9, 20}))*/
-
-	/*fmt.Println(longestPalindrome("abb"))
-	fmt.Println(longestPalindrome("222020221"))
-	fmt.Println(longestPalindrome("babad"))
-	fmt.Println(longestPalindrome("cbbd"))
-	fmt.Println(longestPalindrome("qcwerewwq"))
-	fmt.Println(longestPalindrome("babaddtattarrattatddetartrateedredividerb"))
-	fmt.Println(longestPalindrome("azwdzwmwcqzgcobeeiphemqbjtxzwkhiqpbrprocbppbxrnsxnwgikiaqutwpftbiinlnpyqstkiqzbggcsdzzjbrkfmhgtnbujzszxsycmvipjtktpebaafycngqasbbhxaeawwmkjcziybxowkaibqnndcjbsoehtamhspnidjylyisiaewmypfyiqtwlmejkpzlieolfdjnxntonnzfgcqlcfpoxcwqctalwrgwhvqvtrpwemxhirpgizjffqgntsmvzldpjfijdncexbwtxnmbnoykxshkqbounzrewkpqjxocvaufnhunsmsazgibxedtopnccriwcfzeomsrrangufkjfzipkmwfbmkarnyyrgdsooosgqlkzvorrrsaveuoxjeajvbdpgxlcrtqomliphnlehgrzgwujogxteyulphhuhwyoyvcxqatfkboahfqhjgujcaapoyqtsdqfwnijlkknuralezqmcryvkankszmzpgqutojoyzsnyfwsyeqqzrlhzbc"))
-	*/
-
-	//fmt.Println(Zconvert("LEETCODEISHIRINGA", 3))
-
-	//fmt.Println(reverse(120))
-
-	//fmt.Println(isPalindrome(121))
-
-	//fmt.Println(maxArea([]int{1, 8, 6, 2, 5, 4, 8, 3, 7, 10}))
-
-	//fmt.Println(intToRoman(2494))
-
-	//fmt.Println(romanToInt("DCXXI"))
-
-	/*fmt.Println(longestCommonPrefix([]string{"flower", "flow", "flight"}))
-	fmt.Println(longestCommonPrefix([]string{"dog", "doracecar", "docar"}))*/
-
-	//fmt.Println(threeSum([]int{-4, -2, -2, -2, 0, 1, 2, 2, 2, 3, 3, 4, 4, 6, 6}))
-
-	//fmt.Println(threeSum([]int{-5, 14, 1, -2, 11, 11, -10, 3, -6, 0, 3, -4, -9, -13, -8, -7, 9, 8, -7, 11, 12, -7, 4, -7, -1, -5, 13, 1, -2, 8, -13, 0, -1, 3, 13, -13, -1, 10, 5, 1, -13, -15, 12, -7, -13, -11, -7, 3, 13, 1, 0, 2, 1, 11, 10, 8, -8, 1, -14, -3, -6, -12, 12, 0, 6, 2, 2, -9, -3, 14, -1, -9, 14, -4, -1, 8, -8, 7, -4, 12, -14, 3, -9, 2, 0, -13, -13, -1, 3, -12, 11, 4, -9, 8, 11, 5, -5, -10, 3, -1, -11, -13, 5, -12, -10, 11, 11, -3, -5, 14, -13, -4, -5, -7, 6, 2, -13, 0, 8, -3, 4, 4, -14, 2}))
-
-	//fmt.Println(threeSum([]int{3, 0, -2, -1, 1, 2}))
-
-	//fmt.Println(threeSumClosest([]int{-1, 2, 1, -4}, 1))
-
-	//fmt.Println(letterCombinations("23"))
-
-	//fmt.Println(fourSum([]int{-1, 0, -5, -2, -2, -4, 0, 1, -2}, -9))
-
-	//list := &ListNode{Val: 1, Next: &ListNode{Val: 2, Next: &ListNode{Val: 3, Next: &ListNode{Val: 4, Next: &ListNode{Val: 5, Next: nil}}}}}
-
-	//l := removeNthFromEnd(list, 2)
-
-	//fmt.Println(isValid("([)]"))
-
-	/*list1 := &ListNode{Val: -10, Next: &ListNode{Val: -6, Next: &ListNode{Val: -6, Next: &ListNode{Val: -6, Next: &ListNode{Val: -3, Next: &ListNode{Val: 5, Next: nil}}}}}}
-	//list2 := &ListNode{Val: 1, Next: &ListNode{Val: 3, Next: &ListNode{Val: 4, Next: nil}}}
-	fmt.Println(mergeTwoLists(list1, nil))*/
-
-	/*list1 := &ListNode{Val: 1, Next: &ListNode{Val: 4, Next: &ListNode{Val: 5, Next: nil}}}
-	list2 := &ListNode{Val: 1, Next: &ListNode{Val: 3, Next: &ListNode{Val: 4, Next: nil}}}
-	list3 := &ListNode{Val: 2, Next: &ListNode{Val: 6, Next: nil}}
-
-	l := mergeKLists([]*ListNode{list1, list2, list3})
-	printList(l)*/
-
-	//printList(swapPairs(&ListNode{Val: 1, Next: &ListNode{Val: 2, Next: &ListNode{Val: 3, Next: &ListNode{Val: 4, Next: nil}}}}))
-
-	//list := &ListNode{Val: 1, Next: &ListNode{Val: 2, Next: &ListNode{Val: 3, Next: &ListNode{Val: 4, Next: &ListNode{Val: 5, Next: &ListNode{Val: 6, Next: &ListNode{Val: 7, Next: &ListNode{Val: 8, Next: &ListNode{Val: 9, Next: nil}}}}}}}}}
-
-	//printList(reverseKGroup(list, 4))
-	//printList(reverseKGroup1(list, 3))
-
-	//fmt.Println(removeDuplicates([]int{0, 0, 1, 1, 1, 2, 2, 3, 3, 4}))
-	//fmt.Println(removeElement([]int{0, 1, 2, 2, 3, 0, 4, 2}, 2))
-	//fmt.Println(strStr("mississippi", "issis"))\
-	//fmt.Println(divide(-2147483648, -1))
-
-	//findSubstring1("foobarfoobar", []string{"foo", "bar"})
-	//findSubstring("aaa", []string{"a", "a"})
-	//findSubstring("wordgoodgoodgoodbestword", []string{"word", "good", "best", "word"})
-	/*findSubstring("pjzkrkevzztxductzzxmxsvwjkxpvukmfjywwetvfnujhweiybwvvsrfequzkhossmootkmyxgjgfordrpapjuunmqnxxdrqrf"+
-	"gkrsjqbszgiqlcfnrpjlcwdrvbumtotzylshdvccdmsqoadfrpsvnwpizlwszrtyclhgilklydbmfhuywotjmktnwrfvizvnmfvvqfiokkdprzn"+
-	"nnjycttprkxpuykhmpchiksyucbmtabiqkisgbhxngmhezrrqvayfsxauampdpxtafniiwfvdufhtwajrbkxtjzqjnfocdhekumttuqwovfjrgu"+
-	"lhekcpjszyynadxhnttgmnxkduqmmyhzfnjhducesctufqbumxbamalqudeibljgbspeotkgvddcwgxidaiqcvgwykhbysjzlzfbupkqunuqtra"+
-	"xrlptivshhbihtsigtpipguhbhctcvubnhqipncyxfjebdnjyetnlnvmuxhzsdahkrscewabejifmxombiamxvauuitoltyymsarqcuuoezcbqp"+
-	"daprxmsrickwpgwpsoplhugbikbkotzrtqkscekkgwjycfnvwfgdzogjzjvpcvixnsqsxacfwndzvrwrycwxrcismdhqapoojegggkocyrdtkzm"+
-	"iekhxoppctytvphjynrhtcvxcobxbcjjivtfjiwmduhzjokkbctweqtigwfhzorjlkpuuliaipbtfldinyetoybvugevwvhhhweejogrghllsou"+
-	"ipabfafcxnhukcbtmxzshoyyufjhzadhrelweszbfgwpkzlwxkogyogutscvuhcllphshivnoteztpxsaoaacgxyaztuixhunrowzljqfqrahos"+
-	"heukhahhbiaxqzfmmwcjxountkevsvpbzjnilwpoermxrtlfroqoclexxisrdhvfsindffslyekrzwzqkpeocilatftymodgztjgybtyheqgcpw"+
-	"ogdcjlnlesefgvimwbxcbzvaibspdjnrpqtyeilkcspknyylbwndvkffmzuriilxagyerjptbgeqgebiaqnvdubrtxibhvakcyotkfonmseszhc"+
-	"zapxdlauexehhaireihxsplgdgmxfvaevrbadbwjbdrkfbbjjkgcztkcbwagtcnrtqryuqixtzhaakjlurnumzyovawrcjiwabuwretmdamfkxr"+
-	"gqgcdgbrdbnugzecbgyxxdqmisaqcyjkqrntxqmdrczxbebemcblftxplafnyoxqimkhcykwamvdsxjezkpgdpvopddptdfbprjustquhlazkjf"+
-	"luxrzopqdstulybnqvyknrchbphcarknnhhovweaqawdyxsqsqahkepluypwrzjegqtdoxfgzdkydeoxvrfhxusrujnmjzqrrlxglcmkiykldbi"+
-	"asnhrjbjekystzilrwkzhontwmehrfsrzfaqrbbxncphbzuuxeteshyrveamjsfiaharkcqxefghgceeixkdgkuboupxnwhnfigpkwnqdvzlydp"+
-	"idcljmflbccarbiegsmweklwngvygbqpescpeichmfidgsjmkvkofvkuehsmkkbocgejoiqcnafvuokelwuqsgkyoekaroptuvekfvmtxtqshcw"+
-	"sztkrzwrpabqrrhnlerxjojemcxel",
-	[]string{"dhvf", "sind", "ffsl", "yekr", "zwzq", "kpeo", "cila", "tfty", "modg", "ztjg", "ybty", "heqg", "cpwo", "gdcj", "lnle", "sefg", "vimw", "bxcb"})*/
-
-	//nextPermutation([]int{1, 4, 7, 6, 5})
-
-	//fmt.Println(longestValidParentheses(")()())"))
-	//fmt.Println(longestValidParentheses("()))((())"))
-
-	//fmt.Println(search([]int{3, 1}, 1))
-	//fmt.Println(searchRange([]int{5, 7, 7, 8, 8, 10}, 3))
-
-	//fmt.Println(searchInsert([]int{1, 3, 5, 6}, 0))
-
-	//fmt.Println(countAndSay(1))
-
-	//fmt.Println(combinationSum2([]int{10, 1, 2, 7, 6, 1, 5}, 8))
-
-	//fmt.Println(firstMissingPositive([]int{3, 4, -1, -2, 1, 5, 16, 0, 2, 0}))
-
-	//fmt.Println(trap([]int{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1}))
-
-	//fmt.Println(isMatch("abefcdgiescdfimde", "ab*cd?i*de"))
-
-	//fmt.Println(jump([]int{2, 3, 1, 1, 4, 5, 7, 10, 11, 10}))
-
-	//fmt.Println(permute([]int{1, 2, 3}))
-
-	//fmt.Println(permuteUnique([]int{3, 3, 0, 3}))
-	//fmt.Println(permuteUnique([]int{-1, 2, -1, 2, 1, -1, 2, 1}))
-	//fmt.Println(permuteUnique([]int{-1, 2, -1, 2, 1, -1, 2, 1}))
-
-	//rotate([][]int{{5, 1, 9, 11}, {2, 4, 8, 10}, {13, 3, 6, 7}, {15, 14, 12, 16}})
-	//rotate([][]int{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}})
-
-	//fmt.Println(groupAnagrams([]string{"eat", "tea", "tan", "ate", "nat", "bat"}))
-
-	fmt.Println(myPow(2, 11))
-}
-
 //给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。
-func twoSum(nums []int, target int) []int {
+func TwoSum(nums []int, target int) []int {
 	//先定义一个map
 	m := make(map[int]int)
 	for k, v := range nums {
@@ -187,7 +38,7 @@ func twoSum(nums []int, target int) []int {
 原因：342 + 465 = 807
 
 */
-func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
+func AddTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 	//1、分别计算出两个链表的值，相加之后，倒过来，再生成链表   (这样不行，测试用例中有很多很长的链表，相加会溢出)
 
 	//2、循环两个链表的每个节点，如果有一个节点为空，则将那个节点的值置为0，将两个节点相加，然后得到的合如果大于10则减去10，小于10不做操作，
@@ -277,7 +128,7 @@ func getMaxLengthDiffString(str string) (int, string) {
 //给定两个大小为 m 和 n 的有序数组 nums1 和 nums2。
 //请你找出这两个有序数组的中位数，并且要求算法的时间复杂度为 O(log(m + n))。
 //你可以假设 nums1 和 nums2 不会同时为空。
-func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
+func FindMedianSortedArrays(nums1 []int, nums2 []int) float64 {
 	//思路1:先将两个数组合并，并从小到大排序。然后判断个数奇偶，然后计算中位数
 	/*nums := append(nums1, nums2...)
 	//冒泡排序
@@ -338,7 +189,7 @@ func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
 }
 
 //给定一个字符串 s，找到 s 中最长的回文子串。你可以假设 s 的最大长度为 1000。
-func longestPalindrome(s string) string {
+func LongestPalindrome(s string) string {
 	//思路1，暴力破解
 	l := len(s)
 	if l < 2 {
@@ -452,7 +303,7 @@ func Zconvert(s string, numRows int) string {
 }
 
 //给出一个 32 位的有符号整数，你需要将这个整数中每位上的数字进行反转。
-func reverse(x int) int {
+func Reverse(x int) int {
 	MaxInt32 := 1<<31 - 1
 	MinInt32 := -1 << 31
 
@@ -526,7 +377,7 @@ func myAtoi(str string) int {
 /**
 判断一个整数是否是回文数。回文数是指正序（从左向右）和倒序（从右向左）读都是一样的整数。
 */
-func isPalindrome(x int) bool {
+func IsPalindrome(x int) bool {
 	//思路1、整数转string，然后通过字符串翻转来做
 	/*str := strconv.Itoa(x)
 	strR := reverseString(str)
@@ -565,7 +416,7 @@ func isPalindrome(x int) bool {
 给定 n 个非负整数 a1，a2，...，an，每个数代表坐标中的一个点 (i, ai) 。在坐标内画 n 条垂直线，垂直线 i 的两个端点分别为 (i, ai) 和 (i, 0)。找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。
 说明：你不能倾斜容器，且 n 的值至少为 2。
 */
-func maxArea(height []int) int {
+func MaxArea(height []int) int {
 	//思路1，暴力计算，循环每一个垂直线之间的差，计算出水的容积
 	/*var max int
 	for i := 0; i < len(height); i++ {
@@ -626,7 +477,7 @@ X 可以放在 L (50) 和 C (100) 的左边，来表示 40 和 90。
 C 可以放在 D (500) 和 M (1000) 的左边，来表示 400 和 900。
 给定一个整数，将其转为罗马数字。输入确保在 1 到 3999 的范围内。
 */
-func intToRoman(num int) string {
+func IntToRoman(num int) string {
 	var str string
 	var qian, bai, shi, ge int
 	qian = num / 1000
@@ -719,7 +570,7 @@ X 可以放在 L (50) 和 C (100) 的左边，来表示 40 和 90。
 C 可以放在 D (500) 和 M (1000) 的左边，来表示 400 和 900。
 给定一个罗马数字，将其转换成整数。输入确保在 1 到 3999 的范围内。
 */
-func romanToInt(s string) int {
+func RomanToInt(s string) int {
 	num := 0
 	var prev byte
 	for _, v := range []byte(s) {
@@ -800,7 +651,7 @@ func romanToInt(s string) int {
 输出: ""
 解释: 输入不存在公共前缀。
 */
-func longestCommonPrefix(strs []string) string {
+func LongestCommonPrefix(strs []string) string {
 	var str []byte
 
 	if len(strs) == 0 {
@@ -853,7 +704,7 @@ func longestCommonPrefix(strs []string) string {
 ]
 
 */
-func threeSum(nums []int) [][]int {
+func ThreeSum(nums []int) [][]int {
 
 	//1、思路1 暴力破解
 
@@ -919,7 +770,7 @@ func (s IntSlice) Less(i, j int) bool { return s[i] < s[j] }
 
 与 target 最接近的三个数的和为 2. (-1 + 2 + 1 = 2).
 */
-func threeSumClosest(nums []int, target int) int {
+func ThreeSumClosest(nums []int, target int) int {
 
 	//1、暴力法    此法会超时
 	/*var sum int
@@ -989,7 +840,7 @@ func threeSumClosest(nums []int, target int) int {
 
 给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。
 */
-func letterCombinations(digits string) []string {
+func LetterCombinations(digits string) []string {
 	//定义好一个map，用来存放数字对应的字符
 	m := make(map[byte][]string)
 	m['2'] = []string{"a", "b", "c"}
@@ -1042,7 +893,7 @@ func f(combination, next_digits string, result *[]string, m map[byte][]string) {
 ]
 
 */
-func fourSum(nums []int, target int) [][]int {
+func FourSum(nums []int, target int) [][]int {
 
 	var res [][]int
 
@@ -1148,7 +999,7 @@ func fourSum(nums []int, target int) [][]int {
 你能尝试使用一趟扫描实现吗？
 
 */
-func removeNthFromEnd(head *ListNode, n int) *ListNode {
+func RemoveNthFromEnd(head *ListNode, n int) *ListNode {
 	//递归思想，循环获取需要删除的元素，并将倒数n-1个元素的Next指定为倒数n+1个元素
 	//解题思路1、先计算出链表的长度，然后获取倒数第n个值在链表中正向的顺序
 	/*l1 := head
@@ -1208,7 +1059,7 @@ func removeNthFromEnd(head *ListNode, n int) *ListNode {
 注意空字符串可被认为是有效字符串。
 
 */
-func isValid(s string) bool {
+func IsValid(s string) bool {
 	//可以这么理解，设定一个栈。每读取到一个元素，则判断其情况。如果是左括号，则将其放入栈中，如果是右括号，则检查栈顶的元素是否是跟其匹配的左括号，
 	//如果是，则将左括号弹出（pop）。如果没有，则证明表达式无效。如果最后循环完成，栈中仍有数据，则也证明表达式无效
 	b := make([]byte, 0)
@@ -1254,7 +1105,7 @@ func isValid(s string) bool {
 输出：1->1->2->3->4->4
 
 */
-func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
+func MergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
 	pre := &ListNode{}
 	cur := pre
 	var x, y int
@@ -1297,7 +1148,7 @@ func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
 	return pre.Next
 }
 
-func mergeTwoLists1(l1, l2 *ListNode) *ListNode {
+func MergeTwoLists1(l1, l2 *ListNode) *ListNode {
 	if l1 == nil {
 		return l2
 	}
@@ -1343,7 +1194,7 @@ func mergeTwoLists1(l1, l2 *ListNode) *ListNode {
 ]
 
 */
-func generateParenthesis(n int) []string {
+func GenerateParenthesis(n int) []string {
 	var res []string
 	//使用回溯方法
 	generateF(&res, "", 0, 0, n)
@@ -1379,7 +1230,7 @@ func generateF(res *[]string, cur string, left, right, max int) {
 ]
 输出: 1->1->2->3->4->4->5->6
 */
-func mergeKLists(lists []*ListNode) *ListNode {
+func MergeKLists(lists []*ListNode) *ListNode {
 	//获取所有链表的长度，得到一个总长
 	/*res := &ListNode{}
 	cur := res
@@ -1437,7 +1288,7 @@ func mergeKLists(lists []*ListNode) *ListNode {
 	}
 	//这里假设是一个三个元素的数组，则此时lists[:l/2]为第0个元素，lists[l/2:]为第一个和第二个元素
 	//此时第一个和第二个元素继续递归，会先合并成一个链表，再跟第0个合成一个链表
-	return mergeTwoLists(mergeKLists(lists[:l/2]), mergeKLists(lists[l/2:]))
+	return MergeTwoLists(MergeKLists(lists[:l/2]), MergeKLists(lists[l/2:]))
 
 }
 
@@ -1451,7 +1302,7 @@ func mergeKLists(lists []*ListNode) *ListNode {
 给定 1->2->3->4, 你应该返回 2->1->4->3.
 
 */
-func swapPairs(head *ListNode) *ListNode {
+func SwapPairs(head *ListNode) *ListNode {
 	if head == nil {
 		return nil
 	}
@@ -1512,7 +1363,7 @@ k 是一个正整数，它的值小于或等于链表的长度。
 你的算法只能使用常数的额外空间。
 你不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。
 */
-func reverseKGroup(head *ListNode, k int) *ListNode {
+func ReverseKGroup(head *ListNode, k int) *ListNode {
 	//设定两个游标，先指向第一个节点跟第k个节点，然后将第一个节点和第k个节点交换
 	//完成后，将左边的游标往右移动一位，游标的游标往左移动一位。这个时候要判断，如果中间剩余长度没有小于2，则不处理
 	//然后再循环k+1到2k，依次这么做
@@ -1600,7 +1451,7 @@ func getListIndex(list *ListNode, index int) (*ListNode, *ListNode) {
 	return nil, nil
 }
 
-func reverseKGroup1(head *ListNode, k int) *ListNode {
+func ReverseKGroup1(head *ListNode, k int) *ListNode {
 	//为什么要这么做？因为定义一个头结点可以回避很多特殊情况
 	dummy := &ListNode{Val: 0, Next: head}
 	//定义一个开始节点，一个结束节点，用于翻转
@@ -1660,7 +1511,7 @@ func reverseList(head *ListNode) *ListNode {
 给定一个排序数组，你需要在原地删除重复出现的元素，使得每个元素只出现一次，返回移除后数组的新长度。
 不要使用额外的数组空间，你必须在原地修改输入数组并在使用 O(1) 额外空间的条件下完成。
 */
-func removeDuplicates(nums []int) int {
+func RemoveDuplicates(nums []int) int {
 	var old int
 	old = -100
 
@@ -1688,7 +1539,7 @@ func removeDuplicates(nums []int) int {
 元素的顺序可以改变。你不需要考虑数组中超出新长度后面的元素。
 
 */
-func removeElement(nums []int, val int) int {
+func RemoveElement(nums []int, val int) int {
 	l := len(nums)
 
 	for i := 0; i < l; i++ {
@@ -1716,7 +1567,7 @@ func removeElement(nums []int, val int) int {
 输入: haystack = "aaaaa", needle = "bba"
 输出: -1
 */
-func strStr(haystack string, needle string) int {
+func StrStr(haystack string, needle string) int {
 	if needle == "" {
 		return 0
 	}
@@ -1781,7 +1632,7 @@ func strStr(haystack string, needle string) int {
 假设我们的环境只能存储 32 位有符号整数，其数值范围是 [−231,  231 − 1]。本题中，如果除法结果溢出，则返回 231 − 1
 
 */
-func divide(dividend int, divisor int) int {
+func Divide(dividend int, divisor int) int {
 	MaxInt32 := 1<<31 - 1
 	MinInt32 := -1 << 31
 
@@ -1861,7 +1712,7 @@ func div(a, b int) int {
 
 ababababab , [a, b]
 */
-func findSubstring(s string, words []string) []int {
+func FindSubstring(s string, words []string) []int {
 	//思路1、循环words，组合好每个可能，放入一个新的slice中，循环这个slice，看s中有哪些符合   这种会超时
 
 	//思路2、用两个map来解决。首先，把所有的单词存到map中，键为单词，值为单词出现的次数。然后扫描子串中的单词，如果当前扫描的单词在之前的
@@ -1913,7 +1764,7 @@ func findSubstring(s string, words []string) []int {
 	return res
 }
 
-func findSubstring1(s string, words []string) []int {
+func FindSubstring1(s string, words []string) []int {
 	//思路3、在思路2的基础上。存在三种情况。
 	// 第一种是当前子串完全匹配。 这个之后直接往后移动oneWordLen位。移动完成后，这个时候无需将m2清空，只需要将上一个子串在m2中的数量减1就可以了
 	//第二种是，当前子串在匹配的时候出现了不在m1中的单词时，可以直接移动到这个单词的下一位开始循环下一个子串
@@ -2032,7 +1883,7 @@ func findSubstringF(combine string, words []string) []string {
 如果当前 nums = [3,2,1]。这就是1，2，3所有排序中最大的那个数，那么就返回1，2，3排序后所有数中最小的那个，也就是1，2，3 -> [1,2,3]
 
 */
-func nextPermutation(nums []int) {
+func NextPermutation(nums []int) {
 	//思路  其实只要从末尾开始，从右到左判断就好了，如果左侧比右侧小，则记录当前左侧的值，取到当前值右侧大于当前值的最小值，跳出循环即可。
 	//如果一直比较下来也没有符合的，那就直接将数组翻转
 	swap := func(nums []int, i, j int) {
@@ -2084,7 +1935,7 @@ func nextPermutation(nums []int) {
 输出: 4
 解释: 最长有效括号子串为 "()()"
 */
-func longestValidParentheses(s string) int {
+func LongestValidParentheses(s string) int {
 	//1、暴力法，获取字符串中的每个偶数子串，并判断其是否为有效括号，如果是，和当前maxlength比较   (这种会超时，不采取)
 	/*isValid := func(str string) bool {
 		//这里还是采用栈的思想，新建一个栈，将s的字符串一个一个的往这个栈里塞，如果取到的是右括号，则判断栈顶上是不是左括号，如果是，则将栈里的左括号弹出，和当前的右括号
@@ -2206,7 +2057,7 @@ func longestValidParentheses(s string) int {
 输入: nums = [4,5,6,7,0,1,2], target = 3
 输出: -1
 */
-func search(nums []int, target int) int {
+func Search(nums []int, target int) int {
 	//典型的二分查找，由于此数组是升序数组的翻转，则符合一个定理，在翻转节点后的数组值，一定小于翻转节点前的数组值（如4,5,6,7,0,1,2）
 	//判断，如果当前中点值大于左侧的值，则证明数组左侧是升序。否则则证明右侧是升序
 	var left, right = 0, len(nums) - 1
@@ -2250,7 +2101,7 @@ func search(nums []int, target int) int {
 输入: nums = [5,7,7,8,8,10], target = 6
 输出: [-1,-1]
 */
-func searchRange(nums []int, target int) []int {
+func SearchRange(nums []int, target int) []int {
 	//二分查找走你
 	/*erfen := func(nums []int, target int) int {
 		var left, right = 0, len(nums) - 1
@@ -2356,7 +2207,7 @@ func searchRange(nums []int, target int) []int {
 输出: 0
 
 */
-func searchInsert(nums []int, target int) int {
+func SearchInsert(nums []int, target int) int {
 	l := len(nums)
 
 	for i := 0; i < l; i++ {
@@ -2383,7 +2234,7 @@ func searchInsert(nums []int, target int) int {
 数独部分空格内已填入了数字，空白格用 '.' 表示。
 
 */
-func isValidSudoku(board [][]byte) bool {
+func IsValidSudoku(board [][]byte) bool {
 	rows := make([]map[int]int, 9)
 	columns := make([]map[int]int, 9)
 	boxes := make([]map[int]int, 9)
@@ -2419,7 +2270,7 @@ func isValidSudoku(board [][]byte) bool {
 数字 1-9 在每一列只能出现一次。
 数字 1-9 在每一个以粗实线分隔的 3x3 宫内只能出现一次。
 */
-func solveSudoku(board [][]byte) {
+func SolveSudoku(board [][]byte) {
 	//新建三个bool的数组表明行、列、3*3
 	rowUsed := [9][10]bool{}
 	colUsed := [9][10]bool{}
@@ -2499,7 +2350,7 @@ func recusiveSolveSudoku(board [][]byte, rowUsed, colUsed [9][10]bool, boxUsed [
 
 这题的意思是，下一项是对当前项的描述，比如第一项是1，第二项为了描述1，则就是11，读作1个1，第三项为了描述11，则就是21，读作2个1
 */
-func countAndSay(n int) string {
+func CountAndSay(n int) string {
 	if n == 1 {
 		return "1"
 	}
@@ -2557,7 +2408,7 @@ candidates 中的数字可以无限制重复被选取。
 ]
 
 */
-func combinationSum(candidates []int, target int) [][]int {
+func CombinationSum(candidates []int, target int) [][]int {
 	//这题可以用回溯的方法做。先将数组排序，然后将目标值减去数组的每一个值，得到n个新的目标值，并判断目标值减去数组的每个值是否为0，如果是，则将其放入res
 	//然后继续减每个值，如果为0，则将其放入到res中
 	sort.Ints(candidates)
@@ -2609,7 +2460,7 @@ candidates 中的每个数字在每个组合中只能使用一次。
   [1, 1, 6]
 ]
 */
-func combinationSum2(candidates []int, target int) [][]int {
+func CombinationSum2(candidates []int, target int) [][]int {
 	sort.Ints(candidates)
 	res := [][]int{}
 	combinationSumF2(candidates, []int{}, &res, target, 0)
@@ -2661,7 +2512,7 @@ func combinationSumF2(candidates, last []int, res *[][]int, target, i int) bool 
 输入: [7,8,9,11,12]
 输出: 1
 */
-func firstMissingPositive(nums []int) int {
+func FirstMissingPositive(nums []int) int {
 	/*var res = 1
 
 	l := len(nums)
@@ -2750,7 +2601,7 @@ func firstMissingPositive(nums []int) int {
 输出: 6
 
 */
-func trap(height []int) int {
+func Trap(height []int) int {
 	//思路1，取到最高那个柱子，然后从1开始循环，将每一个高度的柱子能接住的雨水计算出来，想加，就是最终面积（注意剔除最前面和最后面的部分）
 	/*l := len(height)
 	if l == 0 {
@@ -2858,7 +2709,7 @@ num1 和 num2 均不以零开头，除非是数字 0 本身。
 不能使用任何标准库的大数类型（比如 BigInteger）或直接将输入转换为整数来处理。
 
 */
-func multiply(num1 string, num2 string) string {
+func Multiply(num1 string, num2 string) string {
 	len1 := len(num1)
 	len2 := len(num2)
 	if num1 == "0" || num2 == "0" {
@@ -2930,7 +2781,7 @@ p = "a*c?b"
 输入: false
 
 */
-func isMatch(s string, p string) bool {
+func IsMatch(s string, p string) bool {
 
 	m := len(s)
 	n := len(p)
@@ -2988,7 +2839,7 @@ func isMatch(s string, p string) bool {
 说明:
 假设你总是可以到达数组的最后一个位置。
 */
-func jump(nums []int) int {
+func Jump(nums []int) int {
 	//思路，其实可以从后往前跳。 有一个固定公式。数组的长度-1-当前下标 = 数组的值 。如果成立，则此时从该下标跳到数组的末尾，将会用到自身最大的值
 	//此时，这个下标后面的值都是可以不用跳的，则到该下标为止的跳跃次数应该是最小。从后往前依次获取这个最小的下标值。
 	/*var jumpTimes = 1
@@ -3054,7 +2905,7 @@ func jump(nums []int) int {
 ]
 
 */
-func permute(nums []int) [][]int {
+func Permute(nums []int) [][]int {
 	//思路1，回溯。
 	res := make([][]int, 0)
 	l := len(nums)
@@ -3102,7 +2953,7 @@ func permuteF(nums, cur []int, n, l int, res *[][]int) *[][]int {
   [2,1,1]
 ]
 */
-func permuteUnique(nums []int) [][]int {
+func PermuteUnique(nums []int) [][]int {
 	res := make([][]int, 0)
 	l := len(nums)
 	permuteUniqueF(nums, []int{}, -100, l, &res)
@@ -3184,7 +3035,7 @@ func permuteUniqueF(nums, cur []int, n, l int, res *[][]int) *[][]int {
   [16, 7,10,11]
 ]
 */
-func rotate(matrix [][]int) {
+func Rotate(matrix [][]int) {
 	/*
 		思路：
 		1、先将数组上下翻转
@@ -3225,7 +3076,7 @@ func rotate(matrix [][]int) {
 所有输入均为小写字母。
 不考虑答案输出的顺序。
 */
-func groupAnagrams(strs []string) [][]string {
+func GroupAnagrams(strs []string) [][]string {
 	m := make(map[string][]string)
 	res := make([][]string, 0)
 
@@ -3271,7 +3122,7 @@ func groupAnagrams(strs []string) [][]string {
 -100.0 < x < 100.0
 n 是 32 位有符号整数，其数值范围是 [−231, 231 − 1] 。
 */
-func myPow(x float64, n int) float64 {
+func MyPow(x float64, n int) float64 {
 	if n == 0 {
 		return 1
 	}
@@ -3282,12 +3133,485 @@ func myPow(x float64, n int) float64 {
 		return 1 / x
 	}
 	//取当前n的一半返回的值
-	var half = myPow(x, n/2)
+	var half = MyPow(x, n/2)
 	//如果n是偶数，rest是1，如果n是奇数，则rest是x本身。
 	//以x=2 n=5为例，2的五次方换成2的2次方乘以2的2次方乘以2的1次方
 	//以x=2 n=4为例，2的四次方换成2的2次方乘以2的2次方乘以1
 	//以x=2 n=-5为例，2的负五次方换成2的负二次方乘以2的负二次方乘以2的负一次方
 	//以x=2 n=-4为例，2的负四次方换成2的负2次方乘以2的负2次方乘以1
-	var rest = myPow(x, n%2)
+	var rest = MyPow(x, n%2)
 	return rest * half * half
+}
+
+/**
+计算那个素数妹子的微信号
+*/
+func GetMeizi() {
+	var ji = 7140229933
+	//计算乘机为上述值的两个素数
+	for i := 2; i < ji/2; i++ {
+		//判断此时的i是否为素数，如果是，则判断ji除以i是否为素数
+		if sushu(i) {
+			fmt.Println(i)
+			if ji%i == 0 && sushu(ji/i) {
+				fmt.Println(i, ji/i)
+				break
+			}
+		}
+	}
+}
+
+/**
+判断输入的值是否为素数
+*/
+func sushu(x int) bool {
+	var i = 2.0
+	for i = 2.0; i < math.Sqrt(float64(x)); i++ {
+		if x%int(i) == 0 {
+			break
+		}
+	}
+	if i <= math.Sqrt(float64(x)) {
+		return false
+	} else {
+		return true
+	}
+}
+
+/**
+给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。
+说明：
+你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？
+
+示例 1:
+输入: [2,2,1]
+输出: 1
+示例 2:
+输入: [4,1,2,1,2]
+输出: 4
+*/
+func SingleNumber(nums []int) int {
+	//思路1，由于不使用额外的空间，那么循环数组，得到当前值之后，再循环数组，从当前值的下一位开始，判断是否能找到和其相等的元素，时间复杂度O(n²)
+	/*var res int
+	for i := 0; i < len(nums); i++ {
+		cur := nums[i]
+		flag := false
+		if i == len(nums)-1 {
+			return nums[i]
+		} else {
+			for j := i + 1; j < len(nums); j++ {
+				if nums[j] == cur {
+					flag = true
+					//将j从数组中去除
+					if j == len(nums)-1 {
+						nums = nums[:j]
+					} else {
+						nums = append(nums[:j], nums[j+1:]...)
+					}
+					break
+				}
+			}
+		}
+		if !flag {
+			res = cur
+			break
+		}
+	}
+	return res*/
+
+	//思路2   使用亦或的方法做。循环数组，由于相同的两个数亦或之后等于0（比如4为0100，4^4，得到0000。）将数组中所有的值相互亦或一遍，得到的就是没有被消除的数字
+	//以4,1,2,1,2,4,5举例，0^4是4,4^1是5,5^2是7，7^1是6， 6^2是4，4^4是0，0^5是5，最后得到5
+	var n int
+	for _, i := range nums {
+		n = n ^ i
+	}
+	return n
+
+}
+
+/**
+给定一个大小为 n 的数组，找到其中的多数元素。多数元素是指在数组中出现次数大于 ⌊ n/2 ⌋ 的元素。
+你可以假设数组是非空的，并且给定的数组总是存在多数元素。
+
+示例 1:
+输入: [3,2,3]
+输出: 3
+示例 2:
+输入: [2,2,1,1,1,2,2]
+输出: 2
+*/
+func MajorityElement(nums []int) int {
+	m := make(map[int]int)
+	l := len(nums)
+	for _, v := range nums {
+		m[v]++
+		if m[v] > l/2 {
+			return v
+		}
+	}
+	return 0
+}
+
+/**
+编写一个高效的算法来搜索 m x n 矩阵 matrix 中的一个目标值 target。该矩阵具有以下特性：
+每行的元素从左到右升序排列。
+每列的元素从上到下升序排列。
+
+示例:
+现有矩阵 matrix 如下：
+
+[
+  [1,   4,  7, 11, 15, 20],
+  [2,   5,  8, 12, 19, 25],
+  [3,   6,  9, 16, 22, 27],
+  [10, 13, 14, 17, 24, 28],
+  [18, 21, 23, 26, 30, 31]
+]
+给定 target = 5，返回 true。
+给定 target = 20，返回 false。
+*/
+func SearchMatrix(matrix [][]int, target int) bool {
+	//思路：从最后一排的第一个元素开始找。 如果当前元素等于目标值，则返回true，如果当前元素小于目标值，由于当前元素已经是这一列最大的一个了，那么比目标值大的只能是其右边了，所以将
+	//行指针往右移动一位。如果当前元素大于目标值，此时，上一个元素小于目标值，当前元素大于目标值，则证明目标值只有可能在当前元素的列的上面，此时将列的游标往上移动一位。
+
+	if len(matrix) == 0 || len(matrix[0]) == 0 {
+		return false
+	}
+
+	//设定两个游标，一个指向每个一维数组的第一个值，一个指向二维数组的最后一行
+	i, j := len(matrix)-1, 0
+	for i >= 0 && j < len(matrix[0]) {
+		if matrix[i][j] == target {
+			return true
+		} else if matrix[i][j] > target {
+			//如果当前元素大于目标值，则将行数减少一位
+			i--
+		} else {
+			//如果当前元素小于目标值，则将列数加1。  由于一开始就已经是最后一行了，如果此时都没有大于目标值的，那么其他地方也没有了。
+			j++
+		}
+	}
+	return false
+}
+
+/**
+给定两个有序整数数组 nums1 和 nums2，将 nums2 合并到 nums1 中，使得 num1 成为一个有序数组。
+说明:
+初始化 nums1 和 nums2 的元素数量分别为 m 和 n。
+你可以假设 nums1 有足够的空间（空间大小大于或等于 m + n）来保存 nums2 中的元素。
+
+示例:
+输入:
+nums1 = [1,2,3,0,0,0], m = 3
+nums2 = [2,5,6],       n = 3
+输出: [1,2,2,3,5,6]
+*/
+func Merge(nums1 []int, m int, nums2 []int, n int) {
+	//思路，双指针，从后往前移动
+	i := m - 1
+	j := n - 1
+	k := m + n - 1
+	for i >= 0 && j >= 0 {
+		if nums1[i] > nums2[j] {
+			nums1[k] = nums1[i]
+			i--
+			k--
+		} else {
+			nums1[k] = nums2[j]
+			k--
+			j--
+		}
+	}
+	for j >= 0 {
+		nums1[k] = nums2[j]
+		k--
+		j--
+	}
+}
+
+/**
+你将获得 K 个鸡蛋，并可以使用一栋从 1 到 N  共有 N 层楼的建筑。
+每个蛋的功能都是一样的，如果一个蛋碎了，你就不能再把它掉下去。
+你知道存在楼层 F ，满足 0 <= F <= N 任何从高于 F 的楼层落下的鸡蛋都会碎，从 F 楼层或比它低的楼层落下的鸡蛋都不会破。
+每次移动，你可以取一个鸡蛋（如果你有完整的鸡蛋）并把它从任一楼层 X 扔下（满足 1 <= X <= N）。
+你的目标是确切地知道 F 的值是多少。
+无论 F 的初始值如何，你确定 F 的值的最小移动次数是多少？
+
+示例 1：
+输入：K = 1, N = 2
+输出：2
+解释：
+鸡蛋从 1 楼掉落。如果它碎了，我们肯定知道 F = 0 。
+否则，鸡蛋从 2 楼掉落。如果它碎了，我们肯定知道 F = 1 。
+如果它没碎，那么我们肯定知道 F = 2 。
+因此，在最坏的情况下我们需要移动 2 次以确定 F 是多少。
+示例 2：
+输入：K = 2, N = 6
+输出：3
+示例 3：
+输入：K = 3, N = 14
+输出：4
+
+提示：
+1 <= K <= 100
+1 <= N <= 10000
+*/
+func SuperEggDrop(K int, N int) int {
+	T := 1
+	for helper(K, T) <= N {
+		T++
+	}
+	return T
+}
+
+func helper(K int, T int) (N int) {
+	if T == 1 || K == 1 {
+		return T + 1
+	}
+	N = helper(K-1, T-1) + helper(K, T-1)
+	return
+}
+
+/**
+验证回文串
+给定一个字符串，验证它是否是回文串，只考虑字母和数字字符，可以忽略字母的大小写。
+说明：本题中，我们将空字符串定义为有效的回文串。
+
+示例 1:
+输入: "A man, a plan, a canal: Panama"
+输出: true
+示例 2:
+输入: "race a car"
+输出: false
+*/
+func IsPalindrome1(s string) bool {
+	//双指针。
+	l := len(s)
+	var i, j = 0, l - 1
+
+	s = strings.ToLower(s)
+
+	for j > i {
+		//判断，如果不是数字或者字母，则跳过
+		if !unicode.IsLetter(rune(s[j])) && !unicode.IsDigit(rune(s[j])) {
+			j--
+			continue
+		}
+		if !unicode.IsLetter(rune(s[i])) && !unicode.IsDigit(rune(s[i])) {
+			i++
+			continue
+		}
+
+		if s[i] == s[j] {
+			i++
+			j--
+			continue
+		} else {
+			return false
+		}
+
+	}
+	return true
+}
+
+/**
+给定一个字符串 s，将 s 分割成一些子串，使每个子串都是回文串。
+返回 s 所有可能的分割方案。
+
+示例:
+输入: "aab"
+输出:
+[
+  ["aa","b"],
+  ["a","a","b"]
+]
+*/
+func Partition(s string) [][]string {
+
+	//思路，动态规划加回溯。
+	//新建一个动态规划用的bool二维数组
+	dp := make([][]bool, len(s)) // dp[l][r]是否是回文字符串，l,r为左右区间，帮助剪枝
+	res := [][]string{}
+	bytes := []byte(s)
+	for i := 0; i < len(s); i++ {
+		dp[i] = make([]bool, len(s))
+		for j := 0; j <= i; j++ {
+			fmt.Println(i, j, bytes[i], bytes[j])
+			if bytes[i] == bytes[j] && (i-j <= 2 || dp[j+1][i-1]) {
+				dp[j][i] = true
+			}
+			fmt.Println(dp)
+		}
+	}
+	for i := 0; i < len(dp); i++ {
+		for j := 0; j < len(dp[0]); j++ {
+			fmt.Print(dp[j][i])
+		}
+		fmt.Println()
+	}
+
+	var track []string
+	trackBack(bytes, track, dp, 0, &res)
+	return res
+}
+
+func trackBack(s []byte, track []string, dp [][]bool, st int, res *[][]string) {
+	if len(s) == st {
+		var temp []string
+		temp = append(temp, track...)
+		*res = append(*res, temp)
+	}
+
+	// 切一段下来
+	for i := st; i < len(s); i++ {
+		if !dp[st][i] { //剪枝
+			continue
+		}
+		//选择路径
+		track = append(track, string(s[st:i+1]))
+		//递归
+		trackBack(s, track, dp, i+1, res)
+		//撤销选择
+		track = track[:len(track)-1]
+	}
+}
+
+/**
+给定一个非空字符串 s 和一个包含非空单词列表的字典 wordDict，判定 s 是否可以被空格拆分为一个或多个在字典中出现的单词。
+说明：
+拆分时可以重复使用字典中的单词。
+你可以假设字典中没有重复的单词。
+
+示例 1：
+输入: s = "leetcode", wordDict = ["leet", "code"]
+输出: true
+解释: 返回 true 因为 "leetcode" 可以被拆分成 "leet code"。
+
+示例 2：
+输入: s = "applepenapple", wordDict = ["apple", "pen"]
+输出: true
+解释: 返回 true 因为 "applepenapple" 可以被拆分成 "apple pen apple"。
+     注意你可以重复使用字典中的单词。
+
+示例 3：
+输入: s = "catsandog", wordDict = ["cats", "dog", "sand", "and", "cat"]
+输出: false
+*/
+func WordBreak(s string, wordDict []string) bool {
+	//思路：回溯。一次从s中截取字典数组中存在的单词，将剩下的s继续截取，直到最后看是否能完全截取完毕
+
+	for _, v := range wordDict {
+		if i := strings.Index(s, v); i != -1 {
+			s = string(append([]byte(s[:i]), []byte(s[i+len(v)-1:])...))
+			if s == "" {
+				return true
+			}
+		}
+	}
+
+	return false
+}
+
+/**
+在一条环路上有 N 个加油站，其中第 i 个加油站有汽油 gas[i] 升。
+你有一辆油箱容量无限的的汽车，从第 i 个加油站开往第 i+1 个加油站需要消耗汽油 cost[i] 升。你从其中的一个加油站出发，开始时油箱为空。
+如果你可以绕环路行驶一周，则返回出发时加油站的编号，否则返回 -1。
+说明:
+如果题目有解，该答案即为唯一答案。
+输入数组均为非空数组，且长度相同。
+输入数组中的元素均为非负数。
+示例 1:
+输入:
+gas  = [1,2,3,4,5]
+cost = [3,4,5,1,2]
+输出: 3
+解释:
+从 3 号加油站(索引为 3 处)出发，可获得 4 升汽油。此时油箱有 = 0 + 4 = 4 升汽油
+开往 4 号加油站，此时油箱有 4 - 1 + 5 = 8 升汽油
+开往 0 号加油站，此时油箱有 8 - 2 + 1 = 7 升汽油
+开往 1 号加油站，此时油箱有 7 - 3 + 2 = 6 升汽油
+开往 2 号加油站，此时油箱有 6 - 4 + 3 = 5 升汽油
+开往 3 号加油站，你需要消耗 5 升汽油，正好足够你返回到 3 号加油站。
+因此，3 可为起始索引。
+
+示例 2:
+输入:
+gas  = [2,3,4]
+cost = [3,4,3]
+输出: -1
+解释:
+你不能从 0 号或 1 号加油站出发，因为没有足够的汽油可以让你行驶到下一个加油站。
+我们从 2 号加油站出发，可以获得 4 升汽油。 此时油箱有 = 0 + 4 = 4 升汽油
+开往 0 号加油站，此时油箱有 4 - 3 + 2 = 3 升汽油
+开往 1 号加油站，此时油箱有 3 - 3 + 3 = 3 升汽油
+你无法返回 2 号加油站，因为返程需要消耗 4 升汽油，但是你的油箱只有 3 升汽油。
+因此，无论怎样，你都不可能绕环路行驶一周。
+*/
+func CanCompleteCircuit(gas []int, cost []int) int {
+	//思路，首先选择起点。能作为起点的只有gas[i] > cost[i]的节点，如非如此，前往下个节点的油必然不够。 以贪心算法为例，先找gas[i] - cost[i] 最大的节点。
+	l := len(gas)
+	for i := 0; i < l; i++ {
+		fmt.Println("i:", i)
+		//如果此时满足gas[i] > cost[i]，则当前加油站可以作为起点。  此时依次模拟，观察是否满足条件
+		if gas[i] >= cost[i] {
+			fmt.Println(gas[i], cost[i])
+			//汽油总数
+			gasNum := gas[i]
+			//以i为起点模拟
+			for j := i; j < l+i; j++ {
+				fmt.Println("j:", j)
+				//判断，如果j<l，则正常取索引，如果j>=l，则索引为j-l
+				if j < l {
+					fmt.Println("gasNum:", gasNum, "cost[j]:", cost[j])
+					if gasNum < cost[j] {
+						break
+					} else {
+						if j+1 == l {
+							gasNum = gasNum - cost[j] + gas[0]
+						} else {
+							gasNum = gasNum - cost[j] + gas[j+1]
+						}
+					}
+				} else {
+					fmt.Println("gasNum:", gasNum, "cost[j-l:", cost[j-l])
+					if gasNum < cost[j-l] {
+						break
+					} else {
+						gasNum = gasNum - cost[j-l] + gas[j-l+1]
+					}
+				}
+				//如果走到了终点，证明以i为起点是可以的，返回
+				if j == l+i-1 {
+					return i
+				}
+			}
+		}
+	}
+	return -1
+}
+
+/**
+问题1: 为什么应该将起始站点设为k+1？
+因为k->k+1站耗油太大，0->k站剩余油量都是不为负的，每减少一站，就少了一些剩余油量。所以如果从k前面的站点作为起始站，剩余油量不可能冲过k+1站。
+问题2: 为什么如果k+1->end全部可以正常通行，且rest>=0就可以说明车子从k+1站点出发可以开完全程？
+因为，起始点将当前路径分为A、B两部分。其中，必然有(1)A部分剩余油量<0。(2)B部分剩余油量>0。
+所以，无论多少个站，都可以抽象为两个站点（A、B）。(1)从B站加满油出发，(2)开往A站，车加油，(3)再开回B站的过程。
+重点：B剩余的油>=A缺少的总油。必然可以推出，B剩余的油>=A站点的每个子站点缺少的油。
+*/
+func CanCompleteCircuit1(gas []int, cost []int) int {
+	//total为所有加油站的总的油量减去总的里程。  sum为当前走过的加油站的所有油量。start为开始的加油站坐标。
+	var total, sum, start int
+	for i := 0; i < len(cost); i++ {
+		total += gas[i] - cost[i]
+		sum += gas[i] - cost[i]
+		//如果在往第i个加油站走的时候，油不够了，那么就将开始的坐标设定为i+1
+		if sum < 0 {
+			start = i + 1
+			sum = 0
+		}
+	}
+	if total < 0 {
+		return -1
+	}
+	return start
 }
