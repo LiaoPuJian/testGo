@@ -1,9 +1,6 @@
 package main
 
-import (
-	"fmt"
-	"testGo/algorithm"
-)
+import "testGo/algorithm"
 
 func main() {
 	/*list1 := &algorithm.ListNode{Val: 1, Next: &algorithm.ListNode{Val: 0, Next: &algorithm.ListNode{Val: 0, Next: &algorithm.ListNode{Val: 0, Next: &algorithm.ListNode{Val: 1, Next: nil}}}}}
@@ -150,7 +147,7 @@ func main() {
 
 	//fmt.Println(algorithm.CanCompleteCircuit([]int{5, 1, 2, 3, 4}, []int{4, 4, 1, 5, 1}))
 	//fmt.Println(algorithm.CanCompleteCircuit([]int{2}, []int{2}))
-	obj := algorithm.Constructor(2)
+	/*obj := algorithm.Constructor(2)
 	obj.Put(1, 1)
 	obj.Put(2, 2)
 	fmt.Println(obj.Get(1))
@@ -159,6 +156,43 @@ func main() {
 	obj.Put(4, 4)
 	fmt.Println(obj.Get(1))
 	fmt.Println(obj.Get(3))
-	fmt.Println(obj.Get(4))
+	fmt.Println(obj.Get(4))*/
+
+	//fmt.Println(algorithm.FizzBuzz(15))
+
+	//fmt.Println(algorithm.CoinChange([]int{186, 419, 83, 408}, 6249))
+
+	//list := &algorithm.TreeNode{Val: -10, Left: &algorithm.TreeNode{Val: 9}, Right: &algorithm.TreeNode{Val: 20, Left: &algorithm.TreeNode{Val: 15}, Right: &algorithm.TreeNode{Val: 7}}}
+	//list = &algorithm.TreeNode{Val: 0}
+	//fmt.Println(algorithm.MaxPathSum(list))
+	//fmt.Println(algorithm.MaxDepth(list))
+
+	//fmt.Println(algorithm.InorderTraversal(list))
+	//fmt.Println(algorithm.InorderTraversal2(list))
+
+	/*res := algorithm.GenerateTrees(3)
+	for _, v := range res {
+		algorithm.PrintFront(v)
+		fmt.Println("end")
+	}*/
+
+	//res := algorithm.GenerateTreesD(5)
+	//fmt.Println(len(res))
+	/*for _, v := range res {
+		algorithm.PrintFront(v)
+		fmt.Println("end")
+	}*/
+
+	//fmt.Println(algorithm.NumTrees(5))
+	//list := &algorithm.TreeNode{Val: 10, Left: &algorithm.TreeNode{Val: 5}, Right: &algorithm.TreeNode{Val: 15, Left: &algorithm.TreeNode{Val: 6}, Right: &algorithm.TreeNode{Val: 20}}}
+	//list := &algorithm.TreeNode{Val: 3, Left: &algorithm.TreeNode{Val: 1, Left: &algorithm.TreeNode{Val: 0}, Right: &algorithm.TreeNode{Val: 2, Left: &algorithm.TreeNode{Val: 3}}}, Right: &algorithm.TreeNode{Val: 5, Left: &algorithm.TreeNode{Val: 4}, Right: &algorithm.TreeNode{Val: 6}}}
+	//list := &algorithm.TreeNode{Val: 0}
+
+	//fmt.Println(algorithm.IsValidBST(list))
+	//list := &algorithm.TreeNode{Val: 1, Left: &algorithm.TreeNode{Val: 3, Right: &algorithm.TreeNode{Val: 2}}}
+	list := &algorithm.TreeNode{Val: 3, Left: &algorithm.TreeNode{Val: 1}, Right: &algorithm.TreeNode{Val: 4, Left: &algorithm.TreeNode{Val: 2}}}
+	//list = &algorithm.TreeNode{Val: 1, Left: &algorithm.TreeNode{Val: 3, Right: &algorithm.TreeNode{Val: 2}}}
+	algorithm.RecoverTree(list)
+	algorithm.PrintMid(list)
 
 }

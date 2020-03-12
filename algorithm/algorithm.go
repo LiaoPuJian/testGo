@@ -3615,3 +3615,636 @@ func CanCompleteCircuit1(gas []int, cost []int) int {
 	}
 	return start
 }
+
+/**
+编写一个算法来判断一个数是不是“快乐数”。
+一个“快乐数”定义为：对于一个正整数，每一次将该数替换为它每个位置上的数字的平方和，然后重复这个过程直到这个数变为 1，也可能是无限循环但始终变不到 1。如果可以变为 1，那么这个数就是快乐数。
+
+示例:
+输入: 19
+输出: true
+解释:
+1² + 9² = 82
+8² + 2² = 68
+6² + 8² = 100
+1² + 0² + 0² = 1
+
+*/
+func IsHappy(n int) bool {
+	//思路，快慢指针破解循环。   由于如果一个数是快乐数，那么最终它一定会变成1，如果一个数不是快乐数，那最终一定会是一个循环
+
+	//这里写一个计算当前数的下一个数的函数
+	bitSquareSum := func(n int) int {
+		sum := 0
+		for n > 0 {
+			//取当前n的最后一位数
+			bit := n % 10
+			sum += bit * bit
+			n = n / 10
+		}
+		return sum
+	}
+	//设定两个指针，初始值都等于n
+	slow, fast := n, n
+	//这里的思路为，如果n是快乐数，那么最后不管是快指针还是慢指针，一定会变成1，所以最后会返回1
+	//如果n不是快乐数，那么它一定是个无线循环数，以一定的规律无限循环，那么快指针和慢指针一定会在某个节点相等
+	//此时如果相等了切慢指针不是1，那么它就不是快乐数
+	for {
+		//慢指针走一步，快指针走两步
+		slow = bitSquareSum(slow)
+		fast = bitSquareSum(fast)
+		fast = bitSquareSum(fast)
+		if slow == fast {
+			break
+		}
+	}
+
+	return slow == 1
+}
+
+/**
+371. 两整数之和
+不使用运算符 + 和 - ​​​​​​​，计算两整数 ​​​​​​​a 、b ​​​​​​​之和。
+
+示例 1:
+输入: a = 1, b = 2
+输出: 3
+示例 2:
+输入: a = -2, b = 3
+输出: 1
+*/
+func GetSum(a int, b int) int {
+	/**
+	首先看十进制是如何做的： 5+7=12，三步走
+	第一步：相加各位的值，不算进位，得到2。
+	第二步：计算进位值，得到10. 如果这一步的进位值为0，那么第一步得到的值就是最终结果。
+	第三步：重复上述两步，只是相加的值变成上述两步的得到的结果2和10，得到12。
+	同样我们可以用三步走的方式计算二进制值相加： 5---101，7---111
+	第一步：相加各位的值，不算进位，得到010，二进制每位相加就相当于各位做异或操作，101^111。
+	第二步：计算进位值，得到1010，相当于各位进行与操作得到101，再向左移一位得到1010，(101&111)<<1。
+	第三步重复上述两步，各位相加 010^1010=1000，进位值为100=(010 & 1010)<<1。
+	继续重复上述两步：1000^100 = 1100，进位值为0，跳出循环，1100为最终结果。
+	结束条件：进位为0，即a为最终的求和结果。
+	*/
+	for b != 0 {
+		temp := a ^ b
+		b = (a & b) << 1
+		a = temp
+	}
+	return a
+}
+
+/**
+写一个程序，输出从 1 到 n 数字的字符串表示。
+1. 如果 n 是3的倍数，输出“Fizz”；
+2. 如果 n 是5的倍数，输出“Buzz”；
+3.如果 n 同时是3和5的倍数，输出 “FizzBuzz”。
+
+示例：
+n = 15,
+返回:
+[
+    "1",
+    "2",
+    "Fizz",
+    "4",
+    "Buzz",
+    "Fizz",
+    "7",
+    "8",
+    "Fizz",
+    "Buzz",
+    "11",
+    "Fizz",
+    "13",
+    "14",
+    "FizzBuzz"
+]
+
+*/
+func FizzBuzz(n int) []string {
+	var res []string
+	for i := 1; i <= n; i++ {
+		if i%3 == 0 && i%5 != 0 {
+			res = append(res, "Fizz")
+		} else if i%5 == 0 && i%3 != 0 {
+			res = append(res, "Buzz")
+		} else if i%15 == 0 {
+			res = append(res, "FizzBuzz")
+		} else {
+			res = append(res, strconv.FormatInt(int64(i), 10))
+		}
+	}
+	return res
+}
+
+/**
+给定一个整数数组 nums ，找出一个序列中乘积最大的连续子序列（该序列至少包含一个数）。
+
+示例 1:
+输入: [2,3,-2,4]
+输出: 6
+解释: 子数组 [2,3] 有最大乘积 6。
+示例 2:
+输入: [-2,0,-1]
+输出: 0
+解释: 结果不能为 2, 因为 [-2,-1] 不是子数组。
+*/
+/*func maxProduct(nums []int) int {
+	//思路，找整个数组中是否有0，是否有偶数个负数。
+}*/
+
+/**
+给定不同面额的硬币 coins 和一个总金额 amount。编写一个函数来计算可以凑成总金额所需的最少的硬币个数。如果没有任何一种硬币组合能组成总金额，返回 -1。
+示例 1:
+输入: coins = [1, 2, 5], amount = 11
+输出: 3
+解释: 11 = 5 + 5 + 1
+示例 2:
+输入: coins = [2], amount = 3
+输出: -1
+说明:
+你可以认为每种硬币的数量是无限的。
+*/
+func CoinChange(coins []int, amount int) int {
+	//典型的动态规划问题。用dp table记录每个值得最优解。  同时申请一个备忘录，如果当前的值出现过，则直接返回，无需再次计算（剪枝）
+	m := make(map[int]int)
+	return coinChangeDp(coins, amount, m)
+}
+
+func coinChangeDp(coins []int, amount int, memo map[int]int) int {
+	//如果当前的金额在备忘录中，那么直接返回
+	if val, ok := memo[amount]; ok {
+		return val
+	}
+	if amount == 0 {
+		return 0
+	}
+	if amount < 0 {
+		return -1
+	}
+	var res = 1<<31 - 1
+	for _, v := range coins {
+		//子问题为当前金额减去某个硬币的面值
+		subProblem := coinChangeDp(coins, amount-v, memo)
+		//如果当前的子问题返回-1（无解）那证明当前的v也是无解的
+		if subProblem == -1 {
+			continue
+		} else {
+			if res > subProblem+1 {
+				res = subProblem + 1
+			}
+		}
+	}
+	//将res记录到备忘录中   注意这里即便是-1也要记录，否则会有大量重复的计算
+	if res == 1<<31-1 {
+		res = -1
+	}
+	memo[amount] = res
+	return res
+}
+
+//第二种思路，用数组记录，不使用递归   这种效率高一些。 leetcode中有点奇怪，如果单独写一个min函数放在外面，效率会高很多
+func coinChange(coins []int, amount int) int {
+	//维护一个长度为金额+1的数组，并将数组的所有值都初始化为金额+1.
+	dp := make([]int, amount+1)
+	for i := 0; i < len(dp); i++ {
+		dp[i] = amount + 1
+	}
+	dp[0] = 0
+	//循环数组，当当前的金额i大于某一个面值的硬币时，则比较i-coin（某个面值的硬币）+1和dp[i]的大小
+	for i := 1; i <= amount; i++ {
+		for _, coin := range coins {
+			if coin <= i {
+				if dp[i] > dp[i-coin]+1 {
+					dp[i] = dp[i-coin] + 1
+				}
+			}
+		}
+	}
+	if dp[amount] > amount {
+		return -1
+	} else {
+		return dp[amount]
+	}
+}
+
+/**
+给定一个非空二叉树，返回其最大路径和。
+本题中，路径被定义为一条从树中任意节点出发，达到任意节点的序列。该路径至少包含一个节点，且不一定经过根节点。
+示例 1:
+输入: [1,2,3]
+
+       1
+      / \
+     2   3
+
+输出: 6
+
+示例 2:
+输入: [-10,9,20,null,null,15,7]
+
+   -10
+   / \
+  9  20
+    /  \
+   15   7
+
+输出: 42
+*/
+var ans = -1 << 31
+
+func MaxPathSum(root *TreeNode) int {
+	//这个其实就是二叉树的后序遍历。先取当前节点的左子树的最大路径，再取右字数的最大路径。然后取其中的大的值，加上当前节点的路径，返回
+	//需要注意一点就是，需要记录一个最大的结果，这个最大的结果每次更新
+	maxPathSumF(root)
+	return ans
+}
+
+func maxPathSumF(root *TreeNode) int {
+	if root == nil {
+		return 0
+	}
+	left := max(0, maxPathSumF(root.Left))
+	right := max(0, maxPathSumF(root.Right))
+	ans = max(ans, left+right+root.Val)
+	return max(left, right) + root.Val
+}
+
+/**
+给定一个二叉树，找出其最大深度。
+
+二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。
+
+说明: 叶子节点是指没有子节点的节点。
+
+示例：
+给定二叉树 [3,9,20,null,null,15,7]，
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+返回它的最大深度 3 。
+*/
+func MaxDepth(root *TreeNode) int {
+	//思路，递归遍历
+	if root == nil {
+		return 0
+	}
+	if root.Left == nil && root.Right == nil {
+		return 1
+	}
+	left := max(0, MaxDepth(root.Left))
+	right := max(0, MaxDepth(root.Right))
+
+	return max(left, right) + 1
+}
+
+/**
+给定一个二叉树，返回它的中序 遍历。
+
+示例:
+
+输入: [1,null,2,3]
+   1
+    \
+     2
+    /
+   3
+
+输出: [1,3,2]
+进阶: 递归算法很简单，你可以通过迭代算法完成吗？
+
+*/
+var res = make([]int, 0)
+
+func InorderTraversal(root *TreeNode) []int {
+	if root == nil {
+		return res
+	}
+	//递归法：
+	InorderTraversal(root.Left)
+	res = append(res, root.Val)
+	InorderTraversal(root.Right)
+	return res
+}
+
+/**
+迭代法，栈+颜色标记节点  由于一般的栈方法比较难理解，下面是颜色标记法，非常便于理解，同时便于转换不同的顺序，
+对中序，前序，后序可以写出结构一致的代码
+*/
+func InorderTraversal2(root *TreeNode) []int {
+	if root == nil {
+		return res
+	}
+	//一个结构体，里面有节点和节点的颜色，节点的颜色分为两种，1是处理过的，0是未处理过的
+	type Node struct {
+		Color    int
+		TreeNode *TreeNode
+	}
+	//新建一个栈
+	var stack = make([]*Node, 0)
+	//假定有一个栈。 存储需要遍历的节点。
+	stack = append(stack, &Node{0, root})
+	for len(stack) > 0 {
+		//出栈操作
+		cur := stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
+		if cur == nil {
+			continue
+		}
+		//假如cur未处理过，则正常处理
+		if cur.Color == 0 {
+			cur.Color = 1
+			//中序，左中右的顺序，右先入，中再入，左再入
+			if cur.TreeNode.Right != nil {
+				stack = append(stack, &Node{0, cur.TreeNode.Right})
+			}
+			stack = append(stack, cur)
+			if cur.TreeNode.Left != nil {
+				stack = append(stack, &Node{0, cur.TreeNode.Left})
+			}
+		} else {
+			res = append(res, cur.TreeNode.Val)
+		}
+	}
+	return res
+}
+
+/**
+给定一个整数 n，生成所有由 1 ... n 为节点所组成的二叉搜索树。
+
+示例:
+输入: 3
+输出:
+[
+  [1,null,3,2],
+  [3,2,null,1],
+  [3,1,null,null,2],
+  [2,1,3],
+  [1,null,2,null,3]
+]
+解释:
+以上的输出对应以下 5 种不同结构的二叉搜索树：
+
+   1         3     3      2      1
+    \       /     /      / \      \
+     3     2     1      1   3      2
+    /     /       \                 \
+   2     1         2                 3
+
+*/
+
+func GenerateTrees(n int) []*TreeNode {
+	if n == 0 {
+		res := make([]*TreeNode, 0)
+		return res
+	}
+	//1、回溯法。我们从1到n之间选取一个点i作为根节点，那么由于二叉树的性质，1到i-1将会组成这个二叉树的左子树，i+1会组成这个二叉树的右子树。递归完成之后再将两个子树组合即可
+	return generateTreesF(1, n)
+}
+
+func generateTreesF(start, end int) []*TreeNode {
+	var res = make([]*TreeNode, 0)
+
+	if start > end {
+		res = append(res, nil)
+		return res
+	}
+
+	for i := start; i <= end; i++ {
+		//获取左子树
+		leftTree := generateTreesF(start, i-1)
+		//获取右子树
+		rightTree := generateTreesF(i+1, end)
+		//将左右两个子树结合
+		for _, lv := range leftTree {
+			for _, rv := range rightTree {
+				root := &TreeNode{Val: i}
+				root.Left = lv
+				root.Right = rv
+				res = append(res, root)
+			}
+		}
+	}
+	return res
+}
+
+/**
+动态规划法。所有的回溯递归都可以转换为动态规划的思路
+*/
+func GenerateTreesD(n int) []*TreeNode {
+	//动态规划dp数组
+	dp := make([][]*TreeNode, n+1)
+	dp[0] = make([]*TreeNode, 0)
+
+	if n == 0 {
+		return dp[0]
+	}
+	dp[0] = append(dp[0], nil)
+	//循环，长度从1到n，dp[len]代表长度为len的情况下有多少种树的组合情况。那么依照动态规划的思想
+	//求长度为n的情况，只需要将从1到n分别作为根节点，然后计算出左子树的长度和右子树的长度，然后合并即可
+	for len := 1; len <= n; len++ {
+		dp[len] = make([]*TreeNode, 0)
+		//这里将从1到len的不同的数字作为根节点
+		for root := 1; root <= len; root++ {
+			left := root - 1    //左子树的长度
+			right := len - root //右子树的长度
+			for _, lv := range dp[left] {
+				for _, rv := range dp[right] {
+					treeRoot := &TreeNode{Val: root}
+					treeRoot.Left = lv
+					//克隆右子树并加上偏差值
+					treeRoot.Right = generateTreesClone(rv, root)
+					dp[len] = append(dp[len], treeRoot)
+				}
+			}
+		}
+	}
+	return dp[n]
+}
+
+//克隆树，并将树做一定的偏移操作
+func generateTreesClone(tree *TreeNode, offset int) *TreeNode {
+	if tree == nil {
+		return nil
+	}
+	node := &TreeNode{Val: tree.Val + offset}           //偏移根节点
+	node.Left = generateTreesClone(tree.Left, offset)   //偏移左节点
+	node.Right = generateTreesClone(tree.Right, offset) //偏移右节点
+	return node
+}
+
+/**
+96. 不同的二叉搜索树
+给定一个整数 n，求以 1 ... n 为节点组成的二叉搜索树有多少种？
+
+示例:
+输入: 3
+输出: 5
+解释:
+给定 n = 3, 一共有 5 种不同结构的二叉搜索树:
+
+   1         3     3      2      1
+    \       /     /      / \      \
+     3     2     1      1   3      2
+    /     /       \                 \
+   2     1         2                 3
+*/
+func NumTrees(n int) int {
+	//直接用动态规划的思路来解
+	dp := make([]int, n+1)
+	dp[0] = 0
+	dp[1] = 1
+
+	//状态转移方程。
+	for len := 2; len <= n; len++ {
+		cur := 0
+		//以每个长度作为根节点
+		for root := 1; root <= len; root++ {
+			left := root - 1    //左子树数量
+			right := len - root //右子树数量
+
+			//如果当前左子树为0，那么直接加上右子树的数量
+			if left == 0 {
+				cur += dp[right]
+			} else if right == 0 {
+				//如果当前右子树为0，那么直接加上左子树的数量
+				cur += dp[left]
+			} else {
+				//否则左右子树交替组合
+				cur += dp[left] * dp[right]
+			}
+		}
+		dp[len] = cur
+	}
+	return dp[n]
+}
+
+/**
+给定一个二叉树，判断其是否是一个有效的二叉搜索树。
+
+假设一个二叉搜索树具有如下特征：
+
+节点的左子树只包含小于当前节点的数。
+节点的右子树只包含大于当前节点的数。
+所有左子树和右子树自身必须也是二叉搜索树。
+示例 1:
+
+输入:
+    2
+   / \
+  1   3
+输出: true
+示例 2:
+
+输入:
+    5
+   / \
+  1   4
+     / \
+    3   6
+输出: false
+解释: 输入为: [5,1,4,null,null,3,6]。
+     根节点的值为 5 ，但是其右子节点值为 4 。
+
+*/
+func isValidBST(root *TreeNode) bool {
+	//前序遍历
+	return isValidBSTF(root, -1<<63, 1<<63-1)
+}
+
+func isValidBSTF(root *TreeNode, min, max int) bool {
+	return root == nil || min < root.Val && root.Val < max &&
+		isValidBSTF(root.Left, min, root.Val) &&
+		isValidBSTF(root.Right, root.Val, max)
+}
+
+var lastIsValidBST = -1 << 31
+
+func IsValidBST(root *TreeNode) bool {
+	//中序遍历，如果要满足左子节点<当前节点<右子节点，那么只需要中序遍历，依次遍历左中右，记录每次的值，
+	//但凡有一次不满足上面的大于条件，则即为false
+	if root == nil {
+		return true
+	}
+	if !IsValidBST(root.Left) {
+		return false
+	}
+	if lastIsValidBST >= root.Val {
+		return false
+	}
+	lastIsValidBST = root.Val
+	return IsValidBST(root.Right)
+}
+
+/**
+二叉搜索树中的两个节点被错误地交换。
+请在不改变其结构的情况下，恢复这棵树。
+
+示例 1:
+输入: [1,3,null,null,2]
+
+   1
+  /
+ 3
+  \
+   2
+
+输出: [3,1,null,null,2]
+
+   3
+  /
+ 1
+  \
+   2
+
+示例 2:
+输入: [3,1,4,null,null,2]
+
+  3
+ / \
+1   4
+   /
+  2
+
+输出: [2,1,4,null,null,3]
+
+  2
+ / \
+1   4
+   /
+  3
+
+*/
+var last, first, second *TreeNode
+
+func RecoverTree(root *TreeNode) {
+	//设定三个树结构，分别代表最后遍历的一个树，要交换的第一个树和第二个树，先都赋值为nil
+	last, first, second = nil, nil, nil
+	//中序遍历
+	RecoverTreeDfs(root)
+	first.Val, second.Val = second.Val, first.Val
+}
+
+func RecoverTreeDfs(root *TreeNode) {
+	if root == nil {
+		return
+	}
+	RecoverTreeDfs(root.Left)
+	//由于中序遍历正常的二叉搜索树应该为升序，如果上一个节点不为nil，且上一个节点大于当前节点的值，那么证明上个节点跟当前节点的位置是错的
+	if last != nil && root.Val <= last.Val {
+		//如果第一个节点是nil，则将上个节点和当前节点分别赋值给first和second
+		if first == nil {
+			first, second = last, root
+		} else {
+			//如果第一个节点不为空，那么证明first和second之间还有其他的正常节点（如3,2,1这种情况）。此时将second置为当前节点
+			second = root
+			return //剪枝
+		}
+	}
+	last = root
+	RecoverTreeDfs(root.Right)
+}
