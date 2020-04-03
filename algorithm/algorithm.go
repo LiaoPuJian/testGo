@@ -4248,3 +4248,482 @@ func RecoverTreeDfs(root *TreeNode) {
 	last = root
 	RecoverTreeDfs(root.Right)
 }
+
+/**
+给定两个二叉树，编写一个函数来检验它们是否相同。
+如果两个树在结构上相同，并且节点具有相同的值，则认为它们是相同的。
+
+示例 1:
+输入:       1         1
+          / \       / \
+         2   3     2   3
+
+        [1,2,3],   [1,2,3]
+
+输出: true
+
+示例 2:
+输入:      1          1
+          /           \
+         2             2
+
+        [1,2],     [1,null,2]
+输出: false
+
+示例 3:
+输入:       1         1
+          / \       / \
+         2   1     1   2
+
+        [1,2,1],   [1,1,2]
+
+输出: false
+
+*/
+func IsSameTree(p *TreeNode, q *TreeNode) bool {
+	//二叉树前序遍历
+	if p == nil && q == nil {
+		return true
+	}
+	if (p == nil && q != nil) || (p != nil && q == nil) {
+		return false
+	}
+	if p.Val != q.Val {
+		return false
+	}
+	if !IsSameTree(p.Left, q.Left) {
+		return false
+	}
+	if !IsSameTree(p.Right, q.Right) {
+		return false
+	}
+	return true
+}
+
+/**
+给定一个二叉树，检查它是否是镜像对称的。
+
+例如，二叉树 [1,2,2,3,4,4,3] 是对称的。
+
+    1
+   / \
+  2   2
+ / \ / \
+3  4 4  3
+但是下面这个 [1,2,2,null,3,null,3] 则不是镜像对称的:
+
+    1
+   / \
+  2   2
+   \   \
+   3    3
+
+说明:
+如果你可以运用递归和迭代两种方法解决这个问题，会很加分。
+*/
+func isSymmetric(root *TreeNode) bool {
+	if root == nil {
+		return true
+	}
+	return isSymmetricF(root.Left, root.Right)
+}
+
+func isSymmetricF(p, q *TreeNode) bool {
+	if p == nil && q == nil {
+		return true
+	}
+	if p == nil || q == nil {
+		return false
+	}
+	if p.Val != q.Val {
+		return false
+	}
+	//注意这里是传的左树的左子树和右树的右子树，以及左树的右子树和右树的左子树
+	return isSymmetricF(p.Left, q.Right) && isSymmetricF(p.Right, q.Left)
+}
+
+/**
+迭代的思路来做
+*/
+func IsSymmetricA(root *TreeNode) bool {
+	if root == nil {
+		return true
+	}
+	//这里准备一个队列
+	queue := make([]*TreeNode, 0)
+	//将根节点的左子树和右子树放入队列中
+	queue = append(queue, root.Left, root.Right)
+	for len(queue) > 0 {
+		//从头部弹出两个元素
+		p := queue[0]
+		q := queue[1]
+		queue = queue[2:]
+		if p == nil && q == nil {
+			continue
+		}
+		if p == nil || q == nil {
+			return false
+		}
+		if p.Val != q.Val {
+			return false
+		}
+		//将p的左子树和q的右子树入队列
+		queue = append(queue, p.Left, q.Right)
+		//将p的右子树和q的左子树入队列
+		queue = append(queue, p.Right, q.Left)
+	}
+	return true
+}
+
+/**
+给定一个二叉树，返回其按层次遍历的节点值。 （即逐层地，从左到右访问所有节点）。
+
+例如:
+给定二叉树: [3,9,20,null,null,15,7],
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+返回其层次遍历结果：
+
+[
+  [3],
+  [9,20],
+  [15,7]
+]
+*/
+
+func LevelOrder(root *TreeNode) [][]int {
+	//用队列的思路来做，先进先出
+	res := make([][]int, 0)
+	if root == nil {
+		return res
+	}
+
+	type TREE struct {
+		treeNode *TreeNode
+		level    int
+	}
+
+	queue := make([]*TREE, 0)
+	queue = append(queue, &TREE{treeNode: root, level: 0})
+	//当前level结果
+	cur := make([]int, 0)
+	//上一个级别
+	lastLevel := 0
+
+	for len(queue) > 0 {
+		//从队列中取出第一个元素
+		p := queue[0]
+		queue = queue[1:]
+		//判断，如果这个元素的深度跟lastLevel一样，则直接将其放入到cur的数组中
+		if p.level == lastLevel {
+			if p.treeNode != nil {
+				cur = append(cur, p.treeNode.Val)
+			}
+		} else {
+			//将上个级别的节点放入结果中，并新建当前level的数组，将当前节点放入到当前level的数组中
+			res = append(res, cur)
+			cur = make([]int, 0)
+			if p.treeNode != nil {
+				cur = append(cur, p.treeNode.Val)
+			}
+		}
+
+		//将当前节点的左右节点放入到队列中,并将这些节点的level在当前节点的基础上+1
+		if p.treeNode != nil {
+			queue = append(queue, &TREE{treeNode: p.treeNode.Left, level: p.level + 1}, &TREE{treeNode: p.treeNode.Right, level: p.level + 1})
+		}
+		lastLevel = p.level
+	}
+
+	return res
+}
+
+/**
+给定一个二叉树，返回其节点值的锯齿形层次遍历。（即先从左往右，再从右往左进行下一层遍历，以此类推，层与层之间交替进行）。
+
+例如：
+给定二叉树 [3,9,20,null,null,15,7],
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+返回锯齿形层次遍历如下：
+
+[
+  [3],
+  [20,9],
+  [15,7]
+]
+
+*/
+var zigzagRes [][]int
+
+func ZigzagLevelOrder(root *TreeNode) [][]int {
+	//为什么这么写是因为leecode如果直接在定义的地方make，会把结果都聚合起来
+	zigzagRes = make([][]int, 0)
+	zigzagLevelOrderF(root, 0)
+	return zigzagRes
+}
+
+func zigzagLevelOrderF(tree *TreeNode, level int) {
+	if tree == nil {
+		return
+	}
+	if level == len(zigzagRes) {
+		t := make([]int, 0)
+		zigzagRes = append(zigzagRes, t)
+	}
+	//如果当前的level是偶数，则正序放入，是奇数则逆序
+	if level%2 == 0 {
+		zigzagRes[level] = append(zigzagRes[level], tree.Val)
+	} else {
+		temp := make([]int, 0)
+		temp = append(temp, tree.Val)
+		temp = append(temp, zigzagRes[level]...)
+		zigzagRes[level] = temp
+	}
+	zigzagLevelOrderF(tree.Left, level+1)
+	zigzagLevelOrderF(tree.Right, level+1)
+}
+
+//bts(广度优先解法)
+func zigzagLevelOrderBts(root *TreeNode) [][]int {
+	res := make([][]int, 0)
+	queue := make([]*TreeNode, 0)
+	if root == nil {
+		return res
+	}
+	//层级
+	level := 0
+	queue = append(queue, root)
+	for len(queue) > 0 {
+		temp := make([]int, 0)
+		//这个count表示当前级别下在队列中有多少个元素，将这些元素全部从队列中弹出来并且处理
+		count := len(queue)
+		//循环处理当前level下的所有子元素
+		for count > 0 {
+			//获取第一个节点
+			cur := queue[0]
+			queue = queue[1:]
+			//如果层级是偶数，则为正序插入，否则为逆序插入
+			if level%2 == 0 {
+				temp = append(temp, cur.Val)
+			} else {
+				t := make([]int, 0)
+				t = append(t, cur.Val)
+				temp = append(t, temp...)
+			}
+			if cur.Left != nil {
+				queue = append(queue, cur.Left)
+			}
+			if cur.Right != nil {
+				queue = append(queue, cur.Right)
+			}
+			count--
+		}
+		level++
+		res = append(res, temp)
+	}
+	return res
+}
+
+/**
+根据一棵树的前序遍历与中序遍历构造二叉树。
+
+注意:
+你可以假设树中没有重复的元素。
+
+例如，给出
+前序遍历 preorder = [3,9,20,15,7]
+中序遍历 inorder = [9,3,15,20,7]
+返回如下的二叉树：
+    3
+   / \
+  9  20
+    /  \
+   15   7
+
+*/
+func buildTree(preorder []int, inorder []int) *TreeNode {
+	//思路：前序遍历数组的第一个值一定是树的根节点。  然后找到这个值在中序遍历中的位置，这个值在中序遍历数组中左侧为树的左子树，右侧为树的右子树
+	if len(preorder) == 0 || len(inorder) == 0 {
+		return nil
+	}
+	res := &TreeNode{Val: preorder[0]}
+	//找到当前根节点在中序遍历中的位置
+	/**
+	我们在 inorder 中找到 mid 为根节点的下标
+	由于中序遍历特性，mid 左侧都为左子树节点，所以左子树的节点有 mid 个
+	那么同样的，由于前序遍历的特性，preorder 第一个元素（根节点）后跟着的就是它的左子树节点，一共有 mid 个，所以切了 [1:mid+1] 出来
+	*/
+	var mid int
+	for k, v := range inorder {
+		if v == preorder[0] {
+			mid = k
+			break
+		}
+	}
+	//生成res的左子树
+	res.Left = buildTree(preorder[1:mid+1], inorder[:mid])
+	//生成res的右子树
+	res.Right = buildTree(preorder[mid+1:], inorder[mid+1:])
+	return res
+}
+
+/**
+根据一棵树的中序遍历与后序遍历构造二叉树。
+
+注意:
+你可以假设树中没有重复的元素。
+
+例如，给出
+中序遍历 inorder = [9,3,15,20,7]
+后序遍历 postorder = [9,15,7,20,3]
+返回如下的二叉树：
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+
+*/
+func buildTreeB(inorder []int, postorder []int) *TreeNode {
+	if len(inorder) == 0 || len(postorder) == 0 {
+		return nil
+	}
+	//后序遍历的最后一个值一定是根节点
+	res := &TreeNode{Val: postorder[len(postorder)-1]}
+	//找到这个值的左子树跟右子树
+	var mid int
+	for k, v := range inorder {
+		if v == postorder[len(postorder)-1] {
+			mid = k
+			break
+		}
+	}
+
+	res.Left = buildTreeB(inorder[:mid], postorder[:mid])
+	res.Right = buildTreeB(inorder[mid+1:], postorder[mid:len(postorder)-1])
+	return res
+}
+
+/**
+给定一个二叉树，返回其节点值自底向上的层次遍历。 （即按从叶子节点所在层到根节点所在的层，逐层从左向右遍历）
+
+例如：
+给定二叉树 [3,9,20,null,null,15,7],
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+返回其自底向上的层次遍历为：
+
+[
+  [15,7],
+  [9,20],
+  [3]
+]
+
+*/
+var levelOrderBottomRes [][]int
+
+func LevelOrderBottom(root *TreeNode) [][]int {
+	//思路1，递归，自上向下层次遍历之后翻转结果数组
+	levelOrderBottomRes = make([][]int, 0)
+	levelOrderBottomF(root, 0)
+	//翻转res
+	l := len(levelOrderBottomRes)
+	res := make([][]int, l)
+	for i := l - 1; i >= 0; i-- {
+		res[l-i-1] = levelOrderBottomRes[i]
+	}
+	return res
+}
+
+func levelOrderBottomF(root *TreeNode, level int) {
+	if root == nil {
+		return
+	}
+	//长度达到了结果的最大值，需要延伸一位
+	if level == len(levelOrderBottomRes) {
+		t := make([]int, 0)
+		levelOrderBottomRes = append(levelOrderBottomRes, t)
+	}
+	levelOrderBottomRes[level] = append(levelOrderBottomRes[level], root.Val)
+	levelOrderBottomF(root.Left, level+1)
+	levelOrderBottomF(root.Right, level+1)
+}
+
+/**
+广度优先的方式
+*/
+func LevelOrderBottomS(root *TreeNode) [][]int {
+	//思路2，广度优先。在插入到结果集的时候采用从前面插入的方式
+	levelOrderBottomRes := make([][]int, 0)
+	if root == nil {
+		return levelOrderBottomRes
+	}
+	queue := make([]*TreeNode, 0)
+	queue = append(queue, root)
+	for len(queue) > 0 {
+		l := len(queue)
+		//处理当前层级的元素
+		cur := make([]int, 0)
+		for i := 0; i < l; i++ {
+			node := queue[0]
+			queue = queue[1:]
+			if node != nil {
+				cur = append(cur, node.Val)
+				if node.Left != nil {
+					queue = append(queue, node.Left)
+				}
+				if node.Right != nil {
+					queue = append(queue, node.Right)
+				}
+			}
+		}
+		//将cur插入到结果的顶部
+		levelOrderBottomRes = append([][]int{cur}, levelOrderBottomRes...)
+	}
+
+	return levelOrderBottomRes
+}
+
+/**
+将一个按照升序排列的有序数组，转换为一棵高度平衡二叉搜索树。
+本题中，一个高度平衡二叉树是指一个二叉树每个节点 的左右两个子树的高度差的绝对值不超过 1。
+
+示例:
+
+给定有序数组: [-10,-3,0,5,9],
+一个可能的答案是：[0,-3,9,-10,null,5]，它可以表示下面这个高度平衡二叉搜索树：
+
+      0
+     / \
+   -3   9
+   /   /
+ -10  5
+
+*/
+func SortedArrayToBST(nums []int) *TreeNode {
+	//采用递归的思路。判断nums的长度是奇数还是偶数，确定当前子树的根节点，确定了根节点，那么左子树跟右子树就确定了
+	l := len(nums)
+	if l == 0 {
+		return nil
+	}
+	var mid int
+	mid = l / 2
+	node := &TreeNode{Val: nums[mid]}
+	node.Left = SortedArrayToBST(nums[:mid])
+	node.Right = SortedArrayToBST(nums[mid+1:])
+	return node
+}

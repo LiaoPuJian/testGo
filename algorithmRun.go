@@ -1,6 +1,8 @@
 package main
 
-import "testGo/algorithm"
+import (
+	"testGo/algorithm"
+)
 
 func main() {
 	/*list1 := &algorithm.ListNode{Val: 1, Next: &algorithm.ListNode{Val: 0, Next: &algorithm.ListNode{Val: 0, Next: &algorithm.ListNode{Val: 0, Next: &algorithm.ListNode{Val: 1, Next: nil}}}}}
@@ -190,9 +192,26 @@ func main() {
 
 	//fmt.Println(algorithm.IsValidBST(list))
 	//list := &algorithm.TreeNode{Val: 1, Left: &algorithm.TreeNode{Val: 3, Right: &algorithm.TreeNode{Val: 2}}}
-	list := &algorithm.TreeNode{Val: 3, Left: &algorithm.TreeNode{Val: 1}, Right: &algorithm.TreeNode{Val: 4, Left: &algorithm.TreeNode{Val: 2}}}
+	//list := &algorithm.TreeNode{Val: 3, Left: &algorithm.TreeNode{Val: 1}, Right: &algorithm.TreeNode{Val: 4, Left: &algorithm.TreeNode{Val: 2}}}
 	//list = &algorithm.TreeNode{Val: 1, Left: &algorithm.TreeNode{Val: 3, Right: &algorithm.TreeNode{Val: 2}}}
-	algorithm.RecoverTree(list)
-	algorithm.PrintMid(list)
+	/*algorithm.RecoverTree(list)
+	algorithm.PrintMid(list)*/
+
+	/*p := &algorithm.TreeNode{Val: 1, Left: &algorithm.TreeNode{Val: 1}, Right: &algorithm.TreeNode{Val: 2}}
+	q := &algorithm.TreeNode{Val: 1, Left: &algorithm.TreeNode{Val: 1}, Right: &algorithm.TreeNode{Val: 2}}
+
+	fmt.Println(algorithm.IsSameTree(p, q))*/
+
+	/*list := &algorithm.TreeNode{Val: 1, Left: &algorithm.TreeNode{Val: 2, Left: &algorithm.TreeNode{Val: 3}, Right: &algorithm.TreeNode{Val: 4}}, Right: &algorithm.TreeNode{Val: 2, Left: &algorithm.TreeNode{Val: 4}, Right: &algorithm.TreeNode{Val: 3}}}
+	//list = &algorithm.TreeNode{Val: 1, Left: &algorithm.TreeNode{Val: 2, Right: &algorithm.TreeNode{Val: 3}}, Right: &algorithm.TreeNode{Val: 2, Right: &algorithm.TreeNode{Val: 3}}}
+	//fmt.Println(algorithm.IsSymmetricA(list))
+	list = &algorithm.TreeNode{Val: 3, Left: &algorithm.TreeNode{Val: 9}, Right: &algorithm.TreeNode{Val: 20, Left: &algorithm.TreeNode{Val: 15}, Right: &algorithm.TreeNode{Val: 7}}}
+	fmt.Println(algorithm.LevelOrder(list))*/
+
+	//list := &algorithm.TreeNode{Val: 3, Left: &algorithm.TreeNode{Val: 9}, Right: &algorithm.TreeNode{Val: 20, Left: &algorithm.TreeNode{Val: 15}, Right: &algorithm.TreeNode{Val: 7}}}
+	//fmt.Println(algorithm.ZigzagLevelOrder(list))
+	//fmt.Println(algorithm.LevelOrderBottomS(list))
+
+	algorithm.PrintFront(algorithm.SortedArrayToBST([]int{-15, -10, -3, 0, 2, 5, 9}))
 
 }
