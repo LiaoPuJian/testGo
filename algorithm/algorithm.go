@@ -4727,3 +4727,345 @@ func SortedArrayToBST(nums []int) *TreeNode {
 	node.Right = SortedArrayToBST(nums[mid+1:])
 	return node
 }
+
+/**
+给定一个单链表，其中的元素按升序排序，将其转换为高度平衡的二叉搜索树。
+本题中，一个高度平衡二叉树是指一个二叉树每个节点 的左右两个子树的高度差的绝对值不超过 1。
+
+示例:
+
+给定的有序链表： [-10, -3, 0, 5, 9],
+一个可能的答案是：[0, -3, 9, -10, null, 5], 它可以表示下面这个高度平衡二叉搜索树：
+
+      0
+     / \
+   -3   9
+   /   /
+ -10  5
+
+*/
+func sortedListToBST(head *ListNode) *TreeNode {
+	//思路1，先将链表转换为数组，再根据上面一体的做法分别处理左子树跟右子树。
+	/*var cur = make([]int, 0)
+	for head != nil {
+		cur = append(cur, head.Val)
+		head = head.Next
+	}
+	l := len(cur)
+	if l == 0 {
+		return nil
+	}
+	mid := l / 2
+	node := &TreeNode{Val: cur[mid]}
+	node.Left = SortedArrayToBST(cur[:mid])
+	node.Right = SortedArrayToBST(cur[mid+1:])
+	return node*/
+
+	//思路2，用快慢指针，找到链表的中间点，然后将其设置为当前的根节点，将前半部分作为左节点，后半部分作为右节点递归处理
+	if head == nil {
+		return nil
+	}
+	var pre *ListNode
+	fast, slow := head, head
+	for fast != nil && fast.Next != nil {
+		pre = slow
+		slow = slow.Next
+		fast = fast.Next.Next
+	}
+
+	root := new(TreeNode)
+	root.Val = slow.Val
+	//(1)如果只有一个点
+	if pre == nil {
+		return root
+	}
+
+	//(2)如果大于一个点，则需要把链表切一次，丢弃中间点
+	next := slow.Next
+	pre.Next = nil
+
+	root.Left = sortedListToBST(head)
+	root.Right = sortedListToBST(next)
+
+	return root
+}
+
+/**
+给定一个二叉树，判断它是否是高度平衡的二叉树。
+本题中，一棵高度平衡二叉树定义为：
+一个二叉树每个节点 的左右两个子树的高度差的绝对值不超过1。
+
+示例 1:
+给定二叉树 [3,9,20,null,null,15,7]
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+返回 true 。
+
+示例 2:
+给定二叉树 [1,2,2,3,3,null,null,4,4]
+
+       1
+      / \
+     2   2
+    / \
+   3   3
+  / \
+ 4   4
+返回 false 。
+
+*/
+func IsBalanced(root *TreeNode) bool {
+	//思路，获取当前节点的左子树的深度和右子树的深度
+	res, _ := getDeep(root)
+	return res
+}
+
+func getDeep(root *TreeNode) (bool, int) {
+	if root == nil {
+		return true, 0
+	}
+	//获取左子树的深度和结果
+	lr, ld := getDeep(root.Left)
+	if !lr {
+		return false, 0
+	}
+	//获取右子树的深度和结果
+	rr, rd := getDeep(root.Right)
+	if !rr {
+		return false, 0
+	}
+	if ld > rd && ld-rd > 1 || rd > ld && rd-ld > 1 {
+		return false, 0
+	}
+	if ld >= rd {
+		return true, ld + 1
+	} else {
+		return true, rd + 1
+	}
+}
+
+/**
+给定一个二叉树，找出其最小深度。
+最小深度是从根节点到最近叶子节点的最短路径上的节点数量。
+说明: 叶子节点是指没有子节点的节点。
+
+示例:
+给定二叉树 [3,9,20,null,null,15,7],
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+返回它的最小深度  2.
+
+*/
+func MinDepth(root *TreeNode) int {
+	//思路1：递归，获取左子树的最小深度和右子树的最小深度，然后取最小值加1
+	if root == nil {
+		return 0
+	}
+	//判断当前节点是否为叶子节点（没有子节点的节点）
+	var lM, rM int
+	if root.Left != nil && root.Right == nil {
+		lM = MinDepth(root.Left)
+		rM = 1<<31 - 1
+	} else if root.Right != nil && root.Left == nil {
+		rM = MinDepth(root.Right)
+		lM = 1<<31 - 1
+	} else {
+		lM = MinDepth(root.Left)
+		rM = MinDepth(root.Right)
+	}
+
+	if lM >= rM {
+		return rM + 1
+	} else {
+		return lM + 1
+	}
+}
+
+func MinDepthF(root *TreeNode) int {
+	//思路2：深度优先
+	if root == nil {
+		return 0
+	}
+	var min int
+	queue := make([]*TreeNode, 0)
+	queue = append(queue, root)
+	for len(queue) > 0 {
+		l := len(queue)
+		min++
+		for i := 0; i < l; i++ {
+			//如果当前节点的左右节点为nil(当前节点是叶子节点)
+			if queue[i].Left == nil && queue[i].Right == nil {
+				return min
+			}
+			if queue[i].Left != nil {
+				queue = append(queue, queue[i].Left)
+			}
+			if queue[i].Right != nil {
+				queue = append(queue, queue[i].Right)
+			}
+		}
+		queue = queue[l:]
+	}
+	return min
+}
+
+/**
+给定一个二叉树和一个目标和，判断该树中是否存在根节点到叶子节点的路径，这条路径上所有节点值相加等于目标和。
+说明: 叶子节点是指没有子节点的节点。
+
+示例:
+给定如下二叉树，以及目标和 sum = 22，
+
+              5
+             / \
+            4   8
+           /   / \
+          11  13  4
+         /  \      \
+        7    2      1
+返回 true, 因为存在目标和为 22 的根节点到叶子节点的路径 5->4->11->2。
+
+*/
+func HasPathSum(root *TreeNode, sum int) bool {
+	//思路：和减去当前的节点，如果为0了且没有其他子节点，则为true，否则为false
+	if root == nil {
+		return false
+	}
+	cur := sum - root.Val
+	if root.Left == nil && root.Right == nil {
+		if cur == 0 {
+			return true
+		} else {
+			return false
+		}
+	} else {
+		return HasPathSum(root.Left, cur) || HasPathSum(root.Right, cur)
+	}
+}
+
+/**
+给定一个二叉树和一个目标和，找到所有从根节点到叶子节点路径总和等于给定目标和的路径。
+说明: 叶子节点是指没有子节点的节点。
+
+示例:
+给定如下二叉树，以及目标和 sum = 22，
+
+              5
+             / \
+            4   8
+           /   / \
+          11  13  4
+         /  \    / \
+        7    2  5   1
+返回:
+
+[
+   [5,4,11,2],
+   [5,8,4,5]
+]
+
+*/
+var pathSumRes [][]int
+
+func PathSum(root *TreeNode, sum int) [][]int {
+	//思路1 回溯
+	pathSumRes = make([][]int, 0)
+	cur := make([]int, 0)
+	pathSumF(root, sum, cur)
+	return pathSumRes
+}
+
+func pathSumF(root *TreeNode, sum int, cur []int) {
+	//判断，如果当前节点没有左右节点，且节点值刚好等于sum，则将当前节点放入到cur中，将cur放入res中
+	if root == nil {
+		return
+	}
+	cur = append(cur, root.Val)
+	if root.Left == nil && root.Right == nil {
+		if root.Val == sum {
+			curN := make([]int, len(cur))
+			copy(curN, cur)
+			pathSumRes = append(pathSumRes, curN)
+		}
+	}
+	pathSumF(root.Left, sum-root.Val, cur)
+	pathSumF(root.Right, sum-root.Val, cur)
+}
+
+/**
+给定一个二叉树，原地将它展开为链表。
+例如，给定二叉树
+
+    1
+   / \
+  2   5
+ / \   \
+3   4   6
+将其展开为：
+
+1
+ \
+  2
+   \
+    3
+     \
+      4
+       \
+        5
+         \
+          6
+*/
+var lastTree *TreeNode
+
+func flatten(root *TreeNode) {
+	lastTree = nil
+	flattenF(root)
+}
+
+func flattenF(root *TreeNode) {
+	if root == nil {
+		return
+	}
+	//递归。不管后面的节点，处理当前节点时，只需要将左侧置空，右侧正常处理即可
+	flattenF(root.Right)
+	flattenF(root.Left)
+	root.Right = lastTree
+	root.Left = nil
+	lastTree = root
+}
+
+func Unzip(s string) string {
+	start := strings.Index(s, "[")
+	if start == -1 {
+		return s
+	}
+	end := strings.LastIndex(s, "]")
+	var temp string
+	temp = s[start+1 : end]
+	nStart := strings.Index(temp, "|")
+	n, _ := strconv.Atoi(temp[:nStart])
+	//判断arr[1]中是否有[
+	flag := strings.Index(temp[nStart+1:], "[")
+	f := temp[nStart+1:]
+	if flag != -1 {
+		f = Unzip(f)
+	}
+	var res string
+	for i := 1; i <= n; i++ {
+		res += f
+	}
+	if end == len(s)-1 {
+		res = s[:start] + res
+	} else {
+		res = s[:start] + res + s[end+1:]
+	}
+	return res
+}

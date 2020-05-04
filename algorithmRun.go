@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"testGo/algorithm"
 )
 
@@ -212,6 +213,28 @@ func main() {
 	//fmt.Println(algorithm.ZigzagLevelOrder(list))
 	//fmt.Println(algorithm.LevelOrderBottomS(list))
 
-	algorithm.PrintFront(algorithm.SortedArrayToBST([]int{-15, -10, -3, 0, 2, 5, 9}))
+	//algorithm.PrintFront(algorithm.SortedArrayToBST([]int{-15, -10, -3, 0, 2, 5, 9}))
 
+	//list := &algorithm.TreeNode{Val: 3, Left: &algorithm.TreeNode{Val: 9}, Right: &algorithm.TreeNode{Val: 20, Left: &algorithm.TreeNode{Val: 15}, Right: &algorithm.TreeNode{Val: 7}}}
+	//list = &algorithm.TreeNode{Val: 1, Left: &algorithm.TreeNode{Val: 2, Left: &algorithm.TreeNode{Val: 3, Left: &algorithm.TreeNode{Val: 4}, Right: &algorithm.TreeNode{Val: 4}}, Right: &algorithm.TreeNode{Val: 3}}, Right: &algorithm.TreeNode{Val: 2}}
+	//fmt.Println(algorithm.IsBalanced(list))
+
+	/*list := &algorithm.TreeNode{Val: 1, Left: &algorithm.TreeNode{Val: 2}}
+	list = &algorithm.TreeNode{Val: 3, Left: &algorithm.TreeNode{Val: 9}, Right: &algorithm.TreeNode{Val: 20, Left: &algorithm.TreeNode{Val: 15}, Right: &algorithm.TreeNode{Val: 7}}}
+	//fmt.Println(algorithm.MinDepth(list))
+	list = &algorithm.TreeNode{Val: 1, Left: &algorithm.TreeNode{Val: 2, Left: &algorithm.TreeNode{Val: 4}}, Right: &algorithm.TreeNode{Val: 3, Right: &algorithm.TreeNode{Val: 5}}}
+	fmt.Println(algorithm.MinDepthF(list))*/
+
+	/*list := &algorithm.TreeNode{Val: 1, Left: &algorithm.TreeNode{Val: -2, Left: &algorithm.TreeNode{Val: 1, Left: &algorithm.TreeNode{Val: -1}}, Right: &algorithm.TreeNode{Val: 3}}, Right: &algorithm.TreeNode{Val: -3, Left: &algorithm.TreeNode{Val: -2}}}
+	fmt.Println(algorithm.HasPathSum(list, -1))*/
+
+	/*list := &algorithm.TreeNode{Val: 5, Left: &algorithm.TreeNode{Val: 4, Left: &algorithm.TreeNode{Val: 11, Left: &algorithm.TreeNode{Val: 7}, Right: &algorithm.TreeNode{Val: 2}}}, Right: &algorithm.TreeNode{Val: 8, Left: &algorithm.TreeNode{Val: 13}, Right: &algorithm.TreeNode{Val: 4, Left: &algorithm.TreeNode{Val: 5}, Right: &algorithm.TreeNode{Val: 1}}}}
+
+	//list = &algorithm.TreeNode{Val: -6, Right: &algorithm.TreeNode{Val: -3, Left: &algorithm.TreeNode{Val: -6, Left: &algorithm.TreeNode{Val: -6}, Right: &algorithm.TreeNode{Val: -5, Right: &algorithm.TreeNode{Val: 1}}}, Right: &algorithm.TreeNode{Val: 0, Right: &algorithm.TreeNode{Val: 4, Left: &algorithm.TreeNode{Val: 7}}}}}
+	fmt.Println(algorithm.PathSum(list, -21))
+
+	algorithm.Flatten(list)
+	fmt.Println(list)*/
+
+	fmt.Println(algorithm.Unzip("HG[3|B[2|CA]]F"))
 }
