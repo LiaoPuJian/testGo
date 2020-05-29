@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"testGo/algorithm"
+	"hello/algorithm"
 )
 
 func main() {
@@ -236,5 +236,70 @@ func main() {
 	algorithm.Flatten(list)
 	fmt.Println(list)*/
 
-	fmt.Println(algorithm.Unzip("HG[3|B[2|CA]]F"))
+	//fmt.Println(algorithm.Unzip("HG[3|B[2|CA]]F"))
+
+	//list := &algorithm.ListNode{Val: 1, Next: &algorithm.ListNode{Val: 2, Next: &algorithm.ListNode{Val: 3, Next: &algorithm.ListNode{Val: 4, Next: &algorithm.ListNode{Val: 5, Next: &algorithm.ListNode{Val: 6, Next: nil}}}}}}
+	//algorithm.ReverseList2(list)
+
+	/*list := &algorithm.TreeNode{Val: 1, Left: &algorithm.TreeNode{Val: 2, Left: &algorithm.TreeNode{Val: 4}}, Right: &algorithm.TreeNode{Val: 3, Left: &algorithm.TreeNode{Val: 5}, Right: &algorithm.TreeNode{Val: 6}}}
+	data := algorithm.BfsSerializeTree(list)
+	node := algorithm.BfsUnSerializeTree(data)
+	algorithm.PrintFront(node)*/
+
+	//fmt.Println(algorithm.GetMaxSumOfChildArr([]int{1}))
+	//fmt.Println(algorithm.MaxValOfGift([][]int{[]int{1, 10, 3, 8}, []int{12, 2, 9, 6}, []int{5, 7, 4, 11}, []int{3, 7, 16, 5}}))
+	//fmt.Println(algorithm.MaxUnRepeatStr("arabcacfr"))
+
+	//algorithm.FindContinueSequence(100)
+
+	//fmt.Println(algorithm.FindRepeatNumber([]int{2, 3, 1, 0, 2, 5, 3}))
+
+	//fmt.Println(algorithm.FindNumberIn2DArray([][]int{[]int{1, 4, 7, 11, 15}, []int{2, 5, 8, 12, 19}, []int{3, 6, 9, 16, 22}, []int{10, 13, 14, 17, 24}, []int{18, 21, 23, 26, 30}}, 30))
+	//fmt.Println(algorithm.FindNumberIn2DArray([][]int{[]int{1}, []int{3}, []int{4}}, 4))
+	//fmt.Println(algorithm.FindNumberIn2DArray([][]int{[]int{1, 2, 3, 4, 5}, []int{6, 7, 8, 9, 10}, []int{11, 12, 13, 14, 15}, []int{16, 17, 18, 19, 20}, []int{21, 22, 23, 24, 25}}, 15))
+	/*fmt.Println(algorithm.ReplaceSpace("We are happy."))
+	fmt.Println(algorithm.ReplaceSpace("  "))*/
+	//algorithm.PrintFront(algorithm.BuildTree3([]int{3, 9, 20, 15, 7}, []int{9, 3, 15, 20, 7}))
+
+	/*obj := algorithm.ConstructorCQueue()
+	obj.AppendTail(1)
+	obj.AppendTail(3)
+	obj.AppendTail(4)
+
+	fmt.Println(obj.DeleteHead())*/
+
+	//fmt.Println(algorithm.Fib(95))
+
+	//fmt.Println(algorithm.CuttingRope(120))
+
+	//fmt.Println(algorithm.PrintNumbers(4))
+
+	/*list := &algorithm.ListNode{Val: 1, Next: &algorithm.ListNode{Val: 3, Next: &algorithm.ListNode{Val: 4, Next: nil}}}
+	algorithm.DeleteNode(list, 4)*/
+
+	//fmt.Println(algorithm.Exchange([]int{}))
+	/*list := &algorithm.ListNode{Val: 1, Next: &algorithm.ListNode{Val: 3, Next: &algorithm.ListNode{Val: 4, Next: &algorithm.ListNode{Val: 5, Next: &algorithm.ListNode{Val: 6, Next: nil}}}}}
+	algorithm.GetKthFromEnd(list, 3)*/
+
+	/*A := &algorithm.TreeNode{Val: 1, Left: &algorithm.TreeNode{Val: -2, Left: &algorithm.TreeNode{Val: 1, Left: &algorithm.TreeNode{Val: -1}}, Right: &algorithm.TreeNode{Val: 3}}, Right: &algorithm.TreeNode{Val: -3, Left: &algorithm.TreeNode{Val: -2}}}
+	B := &algorithm.TreeNode{Val: -2, Left: &algorithm.TreeNode{Val: 1, Left: &algorithm.TreeNode{Val: -1}}, Right: &algorithm.TreeNode{Val: 3}}
+	fmt.Println(algorithm.IsSubStructure(A, B))*/
+
+	//treeNode := &algorithm.TreeNode{Val: 1, Left: &algorithm.TreeNode{Val: 2, Left: &algorithm.TreeNode{Val: 3}, Right: &algorithm.TreeNode{Val: 4}}, Right: &algorithm.TreeNode{Val: 2, Left: &algorithm.TreeNode{Val: 4}, Right: &algorithm.TreeNode{Val: 3}}}
+	//treeNode := &algorithm.TreeNode{Val: 1, Left: &algorithm.TreeNode{Val: 2, Right: &algorithm.TreeNode{Val: 3}}, Right: &algorithm.TreeNode{Val: 2, Right: &algorithm.TreeNode{Val: 3}}}
+	//fmt.Println(algorithm.IsSymmetric1(treeNode))
+
+	//param := [][]int{[]int{1, 2, 3, 4}, []int{5, 6, 7, 8}, []int{9, 10, 11, 12}, []int{13, 14, 15, 16}}
+	//param = [][]int{[]int{1, 2, 3, 4}, []int{5, 6, 7, 8}}
+	//param = [][]int{[]int{1, 2, 3, 4}, []int{5, 6, 7, 8}, []int{9, 10, 11, 12}}
+	//param = [][]int{[]int{7}, []int{9}, []int{6}}
+	//fmt.Println(algorithm.SpiralOrder(param))
+
+	obj := algorithm.ConstructorMinStack()
+	obj.Push(-2)
+	obj.Push(0)
+	obj.Push(-1)
+	fmt.Println(obj.Min(), obj.Top())
+	obj.Pop()
+	fmt.Println(obj.Min())
 }

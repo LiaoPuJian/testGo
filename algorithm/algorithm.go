@@ -5069,3 +5069,302 @@ func Unzip(s string) string {
 	}
 	return res
 }
+
+//翻转链表 1就地翻转
+func ReverseList1(node *ListNode) *ListNode {
+	//思路，定义一个空链表，遍历传入的链表，每次断开一个元素，并将这个元素拼在定义的那个链表的头部
+	if node == nil {
+		return nil
+	}
+	if node.Next == nil {
+		return node
+	}
+
+	var p *ListNode
+	var tmp *ListNode
+	for node != nil {
+		//将当前节点的后面部分全部放入一个临时变量汇总
+		tmp = node.Next
+		//将当前节点的Next指向p
+		node.Next = p
+		//将p置为当前节点的链表
+		p = node
+		//遍历下一个节点
+		node = tmp
+	}
+	//printList(p)
+	return p
+}
+
+//翻转链表2，借助栈先进后出的特性
+func ReverseList2(node *ListNode) *ListNode {
+	if node == nil {
+		return nil
+	}
+	if node.Next == nil {
+		return node
+	}
+	stack := make([]*ListNode, 0)
+	var tmp *ListNode
+	for node != nil {
+		tmp = node.Next
+		node.Next = nil
+		stack = append(stack, node)
+		node = tmp
+	}
+
+	var head = &ListNode{Val: 0, Next: nil}
+	var p = head
+	for i := len(stack) - 1; i >= 0; i-- {
+		p.Next = stack[i]
+		p = p.Next
+	}
+	//printList(head.Next)
+	return head.Next
+}
+
+/**
+两个函数，实现对二叉树的序列化和反序列化
+思路1：dfs深度优先 （递归）
+*/
+func DfsSerializeTree(node *TreeNode) string {
+	//按照前序的方式遍历，如果遇到空节点，则存入'$'
+	if node == nil {
+		return "$"
+	} else {
+		return strconv.Itoa(node.Val) + "," + DfsSerializeTree(node.Left) + "," + DfsSerializeTree(node.Right)
+	}
+}
+
+var unSerializeTreeRes []string
+
+func DfsUnSerializeTree(steam string) *TreeNode {
+	unSerializeTreeRes = strings.Split(steam, ",")
+	return dfsUnSerializeTree()
+}
+
+func dfsUnSerializeTree() *TreeNode {
+	tmp := unSerializeTreeRes[0]
+	unSerializeTreeRes = unSerializeTreeRes[1:]
+	if tmp == "$" {
+		return nil
+	}
+	v, _ := strconv.Atoi(tmp)
+	root := &TreeNode{Val: v}
+	root.Left = dfsUnSerializeTree()
+	root.Right = dfsUnSerializeTree()
+	return root
+}
+
+/**
+思路2：广度优先  （二叉树的层次遍历）
+*/
+func BfsSerializeTree(node *TreeNode) string {
+	if node == nil {
+		return ""
+	}
+	//声明一个队列，将二叉树按照层次遍历的方式放入队列中
+	var res = make([]string, 0)
+	queue := make([]*TreeNode, 0)
+	queue = append(queue, node)
+	for len(queue) > 0 {
+		cur := queue[0]
+		//将当前节点的值放入res中，然后将左右子节点放入队列中
+		if cur != nil {
+			res = append(res, strconv.Itoa(cur.Val))
+			queue = append(queue, cur.Left, cur.Right)
+		} else {
+			res = append(res, "$")
+		}
+		queue = queue[1:]
+	}
+	return strings.Join(res, ",")
+}
+
+func BfsUnSerializeTree(data string) *TreeNode {
+	if len(data) == 0 {
+		return nil
+	}
+	str := strings.Split(data, ",")
+	root := &TreeNode{}
+	root.Val, _ = strconv.Atoi(str[0])
+	queue := []*TreeNode{root}
+	//这里不会溢出，因为哪怕二叉树只有一个节点，传入的data也应该是“1,$,$”这种形式
+	str = str[1:]
+	for len(queue) > 0 {
+		cur := queue[0]
+		//生成当前树的左子树，并将其放入队列中
+		if str[0] != "$" {
+			leftVal, _ := strconv.Atoi(str[0])
+			cur.Left = &TreeNode{Val: leftVal}
+			queue = append(queue, cur.Left)
+		}
+		//生成当前树的右子树，并将其放入队列中
+		if str[1] != "$" {
+			rightVal, _ := strconv.Atoi(str[1])
+			cur.Right = &TreeNode{Val: rightVal}
+			queue = append(queue, cur.Right)
+		}
+		queue = queue[1:]
+		str = str[2:]
+	}
+	return root
+}
+
+//连续子数组的最大和
+func GetMaxSumOfChildArr(param []int) int {
+	l := len(param)
+	if l == 0 {
+		return 0
+	}
+	//用一个数组记录到i为止的数列和。
+	dp := make([]int, l)
+	dp[0] = param[0]
+	var max = dp[0]
+	for i := 1; i < l; i++ {
+		//如果前一个值小于0，则到i为止的最大数即为它自身
+		if dp[i-1] <= 0 {
+			dp[i] = param[i]
+		} else {
+			//如果前一个值大于0，则到i为止的最大数为它自身加上前一个数
+			dp[i] = param[i] + dp[i-1]
+		}
+		if dp[i] > max {
+			max = dp[i]
+		}
+	}
+	//fmt.Println(dp)
+	return max
+}
+
+//礼物的最大价值。在一个m*n的棋盘的每一格都放有一个礼物，可以从棋盘的左上角开始拿，每次可以往左或者往右移动一格。 请问能拿到的礼物的最大价值和
+func MaxValOfGift(param [][]int) int {
+	//典型的动态规划算法。 dp[i][j] = max(dp[i-1][j], dp[i][j-1]) + param[i][j]
+	row := len(param)
+	if row == 0 {
+		return 0
+	}
+	col := len(param[0])
+	if col == 0 {
+		return 0
+	}
+	max := func(a, b int) int {
+		if a >= b {
+			return a
+		} else {
+			return b
+		}
+	}
+	dp := make([][]int, row)
+	for i := 0; i < row; i++ {
+		dp[i] = make([]int, col)
+		for j := 0; j < col; j++ {
+			if i == 0 && j == 0 {
+				dp[i][j] = param[0][0]
+			} else {
+				if i == 0 {
+					dp[i][j] = dp[i][j-1] + param[i][j]
+				} else if j == 0 {
+					dp[i][j] = dp[i-1][j] + param[i][j]
+				} else {
+					dp[i][j] = max(dp[i-1][j], dp[i][j-1]) + param[i][j]
+				}
+			}
+		}
+	}
+	return dp[row-1][col-1]
+}
+
+//找出最长不含重复字符串的子字符串 例如"arabcacfr" 最长的不含重复字符的子字符串是"acfr"，长度是4
+func MaxUnRepeatStr(s string) int {
+	l := len(s)
+	if l == 0 {
+		return 0
+	}
+	//动态规划。
+	dp := make([]int, l)
+	m := make(map[byte]int) //用来保存当前的字符的位置
+	dp[0] = 1
+	m[s[0]] = 0
+	max := 1
+	for i := 1; i < l; i++ {
+		//如果这个值在之前出现过。那么获取这个值的位置。判断当前的i到这个值的最新位置差值跟dp[i-1]谁大
+		if v, ok := m[s[i]]; ok {
+			if i-v > dp[i-1] {
+				dp[i] = dp[i-1] + 1
+			} else if i-v == dp[i-1] {
+				dp[i] = dp[i-1]
+			} else {
+				//这里要注意，当i-v小于dp[i]时，需要从上一个重复元素的下一位开始计算，加到当前位
+				dp[i] = i - v
+			}
+		} else {
+			//如果这个值没有出现过，那么就直接在dp[i-1]的基础上加1
+			dp[i] = dp[i-1] + 1
+		}
+		if max < dp[i] {
+			max = dp[i]
+		}
+		m[s[i]] = i
+	}
+	return max
+}
+
+/**
+和为s的连续整数序列。  输入一个整数S，打印出所有和为s的连续整数序列（至少含有两个数）。例如，输入14，由于1+2+3+4+5=4+5+6=7+8=15，所以打印出{1,2,3,4,5} {4,5,6} {7,8}
+*/
+func FindContinueSequence(sum int) {
+	//设定两个指针，一个指向1，一个指向2。两个指针组成一个连续序列{1,2} 如果这个连续序列相加小于sum，则将指针2往后移动。如果这个连续序列相加大于sum，则将指针1往后移动
+	first := 1
+	second := 2
+	middle := (sum + 1) / 2
+	curSum := first + second
+	for first < middle {
+		if curSum == sum {
+			fmt.Println(first, second)
+		}
+
+		for curSum > sum && first < middle {
+			curSum -= first
+			first++
+			if curSum == sum {
+				fmt.Println(first, second)
+			}
+		}
+
+		second++
+		curSum += second
+	}
+}
+
+/**
+ 圆圈中最后剩下的数字。
+0,1，....，n-1这n个数字排成一个圆圈，从数字0开始，每次从这个圆圈里删除第m个数字，求出这个圆圈里剩下的最后一个数字。
+*/
+func LastRemaining(m, n int) int {
+	/**
+	直接通过数学规律总结约瑟夫环。在0~n-1这个数列中，删除第m个数字，那么被删除的数字一定是(m-1) % n （这里余n是考虑m大于n的情况 ）我们假设这个数字的位置是k，那么删除k之后，剩下的元素还有0,1，...，k-1，k+1，...，n-1，并且下一次删除送数字k+1开始。 相当于在下一次的数列中，k+1是排在开头的，即下一次的顺序为：k+1, k+2,...，n-1, 0, 1, ..., k-1。
+	那么其实有一个映射关系，将这个数列映射到0~n-2（此时已经弹出了一个元素）
+	k+1 -> 0
+	k+2 -> 1
+	...
+	n-1 -> n-k-2
+	0 -> n-k-1
+	1 -> n-k
+	...
+	k-1 -> n-2
+	可以看出，这就是原问题中把n替换成n-1的情况，设最终胜利的那个人在这种编号环境里（已经出列一个元素，编号范围为0~n-2）的编号为x，则我们可以求出这个人在原编号环境（初始编号范围 0~n-1）下的编号（x+k）%n。
+	如果我们用f(n)标识n个人的情况下最终结果的编号，那么如何知道f(n-1)呢？ 答案是由f(n-2)得来，这就转换成典型的递归问题。
+	f(1) = 0   (当只有最后一个人的时候，无论m为几，最终结果都为0)
+	f(n) = (f(n-1) + m) % n
+	如果此时要求f(n)，那么只需要从f(1)推算即可。
+	*/
+	if m < 1 || n < 1 {
+		return -1
+	}
+	last := 0 //此时的n为1
+	for i := 2; i <= n; i++ {
+		last = (last + m) % i
+	}
+	return last
+}
