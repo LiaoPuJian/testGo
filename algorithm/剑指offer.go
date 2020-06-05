@@ -2,7 +2,16 @@ package algorithm
 
 import (
 	"math"
+	"sort"
+	"strconv"
+	"strings"
 )
+
+type Node struct {
+	Val    int
+	Next   *Node
+	Random *Node
+}
 
 func FindRepeatNumber(nums []int) int {
 	//思路1：看代码
@@ -1023,4 +1032,668 @@ func validateStackSequences(pushed []int, popped []int) bool {
 		}
 	}
 	return len(stack) == 0
+}
+
+/**
+从上到下打印二叉树
+从上到下打印出二叉树的每个节点，同一层的节点按照从左到右的顺序打印。
+*/
+func levelOrder(root *TreeNode) []int {
+	//bfs，没啥好说的
+	queue := make([]*TreeNode, 0)
+	queue = append(queue, root)
+	res := make([]int, 0)
+	for len(queue) > 0 {
+		cur := queue[0]
+		queue = queue[1:]
+		if cur != nil {
+			res = append(res, cur.Val)
+			queue = append(queue, cur.Left, cur.Right)
+		}
+	}
+	return res
+}
+
+/**
+从上到下打印二叉树 II
+从上到下按层打印二叉树，同一层的节点按从左到右的顺序打印，每一层打印到一行。
+*/
+func levelOrder1(root *TreeNode) [][]int {
+	//bfs 没啥好说的
+	res := make([][]int, 0)
+	queue := make([]*TreeNode, 0)
+	queue = append(queue, root)
+	for len(queue) > 0 {
+		cur := queue
+		temp := make([]int, 0)
+		queue = make([]*TreeNode, 0)
+		for i := 0; i < len(cur); i++ {
+			if cur[i] != nil {
+				temp = append(temp, cur[i].Val)
+				queue = append(queue, cur[i].Left, cur[i].Right)
+			}
+		}
+		if len(temp) > 0 {
+			res = append(res, temp)
+		}
+	}
+	return res
+}
+
+/**
+从上到下打印二叉树 III
+请实现一个函数按照之字形顺序打印二叉树，即第一行按照从左到右的顺序打印，第二层按照从右到左的顺序打印，第三行再按照从左到右的顺序打印，其他行以此类推。
+*/
+func levelOrder2(root *TreeNode) [][]int {
+	//bfs 没啥好说的
+	res := make([][]int, 0)
+	queue := make([]*TreeNode, 0)
+	queue = append(queue, root)
+	//一个标识
+	level := 1
+	for len(queue) > 0 {
+		cur := queue
+		temp := make([]int, 0)
+		queue = make([]*TreeNode, 0)
+		for i := 0; i < len(cur); i++ {
+			if cur[i] != nil {
+				queue = append(queue, cur[i].Left, cur[i].Right)
+			}
+		}
+		//如果当前级别是奇数，则正序打印
+		if level%2 == 1 {
+			for i := 0; i < len(cur); i++ {
+				if cur[i] != nil {
+					temp = append(temp, cur[i].Val)
+				}
+			}
+		} else {
+			//否则倒叙打印
+			for i := len(cur) - 1; i >= 0; i-- {
+				if cur[i] != nil {
+					temp = append(temp, cur[i].Val)
+				}
+			}
+		}
+		if len(temp) > 0 {
+			res = append(res, temp)
+		}
+		level++
+	}
+	return res
+}
+
+/**
+二叉搜索树的后序遍历序列
+输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历结果。如果是则返回 true，否则返回 false。假设输入的数组的任意两个数字都互不相同。
+*/
+func VerifyPostorder(postorder []int) bool {
+	//二叉搜索树根节点一定在最后。且根节点一定大于左子节点，小于右子节点
+	l := len(postorder)
+	if l == 0 {
+		return true
+	}
+	root := postorder[l-1]
+	//遍历数组，找到比根节点大的地方，则其左侧为左子树，右侧为右子树
+	left := postorder[:l-1]
+	right := make([]int, 0)
+	for i := 0; i <= l-2; i++ {
+		if postorder[i] > root {
+			left = postorder[:i]
+			right = postorder[i : l-1]
+			break
+		}
+	}
+	//由于此时left中的元素都比root小，那么只需要看看right中的元素是否都比root大即可
+	for i := 0; i < len(right); i++ {
+		if root > right[i] {
+			return false
+		}
+	}
+	//递归查询左子树跟右子树
+	return VerifyPostorder(left) && VerifyPostorder(right)
+}
+
+/**
+二叉树中和为某一值的路径
+输入一棵二叉树和一个整数，打印出二叉树中节点值的和为输入整数的所有路径。从树的根节点开始往下一直到叶节点所经过的节点形成一条路径。
+示例:
+给定如下二叉树，以及目标和 sum = 22，
+
+              5
+             / \
+            4   8
+           /   / \
+          11  13  4
+         /  \    / \
+        7    2  5   1
+返回:
+[
+   [5,4,11,2],
+   [5,8,4,5]
+]
+*/
+var pathSum1Res [][]int
+
+func PathSum1(root *TreeNode, sum int) [][]int {
+	pathSum1Res = make([][]int, 0)
+	pathSumHelp(root, []int{}, 0, sum)
+	return pathSum1Res
+}
+
+func pathSumHelp(root *TreeNode, cur []int, curSum, sum int) {
+	if root == nil {
+		return
+	}
+	//判断当前节点有无子节点
+	if root.Left == nil && root.Right == nil {
+		if root.Val+curSum == sum {
+			nowCur := make([]int, len(cur))
+			copy(nowCur, cur)
+			nowCur = append(nowCur, root.Val)
+			pathSum1Res = append(pathSum1Res, nowCur)
+			return
+		}
+	}
+	cur = append(cur, root.Val)
+	if root.Left != nil && root.Right != nil {
+		pathSumHelp(root.Left, cur, root.Val+curSum, sum)
+		pathSumHelp(root.Right, cur, root.Val+curSum, sum)
+	} else {
+		if root.Left != nil {
+			pathSumHelp(root.Left, cur, root.Val+curSum, sum)
+		} else {
+			pathSumHelp(root.Right, cur, root.Val+curSum, sum)
+		}
+	}
+	return
+}
+
+/**
+复杂链表的复制
+请实现 copyRandomList 函数，复制一个复杂链表。在复杂链表中，每个节点除了有一个 next 指针指向下一个节点，还有一个 random 指针指向链表中的任意节点或者 null。
+*/
+func CopyRandomList(head *Node) *Node {
+	//1、复制每一个节点，使得复制后的节点都在当前节点的下一个节点
+	copyR := func(head *Node) {
+		for head != nil {
+			cloneNode := &Node{Val: head.Val, Next: head.Next}
+			head.Next = cloneNode
+			head = cloneNode.Next
+		}
+	}
+	//2、原生链表的节点的指向任意节点，使复制的节点指向前一个节点随机指向节点的下一个节点
+	randomDirect := func(head *Node) {
+		for head != nil {
+			if head.Random != nil {
+				head.Next.Random = head.Random.Next
+			}
+			head = head.Next.Next
+		}
+	}
+	//3、重新连接节点，把原生节点重新连接起来，把克隆后的节点连接起来
+	reList := func(head *Node) *Node {
+		newHead := head.Next
+		//h1和h2表示两个指针，一个指向原始链表的头部，一个指向复制链表的头部
+		h1, h2 := head, head.Next
+		for h1 != nil {
+			if h2.Next != nil {
+				h1.Next = h1.Next.Next
+				h2.Next = h2.Next.Next
+			} else {
+				h1.Next = nil
+			}
+			//每次将h1和h2往后移动一位。
+			h1 = h1.Next
+			h2 = h2.Next
+		}
+		return newHead
+	}
+
+	if head == nil {
+		return nil
+	}
+	copyR(head)
+	randomDirect(head)
+	return reList(head)
+}
+
+/**
+二叉树的序列化与反序列化
+序列化是将一个数据结构或者对象转换为连续的比特位的操作，进而可以将转换后的数据存储在一个文件或者内存中，同时也可以通过网络传输到另一个计算机环境，采取相反方式重构得到原数据。
+
+请设计一个算法来实现二叉树的序列化与反序列化。这里不限定你的序列 / 反序列化算法执行逻辑，你只需要保证一个二叉树可以被序列化为一个字符串并且将这个字符串反序列化为原始的树结构。
+
+示例:
+
+你可以将以下二叉树：
+
+    1
+   / \
+  2   3
+     / \
+    4   5
+
+序列化为 "[1,2,3,null,null,4,5]"
+*/
+type Codec struct {
+}
+
+func ConstructorCodec() Codec {
+	return Codec{}
+}
+
+// Serializes a tree to a single string.
+func (this *Codec) Serialize(root *TreeNode) string {
+	//序列化二叉树。采用bfs的方式
+	var res string
+	if root == nil {
+		return res
+	}
+	queue := make([]*TreeNode, 0)
+	queue = append(queue, root)
+	for len(queue) > 0 {
+		cur := queue[0]
+		queue = queue[1:]
+		if len(res) == 0 {
+			res += strconv.Itoa(cur.Val)
+		} else {
+			if cur != nil {
+				res += "," + strconv.Itoa(cur.Val)
+			} else {
+				res += ",$"
+			}
+		}
+		if cur != nil {
+			queue = append(queue, cur.Left, cur.Right)
+		}
+	}
+	return res
+}
+
+// Deserializes your encoded data to tree.
+func (this *Codec) Deserialize(data string) *TreeNode {
+	//思路，bfs。每次从data中弹出下一层子树需要的字符个数
+	if data == "" {
+		return nil
+	}
+	strArr := strings.Split(data, ",")
+	queue := make([]*TreeNode, 0)
+	first, _ := strconv.Atoi(strArr[0])
+	strArr = strArr[1:]
+	root := &TreeNode{Val: first}
+	queue = append(queue, root)
+	for len(queue) > 0 {
+		//从队列中取出当前节点
+		cur := queue[0]
+		queue = queue[1:]
+		//从strArr中取出两个元素，分别作为cur的左右子树
+		left := strArr[0]
+		right := strArr[1]
+		strArr = strArr[2:]
+		if left != "$" {
+			//左子树不为空，
+			leftVal, _ := strconv.Atoi(left)
+			cur.Left = &TreeNode{Val: leftVal}
+			queue = append(queue, cur.Left)
+		}
+		if right != "$" {
+			//左子树不为空，
+			rightVal, _ := strconv.Atoi(right)
+			cur.Right = &TreeNode{Val: rightVal}
+			queue = append(queue, cur.Right)
+		}
+	}
+	return root
+}
+
+/**
+字符串的排列
+输入一个字符串，打印出该字符串中字符的所有排列。
+你可以以任意顺序返回这个字符串数组，但里面不能有重复元素。
+
+示例:
+
+输入：s = "abc"
+输出：["abc","acb","bac","bca","cab","cba"]
+*/
+func Permutation(s string) []string {
+	if len(s) == 0 {
+		return []string{}
+	}
+	dict := map[string]bool{}
+	str := []byte(s)
+
+	var f func(index int)
+	f = func(index int) {
+		if index == len(str) {
+			dict[string(str)] = true
+			return
+		}
+		for i := index; i < len(str); i++ {
+			//交换index跟i的值
+			tmp := str[index]
+			str[index] = str[i]
+			str[i] = tmp
+			//开始下一层递归
+			f(index + 1)
+			//交换index跟i的值
+			str[i] = str[index]
+			str[index] = tmp
+		}
+	}
+
+	f(0)
+	res := []string{}
+
+	for k, _ := range dict {
+		res = append(res, k)
+	}
+	return res
+}
+
+/**
+数组中出现次数超过一半的数字
+数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。
+你可以假设数组是非空的，并且给定的数组总是存在多数元素。
+
+示例 1:
+输入: [1, 2, 3, 2, 2, 2, 5, 4, 2]
+输出: 2
+
+*/
+func majorityElement(nums []int) int {
+	//思路1：hashMap记录数字出现的次数
+	//思路2：排序。由于众数的长度超过数组的一半，那么排序后的数组中间一位一定为众数
+	/*sort.Ints(nums)
+	return nums[len(nums)/2]*/
+	//思路3：摩尔投票法
+	/**
+	票数和： 由于众数出现的次数超过数组长度的一半；若记 众数 的票数为 +1+1 ，非众数 的票数为 -1−1 ，则一定有所有数字的 票数和 > 0>0 。
+	票数正负抵消： 设数组 nums 中的众数为 xx ，数组长度为 nn 。若 nums 的前 aa 个数字的 票数和 = 0=0 ，则
+	数组后 (n-a)(n−a) 个数字的 票数和一定仍 >0>0 （即后 (n-a)(n−a) 个数字的 众数仍为 xx ）。
+	*/
+	var x, votes int
+	for _, v := range nums {
+		//如果当前的总票数为0，那么设定当前的v为众数
+		if votes == 0 {
+			x = v
+		}
+		//如果当前的值跟众数相等，那么总票数+1，否则总票数-1
+		if v == x {
+			votes += 1
+		} else {
+			votes += -1
+		}
+	}
+	return x
+}
+
+/**
+最小的k个数
+输入整数数组 arr ，找出其中最小的 k 个数。例如，输入4、5、1、6、2、7、3、8这8个数字，则最小的4个数字是1、2、3、4。
+
+示例 1：
+输入：arr = [3,2,1], k = 2
+输出：[1,2] 或者 [2,1]
+示例 2：
+输入：arr = [0,1,2,1], k = 1
+输出：[0]
+
+*/
+func getLeastNumbers(arr []int, k int) []int {
+	//思路1：排序之后输出前k个元素
+	sort.Ints(arr)
+	return arr[:k]
+	//思路：维护一个长度为k的数组。遍历数组，如果不满k个元素，则将当前的元素放入到数组中，如果有k个元素，则将k中最大的元素弹出(可以用大顶栈中)
+}
+
+/**
+连续子数组的最大和
+输入一个整型数组，数组里有正数也有负数。数组中的一个或连续多个整数组成一个子数组。求所有子数组的和的最大值。
+要求时间复杂度为O(n)。
+
+示例1:
+输入: nums = [-2,1,-3,4,-1,2,1,-5,4]
+输出: 6
+解释: 连续子数组 [4,-1,2,1] 的和最大，为 6。
+
+*/
+func MaxSubArray(nums []int) int {
+	//思路1：设定一段子序列的最大值跟最大值
+	/*var max = nums[0]
+	var cmax = nums[0]
+	//遍历nums
+	for i := 1; i < len(nums); i++ {
+		//如果当前值大于0，则用其加上cmax
+		if nums[i] > 0 {
+			if cmax > 0 {
+				cmax += nums[i]
+			} else {
+				cmax = nums[i]
+			}
+		} else {
+			if cmax > 0 {
+				if cmax+nums[i] > 0 {
+					cmax += nums[i]
+				} else {
+					cmax = 0
+				}
+			} else {
+				cmax = nums[i]
+			}
+		}
+		if cmax > max {
+			max = cmax
+		}
+	}
+	return max*/
+	//思路2：动态规划
+	dp := make([]int, len(nums))
+	dp[0] = nums[0]
+	max := dp[0]
+	for i := 1; i < len(nums); i++ {
+		//如果上一个值大于0，则当前值的最大子序列和一定为dp[i-1] + nums[i]
+		if dp[i-1] > 0 {
+			dp[i] = dp[i-1] + nums[i]
+		} else {
+			//如果上一个值小于0，则当前值的最大子序列为当前值
+			dp[i] = nums[i]
+		}
+		if dp[i] > max {
+			max = dp[i]
+		}
+	}
+	return max
+}
+
+/**
+1～n整数中1出现的次数
+输入一个整数 n ，求1～n这n个整数的十进制表示中1出现的次数。
+例如，输入12，1～12这些整数中包含1 的数字有1、10、11和12，1一共出现了5次。
+*/
+func CountDigitOne(n int) int {
+	/**
+	假设我们对13146这个数求解。
+	我们设定一个指针，首先指向数字的个位。这个指针依次向数字的最大位移动。每次移动，将当前数字分为高位（high）当前位（cur）低位（low）
+	首先看个位，将13146分为 high位1324 cur位6。此时高位从0~1314之间变化，每次变化个位有1个1，（假设高位从1000到1001，此时相当于整体从10000到10001，个位变化为0~9，一次只有一个1）
+	然后再看最后一个6，由于0~6只有1个1，那么最后个位的结果即为1314 + 1 = 1315
+	再看十位，将13146分为 high位131 cur位4 low位6。此时高位从0~131之间变化，（假设高位从100~101，此时整体相当于从10000到100100，十位变化为0~100，其中属于十位的1只有10~19，之间有10个1）
+	再看cur，cur是4，那么因为cur>1, cur和low组成了46,46大于20，则一定有10个1。
+	则十位的结果为：131 * 10 + 10
+	再看百位。将13146分为 high 13 cur 1 low 46。此时计算high，0~13之间变换，（假设高位从2~3，此时整体相当于从12000到13000，百位变化为0~1000，其中属于百位的1只有100~199，百位有100个1）
+	当前位cur=1，所以我们要看low来决定出现的次数，地位是46，证明从100到146中间，1在百位上一共出现了46+1次
+	所以百位的结果为：13*100 + 46 + 1
+	再看千位。将13146分为 high 1 cur 3 low 146。计算high，0~1之间变化，（假设高位从0~1，此时整体相当于从0~10000，一次变化10000个数字，其中属于千位的1只有1000~1999之间有1000个1）。
+	当前位cur为3，则由于3>1, 3146 >= 1999, 所以3146在千位上一定有1000个1
+	所以千位的结果为：1*1000 + 1000
+	再看万位。将13146分为cur 1 low 3146，由于当前位是1，则结果无非就是从10000~13146，一共有3146+1个1
+	所以万位的结果为：0*10000 + 3146 + 1
+
+	结论
+	我们假设高位为high，当前位为cur，低位为low，i代表着需要统计的位置数（1对应个位，10对应十位，100对应百位），则对每一位的个数count有：
+	cur=0,count = high*i;
+	cur=1,count=high*i+low+1;
+	cur>1,count=high*i+i
+	最终累加所有位置上的个数即最终答案。
+	*/
+	var count int
+	var i = 1
+	for n/i != 0 {
+		//指针指向第i位时，计算出high值
+		high := n / (10 * i)
+		//计算当前位的值
+		cur := (n / i) % 10
+		//计算low位的值 假设n是5014，计算十位的low位，即为5014/10=501, 501*10=5010 再用5014-5010即可计算出个位
+		low := n - (n/i)*i
+		if cur == 0 {
+			count += high * i
+		} else if cur == 1 {
+			count += high*i + low + 1
+		} else {
+			count += high*i + i
+		}
+		i = i * 10
+	}
+	return count
+}
+
+/**
+输入一个整数 n ，求n的二进制中有几个1
+*/
+func numsOfOne(n int) int {
+	//思路，任何数字的二进制&1，如果等于1，则证明末尾是1。判断完当前位之后将数字右移再继续即可
+	var num int
+	for n > 0 {
+		cur := n & 1
+		if cur == 1 {
+			num++
+		}
+		n = n >> 1
+	}
+	return num
+}
+
+/**
+数字序列中某一位的数字
+数字以0123456789101112131415…的格式序列化到一个字符序列中。在这个序列中，第5位（从下标0开始计数）是5，第13位是1，第19位是4，等等。
+请写一个函数，求任意第n位对应的数字。
+
+示例 1：
+输入：n = 3
+输出：3
+示例 2：
+输入：n = 11
+输出：0
+*/
+func FindNthDigit(n int) int {
+	//思路：前10个数字（0-9）占用10个位置，10-99中间90个值，占用90*2个位置，100-999中间900个数字，占用900*3个位置，
+	//1000-9999中间9000个数字，占用9000*4个位置，依次类推
+	if n <= 9 {
+		return n
+	}
+	n -= 10
+	var cur = 2
+	for i := 2; i < 10; i++ {
+		temp := n - (9 * int(math.Pow(float64(10), float64(i-1))) * i)
+		//如果当前n小于0，则证明n的值是一个i位数
+		if temp < 0 {
+			cur = i
+			break
+		}
+		n = temp
+	}
+	//证明此时第n位数一定在cur位数中
+	quot := n / cur
+	remain := n % cur
+	//n一定在cur位数中的第quot个数字之间，且位数为remain
+	x := int(math.Pow(float64(10), float64(cur-1))) + quot
+	//获取当前数字的第remain位
+	x = x / int(math.Pow(float64(10), float64(cur-remain-1)))
+	x = x % 10
+	return x
+}
+
+/**
+把数组排成最小的数
+输入一个非负整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。
+示例 1:
+
+输入: [10,2]
+输出: "102"
+示例 2:
+
+输入: [3,30,34,5,9]
+输出: "3033459"
+*/
+type Arr []string
+
+func (a Arr) Len() int {
+	return len(a)
+}
+
+func (a Arr) Less(i, j int) bool {
+	if a[i]+a[j] < a[j]+a[i] {
+		return true
+	}
+	return false
+}
+
+func (a Arr) Swap(i, j int) {
+	a[i], a[j] = a[j], a[i]
+}
+
+func minNumber(nums []int) string {
+	var arr Arr
+	for i := 0; i < len(nums); i++ {
+		arr = append(arr, strconv.Itoa(nums[i]))
+	}
+	sort.Sort(arr)
+	str := ""
+	for i := 0; i < len(arr); i++ {
+		str = str + arr[i]
+	}
+	return str
+}
+
+/**
+把数字翻译成字符串
+给定一个数字，我们按照如下规则把它翻译为字符串：0 翻译成 “a” ，1 翻译成 “b”，……，11 翻译成 “l”，……，25 翻译成 “z”。一个数字可能有多个翻译。请编程实现一个函数，用来计算一个数字有多少种不同的翻译方法。
+示例 1:
+输入: 12258
+输出: 5
+解释: 12258有5种不同的翻译，分别是"bccfi", "bwfi", "bczi", "mcfi"和"mzi"
+*/
+func translateNum(num int) int {
+	//首先定义一个map
+	m := make(map[int]string)
+	m = map[int]string{
+		0:  "a",
+		1:  "b",
+		2:  "c",
+		3:  "d",
+		4:  "e",
+		5:  "f",
+		6:  "g",
+		7:  "h",
+		8:  "i",
+		9:  "j",
+		10: "k",
+		11: "l",
+		12: "m",
+		13: "n",
+		14: "o",
+		15: "p",
+		16: "q",
+		17: "r",
+		18: "s",
+		19: "t",
+		20: "u",
+		21: "v",
+		22: "w",
+		23: "x",
+		24: "y",
+		25: "z",
+	}
+
 }

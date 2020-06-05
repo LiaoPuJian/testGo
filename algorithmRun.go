@@ -295,11 +295,32 @@ func main() {
 	//param = [][]int{[]int{7}, []int{9}, []int{6}}
 	//fmt.Println(algorithm.SpiralOrder(param))
 
-	obj := algorithm.ConstructorMinStack()
+	/*obj := algorithm.ConstructorMinStack()
 	obj.Push(-2)
 	obj.Push(0)
 	obj.Push(-1)
 	fmt.Println(obj.Min(), obj.Top())
 	obj.Pop()
-	fmt.Println(obj.Min())
+	fmt.Println(obj.Min())*/
+
+	//fmt.Println(algorithm.VerifyPostorder([]int{5, 2, -17, -11, 25, 76, 62, 98, 92, 61}))
+
+	/*treeNode := &algorithm.TreeNode{Val: 5, Left: &algorithm.TreeNode{Val: 4, Left: &algorithm.TreeNode{Val: 11, Left: &algorithm.TreeNode{Val: 7}, Right: &algorithm.TreeNode{Val: 2}}}, Right: &algorithm.TreeNode{Val: 8, Left: &algorithm.TreeNode{Val: 13}, Right: &algorithm.TreeNode{Val: 4, Left: &algorithm.TreeNode{Val: 5}, Right: &algorithm.TreeNode{Val: 1}}}}
+	treeNode = &algorithm.TreeNode{Val: -2, Right: &algorithm.TreeNode{Val: -3}}
+	fmt.Println(algorithm.PathSum1(treeNode, -5))*/
+
+	/*treeNode := &algorithm.TreeNode{Val: 1, Left: &algorithm.TreeNode{Val: 2}, Right: &algorithm.TreeNode{Val: 3, Left: &algorithm.TreeNode{Val: 4}, Right: &algorithm.TreeNode{Val: 5}}}
+	obj := algorithm.ConstructorCodec()
+	str := obj.Serialize(treeNode)
+	fmt.Println(str)
+	algorithm.PrintFront(obj.Deserialize(str))*/
+
+	//fmt.Println(algorithm.Permutation("abc"))
+
+	/*fmt.Println(algorithm.MaxSubArray([]int{-2, 1, -3, 4, -1, 2, 1, -5, 4}))
+	fmt.Println(algorithm.MaxSubArray([]int{-2, -1}))*/
+
+	//fmt.Println(algorithm.CountDigitOne(12))
+
+	fmt.Println(algorithm.FindNthDigit(1000))
 }
