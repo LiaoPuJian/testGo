@@ -322,5 +322,43 @@ func main() {
 
 	//fmt.Println(algorithm.CountDigitOne(12))
 
-	fmt.Println(algorithm.FindNthDigit(1000))
+	//fmt.Println(algorithm.FindNthDigit(1000))
+
+	//fmt.Println(algorithm.TranslateNum(1250156147))
+	//fmt.Println(algorithm.TranslateNum(12258))
+
+	//fmt.Println(algorithm.MaxValue([][]int{[]int{1, 3, 1}, []int{1, 5, 1}, []int{4, 2, 1}}))
+	//fmt.Println(algorithm.MaxValue([][]int{[]int{0}}))
+
+	//fmt.Println(algorithm.LengthOfLongestSubstring("pwwkew"))
+
+	//fmt.Println(algorithm.NthUglyNumber(10))
+
+	//fmt.Println(algorithm.FirstUniqChar("leetcode"))
+
+	//fmt.Println(algorithm.ReversePairs([]int{7, 5, 6, 4}))
+
+	//fmt.Println(algorithm.Search1([]int{5, 7, 7, 8, 8, 8, 10}, 8))
+
+	//fmt.Println(algorithm.MissingNumber([]int{0, 1}))
+
+	//fmt.Println(algorithm.TwoSum([]int{2, 7, 11, 15}, 9))
+
+	//fmt.Println(algorithm.ReverseWords(" "))
+
+	//fmt.Println(algorithm.ReverseLeftWords("lrloseumgh", 0))
+
+	//fmt.Println(algorithm.MaxSlidingWindow([]int{1, 3, -1, -3, 5, 3, 6, 7}, 3))
+	//fmt.Println(algorithm.MaxSlidingWindow([]int{1, 3, 1, 2, 0, 5}, 3))
+
+	//fmt.Println(algorithm.TwoSumX(1))
+
+	//fmt.Println(algorithm.IsStraight([]int{0, 4, 1, 2, 5}))
+
+	//fmt.Println(algorithm.MaxProfit([]int{7, 1, 5, 3, 6, 4}))
+
+	//fmt.Println(algorithm.ConstructArr([]int{1, 2, 0, 4, 5}))
+
+	treeNode := &algorithm.TreeNode{Val: 6, Left: &algorithm.TreeNode{Val: 2, Left: &algorithm.TreeNode{Val: 0}, Right: &algorithm.TreeNode{Val: 4, Left: &algorithm.TreeNode{Val: 3}, Right: &algorithm.TreeNode{Val: 5}}}, Right: &algorithm.TreeNode{Val: 8, Left: &algorithm.TreeNode{Val: 7}, Right: &algorithm.TreeNode{Val: 9}}}
+	fmt.Println(algorithm.LowestCommonAncestor(treeNode, 0, 5))
 }
