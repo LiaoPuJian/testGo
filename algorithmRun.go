@@ -359,6 +359,8 @@ func main() {
 
 	//fmt.Println(algorithm.ConstructArr([]int{1, 2, 0, 4, 5}))
 
-	treeNode := &algorithm.TreeNode{Val: 6, Left: &algorithm.TreeNode{Val: 2, Left: &algorithm.TreeNode{Val: 0}, Right: &algorithm.TreeNode{Val: 4, Left: &algorithm.TreeNode{Val: 3}, Right: &algorithm.TreeNode{Val: 5}}}, Right: &algorithm.TreeNode{Val: 8, Left: &algorithm.TreeNode{Val: 7}, Right: &algorithm.TreeNode{Val: 9}}}
-	fmt.Println(algorithm.LowestCommonAncestor(treeNode, 0, 5))
+	/*treeNode := &algorithm.TreeNode{Val: 6, Left: &algorithm.TreeNode{Val: 2, Left: &algorithm.TreeNode{Val: 0}, Right: &algorithm.TreeNode{Val: 4, Left: &algorithm.TreeNode{Val: 3}, Right: &algorithm.TreeNode{Val: 5}}}, Right: &algorithm.TreeNode{Val: 8, Left: &algorithm.TreeNode{Val: 7}, Right: &algorithm.TreeNode{Val: 9}}}
+	fmt.Println(algorithm.LowestCommonAncestor(treeNode, 0, 5))*/
+
+	fmt.Println(algorithm.QuickSortMain([]int{3, 1, 2, 5, 4, 6, 9, 7, 10, 8}))
 }
