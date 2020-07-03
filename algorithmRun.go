@@ -362,5 +362,13 @@ func main() {
 	/*treeNode := &algorithm.TreeNode{Val: 6, Left: &algorithm.TreeNode{Val: 2, Left: &algorithm.TreeNode{Val: 0}, Right: &algorithm.TreeNode{Val: 4, Left: &algorithm.TreeNode{Val: 3}, Right: &algorithm.TreeNode{Val: 5}}}, Right: &algorithm.TreeNode{Val: 8, Left: &algorithm.TreeNode{Val: 7}, Right: &algorithm.TreeNode{Val: 9}}}
 	fmt.Println(algorithm.LowestCommonAncestor(treeNode, 0, 5))*/
 
-	fmt.Println(algorithm.QuickSortMain([]int{3, 1, 2, 5, 4, 6, 9, 7, 10, 8}))
+	//fmt.Println(algorithm.QuickSortMain([]int{3, 1, 2, 5, 4, 6, 9, 7, 10, 8}))
+
+	//fmt.Println(algorithm.WaysToChange(61))
+
+	//fmt.Println(algorithm.Search2([]int{15, 16, 19, 20, 25, 1, 3, 4, 5, 7, 10, 14}, 7))
+
+	//fmt.Println(algorithm.Knapsack(5, 6, []int{2, 1, 3, 5, 4}, []int{4, 2, 3, 2, 3}))
+
+	fmt.Println(algorithm.SuperEggDrop1(2, 6))
 }
