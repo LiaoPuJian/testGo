@@ -1,7 +1,6 @@
 package main
 
 import (
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -28,17 +27,7 @@ func handleShellFunc(shell shellFunc) func(w http.ResponseWriter, r *http.Reques
 }
 
 func sayhelloName(w http.ResponseWriter, r *http.Request) error {
-	path := r.URL.Path[len("/"):]
-	file, err := os.Open(path)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
-	all, err := ioutil.ReadAll(file)
-	if err != nil {
-		return err
-	}
-	w.Write(all)
+	w.Write([]byte("hello world rua!"))
 	return nil
 }
 
