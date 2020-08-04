@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/keima/spider"
+	"github.com/LiaoPuJian/keima/spider"
 )
 
 func main() {

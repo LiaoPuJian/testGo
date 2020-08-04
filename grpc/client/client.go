@@ -17,7 +17,7 @@ func main() {
 
 	client := hello.NewHelloClient(conn)
 
-	res, err := client.HelloWorld(context.Background(), &hello.Request{Name:"Neroq"})
+	res, err := client.HelloWorld(context.Background(), &hello.Request{Name:"Nero"})
 	if err != nil {
 		log.Fatalf("调用rpc服务err! %s", err)
 	}
