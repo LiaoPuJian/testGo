@@ -1,0 +1,16 @@
+@startuml
+participant Canal程序
+queue MQ分区1
+participant 消费程序线程1
+queue MQ分区2
+participant 消费程序线程2
+queue MQ分区3
+participant 消费程序线程3
+
+Canal程序->MQ分区1: UID/分区数余数为1，写入1分区
+MQ分区1<--消费程序线程1: 消费1分区的消息
+Canal程序->MQ分区2: UID/分区数余数为2，写入2分区
+MQ分区2<--消费程序线程2: 消费1分区的消息
+Canal程序->MQ分区3: UID/分区数余数为3，写入3分区
+MQ分区3<--消费程序线程3: 消费1分区的消息
+@enduml

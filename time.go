@@ -23,8 +23,8 @@ func main() {
 	default:
 		fmt.Println("Too far away")
 	}*/
-
-	getTime()
+	testTime()
+	//getTime()
 	/*a := DateToTimestamp("2018-06-30 15:04:05")
 	fmt.Println(a)
 
@@ -33,8 +33,24 @@ func main() {
 
 }
 
+func testTime() {
+	fmt.Println(111, time.Now().Year())
+	yearA := time.Date(time.Now().Year(), 1, 1, 0, 0, 0, 0, time.Local)
+	fmt.Println(222, yearA)
+	yearB := yearA.AddDate(5, 0, 0)
+
+	t1 := time.Date(yearA.Year(), 0, 0, 0, 0, 0, 0, time.Local)
+	t2 := time.Date(yearB.Year(), 0, 0, 0, 0, 0, 0, time.Local)
+
+	fmt.Println(yearA.Year())
+	fmt.Println(yearB.Year())
+
+	fmt.Println(t1.Year())
+	fmt.Println(t2.Year())
+}
+
 func getTime() {
-	timeStr := time.Now().Format("2006-01-02")
+	timeStr := time.Now().Format("2006-01-02 15:04:05")
 	fmt.Println(timeStr)
 
 	//使用Parse 默认获取为UTC时区 需要获取本地时区 所以使用ParseInLocation

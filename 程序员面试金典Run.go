@@ -1,6 +1,9 @@
 package main
 
-import "hello/algorithm"
+import (
+	"fmt"
+	"hello/algorithm"
+)
 
 func main() {
 	//fmt.Println(algorithm.IsUnique("ttnucc"))
@@ -48,7 +51,14 @@ func main() {
 
 	/*list := &algorithm.TreeNode{Val: 0}
 	fmt.Println(algorithm.IsValidBST1(list))*/
-	list := &algorithm.TreeNode{Val: 2, Left: &algorithm.TreeNode{Val: 1}, Right: &algorithm.TreeNode{Val: 3}}
-	algorithm.InorderSuccessor(list, list.Left)
+	/*list := &algorithm.TreeNode{Val: 2, Left: &algorithm.TreeNode{Val: 1}, Right: &algorithm.TreeNode{Val: 3}}
+	algorithm.InorderSuccessor(list, list.Left)*/
+
+	/*list := &algorithm.TreeNode{Val: 5, Left: &algorithm.TreeNode{Val: 4, Left: &algorithm.TreeNode{Val: 11, Left: &algorithm.TreeNode{Val: 7}, Right: &algorithm.TreeNode{Val: 2}}}, Right: &algorithm.TreeNode{Val: 8, Left: &algorithm.TreeNode{Val: 13}, Right: &algorithm.TreeNode{Val: 4, Left: &algorithm.TreeNode{Val: 5}, Right: &algorithm.TreeNode{Val: 1}}}}
+	list = &algorithm.TreeNode{Val: -2, Right: &algorithm.TreeNode{Val: -3}}
+	fmt.Println(algorithm.PathSum2(list, -5))*/
+
+	list := &algorithm.TreeNode{Val: 5, Left: &algorithm.TreeNode{Val: 4, Left: &algorithm.TreeNode{Val: 11, Left: &algorithm.TreeNode{Val: 7}, Right: &algorithm.TreeNode{Val: 2}}}, Right: &algorithm.TreeNode{Val: 8, Left: &algorithm.TreeNode{Val: 13}, Right: &algorithm.TreeNode{Val: 4, Left: &algorithm.TreeNode{Val: 5}, Right: &algorithm.TreeNode{Val: 1}}}}
+	fmt.Println(algorithm.BSTSequences(list))
 
 }

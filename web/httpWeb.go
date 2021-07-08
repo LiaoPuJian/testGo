@@ -1,9 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
 
 //定义一个函数类型
@@ -28,6 +30,17 @@ func handleShellFunc(shell shellFunc) func(w http.ResponseWriter, r *http.Reques
 
 func sayhelloName(w http.ResponseWriter, r *http.Request) error {
 	w.Write([]byte("hello world rua!"))
+	go func() {
+		fmt.Println(222)
+		time.Sleep(time.Second * 10)
+		fmt.Println(111)
+	}()
+
+	go func() {
+		fmt.Println(333)
+		time.Sleep(time.Second * 10)
+		fmt.Println(444)
+	}()
 	return nil
 }
 

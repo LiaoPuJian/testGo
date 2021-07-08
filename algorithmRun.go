@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"hello/algorithm"
 )
 
@@ -370,5 +369,8 @@ func main() {
 
 	//fmt.Println(algorithm.Knapsack(5, 6, []int{2, 1, 3, 5, 4}, []int{4, 2, 3, 2, 3}))
 
-	fmt.Println(algorithm.SuperEggDrop1(2, 6))
+	//fmt.Println(algorithm.SuperEggDrop1(2, 6))
+
+	list := &algorithm.ListNode{Val: -1, Next: &algorithm.ListNode{Val: 5, Next: &algorithm.ListNode{Val: 3, Next: &algorithm.ListNode{Val: 4, Next: &algorithm.ListNode{Val: 0, Next: nil}}}}}
+	algorithm.SortList(list)
 }

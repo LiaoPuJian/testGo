@@ -1263,11 +1263,181 @@ func inorderSuccessor(root *TreeNode, p *TreeNode) *TreeNode {
 
 */
 func lowestCommonAncestor(root *TreeNode, p *TreeNode, q *TreeNode) *TreeNode {
-	res := root
-
+	//如果root和p,q某个节点是同一个，那pq的公共祖先一定是root
+	if root == p || root == q || root == nil {
+		return root
+	}
+	//判断左子树是否为pq的公共节点
+	left := lowestCommonAncestor(root.Left, p, q)
+	//判断右子树是否为pq的公共节点
+	right := lowestCommonAncestor(root.Right, p, q)
+	//如果left和right都不为nil，则返回当前节点
+	if left != nil && right != nil {
+		return root
+	}
+	if left != nil {
+		return left
+	} else {
+		return right
+	}
 }
 
-//判断p,q是否是当前节点的子节点
-func isChild(root, p, q *TreeNode) bool {
+/**
+检查子树。你有两棵非常大的二叉树：T1，有几万个节点；T2，有几万个节点。设计一个算法，判断 T2 是否为 T1 的子树。
+如果 T1 有这么一个节点 n，其子树与 T2 一模一样，则 T2 为 T1 的子树，也就是说，从节点 n 处把树砍断，得到的树与 T2 完全相同。
 
+示例1:
+ 输入：t1 = [1, 2, 3], t2 = [2]
+ 输出：true
+示例2:
+ 输入：t1 = [1, null, 2, 4], t2 = [3, 2]
+ 输出：false
+提示：
+树的节点数目范围为[0, 20000]。
+
+*/
+func checkSubTree(t1 *TreeNode, t2 *TreeNode) bool {
+	//定义一个方法，判断两个树是否为同一个树
+	var isSame func(p, q *TreeNode) bool
+	isSame = func(p, q *TreeNode) bool {
+		if p == nil && q == nil {
+			return true
+		}
+		if p == nil || q == nil {
+			return false
+		}
+		return p.Val == q.Val && isSame(p.Left, q.Left) && isSame(p.Right, q.Right)
+	}
+	if t1 == nil {
+		return t2 == nil
+	}
+	return isSame(t1, t2) || checkSubTree(t1.Left, t2) || checkSubTree(t1.Right, t2)
+}
+
+/**
+给定一棵二叉树，其中每个节点都含有一个整数数值(该值或正或负)。设计一个算法，打印节点数值总和等于某个给定值的所有路径的数量。
+注意，路径不一定非得从二叉树的根节点或叶节点开始或结束，但是其方向必须向下(只能从父节点指向子节点方向)。
+示例:
+给定如下二叉树，以及目标和 sum = 22，
+
+              5
+             / \
+            4   8
+           /   / \
+          11  13  4
+         /  \    / \
+        7    2  5   1
+返回:
+3
+解释：和为 22 的路径有：[5,4,11,2], [5,8,4,5], [4,11,7]
+提示：
+节点总数 <= 10000
+
+*/
+var pathSumRes2 [][]int
+
+func PathSum2(root *TreeNode, sum int) int {
+	//这里为了防止leetcode报错
+	pathSumRes2 = make([][]int, 0)
+	//回溯解法
+	pathSumF1(root, []int{}, sum, 0)
+	return len(pathSumRes2)
+}
+
+func pathSumF1(root *TreeNode, cur []int, sum, lastSum int) {
+	if root == nil {
+		return
+	}
+	if root.Val+lastSum == sum {
+		tmp := make([]int, len(cur))
+		copy(tmp, cur)
+		tmp = append(tmp, root.Val)
+		pathSumRes2 = append(pathSumRes2, tmp)
+		return
+	}
+	if root.Val+lastSum > sum && sum > 0 && lastSum > 0 {
+		if len(cur) > 0 {
+			//将第一个值弹出
+			head := cur[0]
+			cur = cur[1:]
+			pathSumF1(root, cur, sum, lastSum-head)
+		} else {
+			//如果当前cur没有值，但是当前的val还是大于sum的话，则继续下个节点
+			pathSumF1(root.Left, cur, sum, lastSum)
+			pathSumF1(root.Right, cur, sum, lastSum)
+		}
+		return
+	}
+	cur = append(cur, root.Val)
+	lastSum += root.Val
+	pathSumF1(root.Left, cur, sum, lastSum)
+	pathSumF1(root.Right, cur, sum, lastSum)
+}
+
+/**
+从左向右遍历一个数组，通过不断将其中的元素插入树中可以逐步地生成一棵二叉搜索树。给定一个由不同节点组成的二叉搜索树，输出所有可能生成此树的数组。
+示例：
+给定如下二叉树
+        2
+       / \
+      1   3
+返回：
+[
+   [2,1,3],
+   [2,3,1]
+]
+
+*/
+// BSTSequences 二叉搜索树序列（04.09）
+func BSTSequences(root *TreeNode) [][]int {
+	// 空树直接返回空切片
+	if root == nil {
+		// 注意这里返回长度为 1 的切片，即 [[]]，返回 [] 会判错
+		return make([][]int, 1)
+	}
+	// q 模拟队列存储所有可能的下一节点
+	var q []*TreeNode
+	// path 记录路径，为了方便调用 findPath 函数这里直接存进 root.Val
+	var path = []int{root.Val}
+	// res 存储找到的 path
+	var res [][]int
+
+	findPath(root, q, path, &res)
+
+	return res
+}
+
+func findPath(root *TreeNode, q []*TreeNode, path []int, res *[][]int) {
+	// 有左子节点时添加到队列里
+	if root.Left != nil {
+		q = append(q, root.Left)
+	}
+	// 有右子节点时添加到队列里
+	if root.Right != nil {
+		q = append(q, root.Right)
+	}
+	// 队列为空时代表找到了一个 path，将 path 添加到 res 中
+	if len(q) == 0 {
+		*res = append(*res, path)
+		return
+	}
+	// 取出队列中的一个节点作为 nextRoot，同步更新 nextQ 和 nextPath
+	for i, nextRoot := range q {
+		// 这里不能直接 nextQ := append(q[:i], q[i+1:]...)
+		// append() 函数是把后面的元素依次追加到前面的切片中，再用来初始化 nextQ
+		// 这种写法会对 q 产生操作，从而影响循环
+		tmpQ := make([]*TreeNode, len(q))
+		copy(tmpQ, q)
+		// nextQ 为 q 取出 nextRoot 所剩
+		nextQ := append(tmpQ[:i], tmpQ[i+1:]...)
+		// 这里也不能直接 nextPath := append(path, nextRoot.Val)
+		// 理由大致同上：在某个节点同时有左右子节点时，会有两个不同的 nextRoot 共用一个 path
+		// 这时为第一个 nextRoot 修改 path 会对第二个产生影响
+		tmpPath := make([]int, len(path))
+		copy(tmpPath, path)
+		// nextPath 为 path 追加 nextRoot.Val
+		nextPath := append(tmpPath, nextRoot.Val)
+		// 递归，直到队列为空
+		findPath(nextRoot, nextQ, nextPath, res)
+	}
 }

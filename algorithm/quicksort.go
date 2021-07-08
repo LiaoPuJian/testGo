@@ -18,7 +18,7 @@ func quickSort(left, right int) {
 	tmp := quickRes[left]
 
 	for i < j {
-		//右侧先动（由于以最左侧的值作为基准朱），从右往左找一个小于基准值的值
+		//右侧先动（由于以最左侧的值作为基准），从右往左找一个小于基准值的值
 		for quickRes[j] >= tmp && i < j {
 			j--
 		}

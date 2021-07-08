@@ -5368,3 +5368,334 @@ func LastRemaining(m, n int) int {
 	}
 	return last
 }
+
+/**
+N叉树的前序遍历
+给定一个 N 叉树，返回其节点值的前序遍历。
+
+例如，给定一个 3叉树 :
+返回其前序遍历: [1,3,5,6,2,4]。
+说明: 递归法很简单，你可以使用迭代法完成此题吗?
+ Definition for a Node.
+  type Node struct {
+      Val int
+      Children []*Node
+  }
+*/
+
+/*var preorderRes []int
+
+//递归法
+func preorder(root *Node) []int {
+	preorderRes = make([]int, 0)
+	var preorderF func(root *Node)
+	preorderF = func(root *Node) {
+		if root == nil {
+			return
+		}
+		preorderRes = append(preorderRes, root.Val)
+		for _, v := range root.Children {
+			preorderF(v)
+		}
+	}
+	preorderF(root)
+	return preorderRes
+}*/
+
+//迭代法
+/**
+func preorder(root *Node) []int {
+	//迭代法，dps
+    res := make([]int, 0)
+    if root == nil {
+        return res
+    }
+    queue := make([]*Node, 0)
+    queue = append(queue, root)
+    for len(queue) > 0 {
+        //取出最前面一个元素，然后判断
+        cur := queue[0]
+        queue = queue[1:]
+        if cur != nil {
+            res = append(res, cur.Val)
+            temp := make([]*Node, 0)
+            for _, v := range cur.Children {
+                temp = append(temp, v)
+            }
+            queue = append(temp, queue...)
+        }
+    }
+    return res
+}
+*/
+
+/**
+最大树定义：一个树，其中每个节点的值都大于其子树中的任何其他值。
+
+给出最大树的根节点 root。
+
+给出一个树，给一个值。如果这个值大于这个树的根，则将这个树作为当前值的左子树。否则将这个值放入这个树的右子树中
+*/
+func insertIntoMaxTree(root *TreeNode, val int) *TreeNode {
+	if root == nil {
+		return &TreeNode{val, nil, nil}
+	}
+	if val > root.Val {
+		return &TreeNode{val, root, nil}
+	}
+	root.Right = insertIntoMaxTree(root.Right, val)
+	return root
+}
+
+/**
+给你一个树，请你 按中序遍历 重新排列树，使树中最左边的结点现在是树的根，并且每个结点没有左子结点，只有一个右子结点。
+示例 ：
+
+输入：[5,3,6,2,4,null,8,1,null,null,null,7,9]
+
+       5
+      / \
+    3    6
+   / \    \
+  2   4    8
+ /        / \
+1        7   9
+
+输出：[1,null,2,null,3,null,4,null,5,null,6,null,7,null,8,null,9]
+
+ 1
+  \
+   2
+    \
+     3
+      \
+       4
+        \
+         5
+          \
+           6
+            \
+             7
+              \
+               8
+                \
+                 9
+*/
+var increasingBSTParent *TreeNode
+var increasingBSTP *TreeNode
+
+func increasingBST(root *TreeNode) *TreeNode {
+	increasingBSTParent = &TreeNode{}
+	increasingBSTP = increasingBSTParent
+	increasingBSTF(root)
+	return increasingBSTParent.Right
+}
+
+func increasingBSTF(root *TreeNode) {
+	//先中序遍历，得到的每个值放入到increasingBSTRes中
+	if root == nil {
+		return
+	}
+	increasingBSTF(root.Left)
+	increasingBSTP.Right = &TreeNode{Val: root.Val}
+	increasingBSTP = increasingBSTP.Right
+	increasingBSTF(root.Right)
+}
+
+/**
+222. 完全二叉树的节点个数
+给出一个完全二叉树，求出该树的节点个数。
+说明：
+完全二叉树的定义如下：在完全二叉树中，除了最底层节点可能没填满外，其余每层节点数都达到最大值，并且最下面一层的节点都集中在该层最左边的若干位置。若最底层为第 h 层，则该层包含 1~ 2h 个节点。
+示例:
+输入:
+    1
+   / \
+  2   3
+ / \  /
+4  5 6
+
+输出: 6
+
+*/
+func countNodes(root *TreeNode) int {
+	//思路，递归获取左右子树的高度left和right。如果left==right，则证明左右子树等高，所以左子树已经被填满了，此时左子树的个数为pow(2, left)
+	//此时的总数量等于pow(2, left) + countNodes(root.Right) 如果left != right，则证明左子树比右子树高，则此时右子树比左子树少一层，但也是填满的，所以右子树的个数为pow(2, right)
+	//则此时总数量等于pow(2. right) + countNodes(root.Left)
+	if root == nil {
+		return 0
+	}
+	left := countNodesGetTreeDeep(root.Left)
+	right := countNodesGetTreeDeep(root.Right)
+	if left == right {
+		return countNodes(root.Right) + (1 << left)
+	} else {
+		return countNodes(root.Left) + (1 << right)
+	}
+}
+
+func countNodesGetTreeDeep(root *TreeNode) uint {
+	var res uint
+	for root != nil {
+		res += 1
+		root = root.Left
+	}
+	return res
+}
+
+/**
+二叉树剪枝
+给定二叉树根结点 root ，此外树的每个结点的值要么是 0，要么是 1。
+返回移除了所有不包含 1 的子树的原二叉树。
+( 节点 X 的子树为 X 本身，以及所有 X 的后代。)
+*/
+func pruneTree(root *TreeNode) *TreeNode {
+	//其实需要被剪去的节点只符合一种情况。本身是0,且没有左右子节点。 自下向上递归，如果遇到当前节点的左右节点都被剪掉，且当前节点是0，则当前节点也应该被剪去
+	if root == nil {
+		return nil
+	}
+	//如果当前节点是0
+	if root.Val == 0 {
+		//递归处理左右的节点
+		root.Left = pruneTree(root.Left)
+		root.Right = pruneTree(root.Right)
+		//如果左右的节点都是nil，并且当前节点是0,则证明当前节点需要被剪去
+		if root.Left == nil && root.Right == nil {
+			return nil
+		}
+	} else {
+		root.Left = pruneTree(root.Left)
+		root.Right = pruneTree(root.Right)
+	}
+	return root
+}
+
+/**
+给定一个根为 root 的二叉树，每个结点的深度是它到根的最短距离。
+如果一个结点在整个树的任意结点之间具有最大的深度，则该结点是最深的。
+一个结点的子树是该结点加上它的所有后代的集合。
+返回能满足“以该结点为根的子树中包含所有最深的结点”这一条件的具有最大深度的结点。
+
+*/
+func subtreeWithAllDeepest(root *TreeNode) *TreeNode {
+	//其实这题就是个简单的最深节点的最近公共祖先
+	//递归，如果当前左子树和右子树深度一样，则返回root。如果左子树比右子树深，则递归处理左子树，否则递归处理右子树
+	if root == nil {
+		return root
+	}
+	l := MaxDepth(root.Left)
+	r := MaxDepth(root.Right)
+	if l == r {
+		return root
+	}
+	if l > r {
+		return subtreeWithAllDeepest(root.Left)
+	} else {
+		return subtreeWithAllDeepest(root.Right)
+	}
+}
+
+/**
+给你链表的头结点 head ，请将其按 升序 排列并返回 排序后的链表 。
+进阶：
+
+你可以在 O(n log n) 时间复杂度和常数级空间复杂度下，对链表进行排序吗？
+
+*/
+func SortList(head *ListNode) *ListNode {
+	//思路，由于要使用常数级的空间，所以使用冒泡排序的思路，比较当前节点和其后面节点的大小，如果比后面节点大，则交换双方的值
+	tmp := head
+
+	l := 0
+	for tmp != nil {
+		tmp = tmp.Next
+		l++
+	}
+
+	for i := 0; i < l; i++ {
+		tmp = head
+		for tmp != nil {
+			if tmp.Next != nil && tmp.Val > tmp.Next.Val {
+				tmp.Val, tmp.Next.Val = tmp.Next.Val, tmp.Val
+			}
+			tmp = tmp.Next
+		}
+	}
+	printList(head)
+	return head
+}
+
+/**
+较大分组的位置
+在一个由小写字母构成的字符串 s 中，包含由一些连续的相同字符所构成的分组。
+例如，在字符串 s = "abbxxxxzyy" 中，就含有 "a", "bb", "xxxx", "z" 和 "yy" 这样的一些分组。
+分组可以用区间 [start, end] 表示，其中 start 和 end 分别表示该分组的起始和终止位置的下标。上例中的 "xxxx" 分组用区间表示为 [3,6] 。
+我们称所有包含大于或等于三个连续字符的分组为 较大分组 。
+找到每一个 较大分组 的区间，按起始位置下标递增顺序排序后，返回结果。
+
+*/
+func largeGroupPositions(s string) [][]int {
+	//双指针
+	res := make([][]int, 0)
+	if len(s) < 3 {
+		return res
+	}
+	p1 := 0
+	p2 := p1 + 1
+	maxLen := 1
+	for p2 < len(s) {
+		//如果当前p1和p2的字符不相等，则判断maxLen的长度是否大于等于3，如果是，则将p1和p2-1放入到res中。且此时将p1移动到p2，将p2移动到p2+1
+		if s[p1] != s[p2] {
+			if maxLen >= 3 {
+				res = append(res, []int{p1, p2 - 1})
+			}
+			p1 = p2
+			p2++
+			maxLen = 1
+		} else {
+			//如果当前p1和p2相等，则将maxLen加1
+			maxLen++
+			p2++
+			//如果加完之后p2刚到等于s的长度，则判断最后一组是否符合
+			if p2 == len(s) && maxLen >= 3 {
+				res = append(res, []int{p1, p2 - 1})
+			}
+		}
+	}
+	return res
+}
+
+/**
+斐波那契数，通常用 F(n) 表示，形成的序列称为 斐波那契数列 。该数列由 0 和 1 开始，后面的每一项数字都是前面两项数字的和。也就是：
+F(0) = 0，F(1) = 1
+F(n) = F(n - 1) + F(n - 2)，其中 n > 1
+给你 n ，请计算 F(n) 。
+*/
+func fib(n int) int {
+	if n <= 1 {
+		return n
+	}
+	res := 0
+	first := 0
+	second := 1
+	for i := 2; i <= n; i++ {
+		res = first + second
+		first = second
+		second = res
+	}
+	return res
+}
+
+/**
+399. 除法求值
+给你一个变量对数组 equations 和一个实数值数组 values 作为已知条件，其中 equations[i] = [Ai, Bi] 和 values[i] 共同表示等式 Ai / Bi = values[i] 。每个 Ai 或 Bi 是一个表示单个变量的字符串。
+另有一些以数组 queries 表示的问题，其中 queries[j] = [Cj, Dj] 表示第 j 个问题，请你根据已知条件找出 Cj / Dj = ? 的结果作为答案。
+返回 所有问题的答案 。如果存在某个无法确定的答案，则用 -1.0 替代这个答案。
+
+注意：输入总是有效的。你可以假设除法运算中不会出现除数为 0 的情况，且不存在任何矛盾的结果。
+
+*/
+func calcEquation(equations [][]string, values []float64, queries [][]string) []float64 {
+	//思路，假如["a", "b"]的值确定了，那毫无疑问["b", "a"]的值也确定了。  如果["a", "b"]的值确定了，["b", "c"]的值也确定了，那么["a", "c"]的值也确定了。
+
+}
